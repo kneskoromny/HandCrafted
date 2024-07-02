@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct HandCraftedTabView: View {
+    
     var body: some View {
         TabView {
             AccountView()
