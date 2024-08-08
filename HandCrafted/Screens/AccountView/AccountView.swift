@@ -4,19 +4,27 @@ struct AccountView: View {
     
     @StateObject var viewModel = AccountViewModel()
     
+    @ObservedObject var registerRouter = RegisterRouter()
+    
     var body: some View {
-        NavigationView {
-            switch viewModel.accountState {
-            case .login:
-                LoginView(viewModel: viewModel)
-            case .auth:
-                AuthView()
-            case .register:
-                RegisterView(viewModel: viewModel)
+        switch viewModel.accountState {
+        case .auth:
+            AuthView()
+        case .unAuth:
+            NavigationStack(path: $registerRouter.navPath) {
+                SignUpView(viewModel: viewModel)
+                    .navigationDestination(for: RegisterRouter.Destination.self) { destination in
+                        switch destination {
+                        case .signIn:
+                            SignInView(viewModel: viewModel)
+                        case .forgotPassword:
+                            ForgotPasswordView(viewModel: viewModel)
+                        case .recoveryRequested:
+                            RecoveryPasswordRequestedView()
+                        }
+                    }
             }
-        }
-        .onAppear {
-            viewModel.retrieveUser()
+            .environmentObject(registerRouter)
         }
     }
     

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct HCButton: View {
+struct PrimaryButton: View {
     
     var title: LocalizedStringKey
     var foregroundColor: Color
@@ -17,12 +17,18 @@ struct HCButton: View {
             .font(.title3)
             .fontWeight(.semibold)
             .cornerRadius(10)
+            .shadow(
+                color: Color.green,
+                radius: 1,
+                x: 0,
+                y: 0
+            )
 
     }
 }
 
 #Preview {
-    HCButton(
+    PrimaryButton(
         title: "Test Title",
         foregroundColor: .white,
         backgroundColor: .green
