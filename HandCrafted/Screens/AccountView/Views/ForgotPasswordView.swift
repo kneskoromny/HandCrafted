@@ -52,7 +52,9 @@ struct ForgotPasswordView: View {
                 .padding(Const.textFieldsInsets)
                 Button {
                     // TODO: Network
-                    router.navigate(to: .recoveryRequested)
+                    viewModel.sendPasswordReset {
+                        self.router.navigate(to: .recoveryRequested)
+                    }
                 } label: {
                     PrimaryButton(
                         title: "Send",

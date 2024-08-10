@@ -41,6 +41,7 @@
 		F7FEF2522C64CC8800DE29FC /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FEF2512C64CC8800DE29FC /* ForgotPasswordView.swift */; };
 		F7FEF2542C64DA9D00DE29FC /* RecoveryPasswordRequestedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FEF2532C64DA9D00DE29FC /* RecoveryPasswordRequestedView.swift */; };
 		F7FEF2562C67BE3100DE29FC /* RegisterRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FEF2552C67BE3100DE29FC /* RegisterRouter.swift */; };
+		F7FEF2592C67D2C800DE29FC /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FEF2582C67D2C700DE29FC /* AuthManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,7 @@
 		F7FEF2512C64CC8800DE29FC /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		F7FEF2532C64DA9D00DE29FC /* RecoveryPasswordRequestedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPasswordRequestedView.swift; sourceTree = "<group>"; };
 		F7FEF2552C67BE3100DE29FC /* RegisterRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRouter.swift; sourceTree = "<group>"; };
+		F7FEF2582C67D2C700DE29FC /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +183,8 @@
 			isa = PBXGroup;
 			children = (
 				F78D90BA2C34744600CD9DBC /* Firebase */,
+				F7FEF25A2C67D2D700DE29FC /* Network */,
+				F7FEF2572C67BE3A00DE29FC /* Navigation */,
 				F7EEE8A02C1F05260045C760 /* HandCrafted */,
 				F7EEE89F2C1F05260045C760 /* Products */,
 			);
@@ -204,7 +208,6 @@
 				F77401DE2C275E940039D2F4 /* Models */,
 				F7EEE8A52C1F05280045C760 /* Assets.xcassets */,
 				F7EEE8A72C1F05280045C760 /* Preview Content */,
-				F7FEF2572C67BE3A00DE29FC /* Navigation */,
 			);
 			path = HandCrafted;
 			sourceTree = "<group>";
@@ -223,6 +226,14 @@
 				F7FEF2552C67BE3100DE29FC /* RegisterRouter.swift */,
 			);
 			path = Navigation;
+			sourceTree = "<group>";
+		};
+		F7FEF25A2C67D2D700DE29FC /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				F7FEF2582C67D2C700DE29FC /* AuthManager.swift */,
+			);
+			path = Network;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -325,6 +336,7 @@
 				F7B0D2AD2C275A870017DCD7 /* User.swift in Sources */,
 				F7B0D2A92C275A3B0017DCD7 /* AccountViewModel.swift in Sources */,
 				F7FEF2542C64DA9D00DE29FC /* RecoveryPasswordRequestedView.swift in Sources */,
+				F7FEF2592C67D2C800DE29FC /* AuthManager.swift in Sources */,
 				F7B0D2AB2C275A6D0017DCD7 /* Alert.swift in Sources */,
 				F7403A062C282E8C00A9A138 /* SignInView.swift in Sources */,
 				F7403A0D2C28633800A9A138 /* AuthView.swift in Sources */,
