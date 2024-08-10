@@ -14,6 +14,8 @@ final class AccountViewModel: ObservableObject {
     @Published var accountState: AccountState = .unAuth
     @Published var isLoading = false
     
+    private var authManager = AuthManager()
+    
     var isValidForm: Bool {
         guard !user.firstName.isEmpty && !user.lastName.isEmpty && !user.email.isEmpty else {
             alertItem = AlertContext.invalidForm
@@ -24,6 +26,21 @@ final class AccountViewModel: ObservableObject {
             return false
         }
         return true
+    }
+    
+    func createUser() {
+        isLoading = true
+        authManager.createUser(
+            withEmail: user.email,
+            password: user.password) { [weak self] error in
+                self?.isLoading = false
+                if error == nil {
+                    self?.accountState = .auth
+                } else {
+                    // TODO: Обработать ошибки Firebase
+                    self?.alertItem = AlertContext.invalidResponse
+                }
+            }
     }
     
     func saveChanges() {

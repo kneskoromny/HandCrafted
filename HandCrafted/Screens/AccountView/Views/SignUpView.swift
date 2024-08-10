@@ -70,14 +70,7 @@ struct SignUpView: View {
                         }
                     }
                     Button {
-                        // TODO: network
-                        print(#function, "mytest - sign up did tapped")
-                        viewModel.isLoading = true
-                        let deadline: DispatchTime = .now() + 1
-                        DispatchQueue.main.asyncAfter(deadline: deadline) {
-                            viewModel.isLoading = false
-                        }
-                        //                    viewModel.accountState = .auth
+                        viewModel.createUser()
                     } label: {
                         PrimaryButton(
                             title: "Sign Up",
@@ -91,6 +84,13 @@ struct SignUpView: View {
             }
             .padding(Const.viewInsets)
             .navigationTitle("Sign Up")
+            .alert(item: $viewModel.alertItem) { alert in
+                Alert(
+                    title: alert.title,
+                    message: alert.message,
+                    dismissButton: alert.dismissButton
+                )
+            }
         }
         
     }
