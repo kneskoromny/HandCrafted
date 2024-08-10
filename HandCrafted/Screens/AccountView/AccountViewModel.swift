@@ -58,6 +58,19 @@ final class AccountViewModel: ObservableObject {
             }
     }
     
+    func sendPasswordReset(completion: @escaping () -> Void) {
+        isLoading = true
+        authManager.sendPasswordReset(withEmail: user.email) { [weak self] error in
+            self?.isLoading = false
+            if error == nil {
+                completion()
+            } else {
+                // TODO: Обработать ошибки Firebase
+                self?.alertItem = AlertContext.invalidResponse
+            }
+        }
+    }
+    
     func saveChanges() {
         Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
           AnalyticsParameterItemID: "id- testId",
