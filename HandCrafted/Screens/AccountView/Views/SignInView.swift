@@ -66,7 +66,7 @@ struct SignInView: View {
                         }
                     }
                     Button {
-                        print(#function, "mytest - sign in did tapped")
+                        viewModel.signIn()
                     } label: {
                         PrimaryButton(
                             title: "Sign In",

@@ -43,6 +43,21 @@ final class AccountViewModel: ObservableObject {
             }
     }
     
+    func signIn() {
+        isLoading = true
+        authManager.signIn(
+            withEmail: user.email,
+            password: user.password) { [weak self] error in
+                self?.isLoading = false
+                if error == nil {
+                    self?.accountState = .auth
+                } else {
+                    // TODO: Обработать ошибки Firebase
+                    self?.alertItem = AlertContext.invalidResponse
+                }
+            }
+    }
+    
     func saveChanges() {
         Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
           AnalyticsParameterItemID: "id- testId",
