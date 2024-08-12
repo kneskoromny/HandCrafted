@@ -1,15 +1,33 @@
 import SwiftUI
 
-struct AccountView: View {
+struct ProfileView: View {
     
-    @StateObject var viewModel = AccountViewModel()
+    @StateObject var viewModel = ProfileViewModel()
     
     @ObservedObject var registerRouter = RegisterRouter()
+    @ObservedObject var accountRouter = AccountRouter()
     
     var body: some View {
         switch viewModel.accountState {
         case .auth:
-            AuthView()
+            NavigationStack(path: $accountRouter.navPath) {
+                AccountView()
+                    .navigationDestination(for: AccountRouter.Destination.self) { destination in
+                        switch destination {
+                        case .orders:
+                            Text("Orders View")
+                        case .favorites:
+                            Text("Favorites View")
+                        case .shippingAddresses:
+                            Text("Shipping Addresses View")
+                        case .paymentMethods:
+                            Text("PAyment Methods View")
+                        case .settings:
+                            Text("Settings View")
+                        }
+                    }
+            }
+            .environmentObject(accountRouter)
         case .unAuth:
             NavigationStack(path: $registerRouter.navPath) {
                 SignUpView(viewModel: viewModel)

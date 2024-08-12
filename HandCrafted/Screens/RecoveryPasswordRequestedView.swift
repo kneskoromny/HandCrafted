@@ -59,9 +59,9 @@ struct RecoveryPasswordRequestedView: View {
                 Button {
                     router.navigateToRoot()
                 } label: {
-                    Label("Back", systemImage: "arrow.left.circle")
+                    Label("Back", systemImage: "arrow.left")
                 }
-                .tint(.black)
+                .tint(.red)
             }
         }
     }

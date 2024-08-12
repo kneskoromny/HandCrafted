@@ -7,7 +7,7 @@ struct RegisterView: View {
     }
     
     @FocusState private var focusedTextField: FormTextField?
-    @ObservedObject var viewModel: AccountViewModel
+    @ObservedObject var viewModel: ProfileViewModel
     
     var body: some View {
             Form {
@@ -88,5 +88,5 @@ struct RegisterView: View {
 }
 
 #Preview {
-    RegisterView(viewModel: AccountViewModel())
+    RegisterView(viewModel: ProfileViewModel())
 }

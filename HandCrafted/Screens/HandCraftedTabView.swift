@@ -22,10 +22,10 @@ struct HandCraftedTabView: View {
                     )
                 }
                 .tag(2)
-            AccountView()
+            ProfileView()
                 .tabItem {
                     Label(
-                        "Account",
+                        "Profile",
                         systemImage: "person"
                     )
                 }

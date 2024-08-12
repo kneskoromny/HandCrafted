@@ -1,7 +1,7 @@
 import FirebaseAnalytics
 import SwiftUI
 
-final class AccountViewModel: ObservableObject {
+final class ProfileViewModel: ObservableObject {
     
     enum AccountState {
         case auth, unAuth
@@ -11,10 +11,11 @@ final class AccountViewModel: ObservableObject {
     
     @Published var user = User()
     @Published var alertItem: AlertItem?
-    @Published var accountState: AccountState = .unAuth
+    @Published var accountState: AccountState = .auth
     @Published var isLoading = false
     
-    private var authManager = AuthManager()
+    private let authManager = AuthManager()
+    private let dbManager = DatabaseManager()
     
     var isValidForm: Bool {
         guard !user.firstName.isEmpty && !user.lastName.isEmpty && !user.email.isEmpty else {
@@ -36,6 +37,7 @@ final class AccountViewModel: ObservableObject {
                 self?.isLoading = false
                 if error == nil {
                     self?.accountState = .auth
+                    
                 } else {
                     // TODO: Обработать ошибки Firebase
                     self?.alertItem = AlertContext.invalidResponse

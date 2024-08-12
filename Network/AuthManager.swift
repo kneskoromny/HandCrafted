@@ -1,4 +1,6 @@
-import Firebase
+import FirebaseCore
+import FirebaseAuth
+import FirebaseDatabase
 import Foundation
 
 final class AuthManager {

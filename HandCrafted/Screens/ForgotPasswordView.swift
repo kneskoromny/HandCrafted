@@ -27,7 +27,7 @@ struct ForgotPasswordView: View {
     
     // MARK: - State
     
-    @StateObject var viewModel = AccountViewModel()
+    @StateObject var viewModel = ProfileViewModel()
     @EnvironmentObject var router: RegisterRouter
     
     // MARK: - Body
@@ -73,9 +73,9 @@ struct ForgotPasswordView: View {
                     Button {
                         router.navigateBack()
                     } label: {
-                        Label("Back", systemImage: "arrow.left.circle")
+                        Label("Back", systemImage: "arrow.left")
                     }
-                    .tint(.black)
+                    .tint(.red)
                 }
             }
         }

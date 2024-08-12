@@ -1,21 +1,15 @@
 import SwiftUI
 
-struct SignInView: View {
+struct SignUpView: View {
     
     // MARK: - Const
     
     private enum Const {
         static let viewInsets = EdgeInsets(
-            top: 0,
+            top: 48,
             leading: 16,
             bottom: 0,
             trailing: 16
-        )
-        static let textFieldsInsets = EdgeInsets(
-            top: 48,
-            leading: 0,
-            bottom: 0,
-            trailing: 0
         )
         static let buttonsInsets = EdgeInsets(
             top: 8,
@@ -27,7 +21,7 @@ struct SignInView: View {
     
     // MARK: - State
     
-    @StateObject var viewModel = AccountViewModel()
+    @StateObject var viewModel = ProfileViewModel()
     @EnvironmentObject var router: RegisterRouter
     
     // MARK: - Body
@@ -39,6 +33,10 @@ struct SignInView: View {
             VStack {
                 VStack(spacing: 16) {
                     PrimaryTextField(
+                        placeholder: "Name",
+                        value: $viewModel.user.firstName
+                    )
+                    PrimaryTextField(
                         placeholder: "E-mail",
                         value: $viewModel.user.email
                     )
@@ -48,28 +46,28 @@ struct SignInView: View {
                         placeholder: "Password",
                         value: $viewModel.user.password
                     )
-                    .textContentType(.password)
+                    .textContentType(.newPassword)
                     .keyboardType(.asciiCapable)
                 }
-                .padding(Const.textFieldsInsets)
                 
                 VStack(spacing: 16)  {
                     Button {
-                        router.navigate(to: .forgotPassword)
+                        router.navigate(to: .signIn)
                     } label: {
                         HStack {
                             Spacer()
-                            TextImageButton(
-                                title: "Forgot your password?",
-                                imageName: "arrowRight"
+                            ArrowRightButton(
+                                title: "Already have an account?",
+                                font: .subheadline,
+                                isSpacer: false
                             )
                         }
                     }
                     Button {
-                        viewModel.signIn()
+                        viewModel.createUser()
                     } label: {
                         PrimaryButton(
-                            title: "Sign In",
+                            title: "Sign Up",
                             foregroundColor: .white,
                             backgroundColor: .green
                         )
@@ -79,21 +77,19 @@ struct SignInView: View {
                 Spacer()
             }
             .padding(Const.viewInsets)
-            .navigationTitle("Sign In")
-            .navigationBarBackButtonHidden()
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        router.navigateBack()
-                    } label: {
-                        Label("Back", systemImage: "arrow.left.circle")
-                    }.tint(.black)
-                }
+            .navigationTitle("Sign Up")
+            .alert(item: $viewModel.alertItem) { alert in
+                Alert(
+                    title: alert.title,
+                    message: alert.message,
+                    dismissButton: alert.dismissButton
+                )
             }
         }
+        
     }
 }
 
 #Preview {
-    SignInView()
+    SignUpView()
 }
