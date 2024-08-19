@@ -18,7 +18,7 @@ struct PrimaryButton: View {
             .fontWeight(.semibold)
             .cornerRadius(10)
             .shadow(
-                color: Color.green,
+                color: backgroundColor,
                 radius: 1,
                 x: 0,
                 y: 0

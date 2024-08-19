@@ -6,6 +6,9 @@ struct User: Codable {
     var lastName = ""
     var email = ""
     var password = ""
-    var birthday = Date()
+    var birthday = ""
+    
+    var isSalesSubOn: Bool = false
+    var isNewArrivalsSubOn: Bool = false
     
 }

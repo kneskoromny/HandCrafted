@@ -7,4 +7,5 @@ enum Constant {
         static let secondary: Font = .subheadline
         static let thirdly: Font = .footnote
     }
+    
 }

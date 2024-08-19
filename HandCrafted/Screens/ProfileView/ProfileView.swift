@@ -21,9 +21,9 @@ struct ProfileView: View {
                         case .shippingAddresses:
                             Text("Shipping Addresses View")
                         case .paymentMethods:
-                            Text("PAyment Methods View")
+                            Text("Payment Methods View")
                         case .settings:
-                            Text("Settings View")
+                            SettingsView()
                         }
                     }
             }

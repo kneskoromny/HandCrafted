@@ -54,11 +54,11 @@ struct RegisterView: View {
                     }
                     .submitLabel(.continue)
                     
-                    DatePicker(
-                        "Дата рождения",
-                        selection: $viewModel.user.birthday,
-                        displayedComponents: .date
-                    )
+//                    DatePicker(
+//                        "Дата рождения",
+//                        selection: $viewModel.user.birthday,
+//                        displayedComponents: .date
+//                    )
                     Button(action: {
                         viewModel.saveChanges()
                     },
