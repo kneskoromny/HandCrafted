@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct HandCraftedTabView: View {
+struct TabsView: View {
     
     @State private var selection = 3
     
@@ -22,7 +22,7 @@ struct HandCraftedTabView: View {
                     )
                 }
                 .tag(2)
-            ProfileView()
+            ProfileTabView()
                 .tabItem {
                     Label(
                         "Profile",
@@ -36,5 +36,5 @@ struct HandCraftedTabView: View {
 }
 
 #Preview {
-    HandCraftedTabView()
+    TabsView()
 }

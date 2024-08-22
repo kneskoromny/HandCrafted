@@ -1,17 +1,17 @@
 import SwiftUI
+import SwiftData
 
-struct ProfileView: View {
+struct ProfileTabView: View {
     
-    @StateObject var viewModel = ProfileViewModel()
-    
+    @ObservedObject var profileViewModel = ProfileViewModel()
     @ObservedObject var registerRouter = RegisterRouter()
     @ObservedObject var accountRouter = AccountRouter()
     
     var body: some View {
-        switch viewModel.accountState {
+        switch profileViewModel.accountState {
         case .auth:
             NavigationStack(path: $accountRouter.navPath) {
-                AccountView()
+                ProfileView()
                     .navigationDestination(for: AccountRouter.Destination.self) { destination in
                         switch destination {
                         case .orders:
@@ -28,21 +28,24 @@ struct ProfileView: View {
                     }
             }
             .environmentObject(accountRouter)
+            .environmentObject(profileViewModel)
+            
         case .unAuth:
             NavigationStack(path: $registerRouter.navPath) {
-                SignUpView(viewModel: viewModel)
+                RegisterView()
                     .navigationDestination(for: RegisterRouter.Destination.self) { destination in
                         switch destination {
                         case .signIn:
-                            SignInView(viewModel: viewModel)
+                            LoginView()
                         case .forgotPassword:
-                            ForgotPasswordView(viewModel: viewModel)
+                            ForgotPasswordView()
                         case .recoveryRequested:
                             RecoveryPasswordRequestedView()
                         }
                     }
             }
             .environmentObject(registerRouter)
+            .environmentObject(profileViewModel)
         }
     }
     
@@ -50,6 +53,6 @@ struct ProfileView: View {
 
 struct AccountView_Previews: PreviewProvider {
     static var previews: some View {
-        AccountView()
+        ProfileView()
     }
 }

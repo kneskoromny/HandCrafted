@@ -9,60 +9,108 @@ final class ProfileViewModel: ObservableObject {
     // TODO: исправить на SwiftData
     @AppStorage("user") private var userData: Data?
     
+    @Published var loginData = LoginData()
     @Published var user = User()
     @Published var alertItem: AlertItem?
-    @Published var accountState: AccountState = .auth
+    @Published var accountState: AccountState = .unAuth
     @Published var isLoading = false
     
     private let authManager = AuthManager()
     private let dbManager = DatabaseManager()
     
-    var isValidForm: Bool {
-        guard !user.firstName.isEmpty && !user.lastName.isEmpty && !user.email.isEmpty else {
-            alertItem = AlertContext.invalidForm
-            return false
-        }
-        guard user.email.isValidEmail else {
-            alertItem = AlertContext.invalidEmail
-            return false
-        }
-        return true
+    init() {
+        accountState = authManager.isAuthorizedUser ? .auth : .unAuth
     }
     
-    func createUser() {
+    func registerUser()  {
         isLoading = true
         authManager.createUser(
-            withEmail: user.email,
-            password: user.password) { [weak self] error in
-                self?.isLoading = false
+            withEmail: loginData.email,
+            password: loginData.password) { [weak self] error in
+                guard let self else { return }
                 if error == nil {
-                    self?.accountState = .auth
-                    
+                    print(#function, "mytest - success")
+                    user = User(
+                        email: loginData.email,
+                        password: loginData.password
+                    )
+                    self.dbManager.saveUser(self.user) { error in
+                        self.isLoading = false
+                        if error == nil {
+                            self.accountState = .auth
+                        } else {
+                            // TODO: Обработать ошибки Firebase
+                            self.alertItem = AlertContext.invalidResponse
+                        }
+                    }
                 } else {
+                    self.isLoading = false
                     // TODO: Обработать ошибки Firebase
-                    self?.alertItem = AlertContext.invalidResponse
+                    self.alertItem = AlertContext.invalidResponse
                 }
             }
     }
     
-    func signIn() {
+    func loginUser() {
         isLoading = true
         authManager.signIn(
-            withEmail: user.email,
-            password: user.password) { [weak self] error in
-                self?.isLoading = false
+            withEmail: loginData.email,
+            password: loginData.password) { [weak self] error in
+                guard let self else { return }
                 if error == nil {
-                    self?.accountState = .auth
+                    self.dbManager.getUser { user in
+                        self.isLoading = false
+                        if let user {
+                            self.user = user
+                            self.accountState = .auth
+                        } else {
+                            self.alertItem = AlertContext.invalidUserData
+                        }
+                    }
                 } else {
+                    self.isLoading = false
                     // TODO: Обработать ошибки Firebase
-                    self?.alertItem = AlertContext.invalidResponse
+                    self.alertItem = AlertContext.invalidResponse
                 }
             }
     }
+    
+    func saveUser() {
+        isLoading = true
+        dbManager.saveUser(user) { [weak self] error in
+            self?.isLoading = false
+            if error == nil {
+                print(#function, "mytest - success")
+                self?.alertItem = AlertContext.userSaveSuccess
+            } else {
+                // TODO: Обработать ошибки Firebase
+                self?.alertItem = AlertContext.invalidResponse
+            }
+        }
+//        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+//          AnalyticsParameterItemID: "id- testId",
+//          AnalyticsParameterItemName: "testId",
+//          AnalyticsParameterContentType: "cont",
+//        ])
+    }
+    
+    func getUser() {
+        isLoading = true
+        dbManager.getUser { [weak self] user in
+            self?.isLoading = false
+            if let user {
+                self?.user = user
+            } else {
+                self?.alertItem = AlertContext.invalidUserData
+            }
+        }
+    }
+    
+   
     
     func sendPasswordReset(completion: @escaping () -> Void) {
         isLoading = true
-        authManager.sendPasswordReset(withEmail: user.email) { [weak self] error in
+        authManager.sendPasswordReset(withEmail: loginData.email) { [weak self] error in
             self?.isLoading = false
             if error == nil {
                 completion()
@@ -73,48 +121,6 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
-    func saveChanges() {
-        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
-          AnalyticsParameterItemID: "id- testId",
-          AnalyticsParameterItemName: "testId",
-          AnalyticsParameterContentType: "cont",
-        ])
-        guard isValidForm else {
-            return
-        }
-        do {
-            let data = try JSONEncoder().encode(user)
-            userData = data
-            alertItem = AlertContext.userSaveSuccess
-        } catch {
-            alertItem = AlertContext.invalidUserData
-        }
-    }
     
-    func checkAccountState() {
-        guard let userData else {
-            return
-        }
-        do {
-            user = try JSONDecoder().decode(User.self, from: userData)
-            accountState = .auth
-        } catch {
-            alertItem = AlertContext.invalidUserData
-        }
-    }
-    
-    func retrieveUser() {
-        guard let userData else {
-//            alertItem = AlertContext.invalidUserData
-            return
-        }
-        do {
-            user = try JSONDecoder().decode(User.self, from: userData)
-            
-        } catch {
-            alertItem = AlertContext.invalidUserData
-        }
-    }
     
 }
-

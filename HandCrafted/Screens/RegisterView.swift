@@ -2,91 +2,90 @@ import SwiftUI
 
 struct RegisterView: View {
     
-    enum FormTextField {
-        case firstName, lastName, email
+    // MARK: - Const
+    
+    private enum Const {
+        static let viewInsets = EdgeInsets(
+            top: 48,
+            leading: 16,
+            bottom: 0,
+            trailing: 16
+        )
+        static let buttonsInsets = EdgeInsets(
+            top: 8,
+            leading: 0,
+            bottom: 0,
+            trailing: 0
+        )
     }
     
-    @FocusState private var focusedTextField: FormTextField?
-    @ObservedObject var viewModel: ProfileViewModel
+    // MARK: - State
+    
+    @EnvironmentObject var viewModel: ProfileViewModel
+    @EnvironmentObject var router: RegisterRouter
+    
+    // MARK: - Body
     
     var body: some View {
-            Form {
-                Section(header: Text("Обо мне")) {
-                    TextField(
-                        "Имя",
-                        text: $viewModel.user.firstName
+        if viewModel.isLoading {
+            ProgressView("Loading...")
+        } else {
+            VStack {
+                VStack(spacing: 16) {
+                    PrimaryTextField(
+                        placeholder: "E-mail",
+                        value: $viewModel.loginData.email
                     )
-                    .focused(
-                        $focusedTextField,
-                        equals: .firstName
-                    )
-                    .onSubmit {
-                        focusedTextField = .lastName
-                    }
-                    .submitLabel(.next)
-                    
-                    TextField(
-                        "Фамилия",
-                        text: $viewModel.user.lastName
-                    )
-                    .focused(
-                        $focusedTextField,
-                        equals: .lastName
-                    )
-                    .onSubmit {
-                        focusedTextField = .email
-                    }
-                    .submitLabel(.next)
-                    
-                    TextField(
-                        "E-mail",
-                        text: $viewModel.user.email
-                    )
+                    .textContentType(.emailAddress)
                     .keyboardType(.emailAddress)
-                    .autocapitalization(.none)
-                    .autocorrectionDisabled(true)
-                    .focused(
-                        $focusedTextField,
-                        equals: .email
+                    PrimaryTextField(
+                        placeholder: "Password",
+                        value: $viewModel.loginData.password
                     )
-                    .onSubmit {
-                        focusedTextField = nil
-                    }
-                    .submitLabel(.continue)
-                    
-//                    DatePicker(
-//                        "Дата рождения",
-//                        selection: $viewModel.user.birthday,
-//                        displayedComponents: .date
-//                    )
-                    Button(action: {
-                        viewModel.saveChanges()
-                    },
-                           label: {
-                        Text("Сохранить изменения")
-                    })
+                    .textContentType(.newPassword)
+                    .keyboardType(.asciiCapable)
                 }
-            .toolbar{
-                ToolbarItemGroup(
-                    placement: .keyboard
-                ) {
-                    Button("Отмена") {
-                        focusedTextField = nil
+                
+                VStack(spacing: 16)  {
+                    Button {
+                        router.navigate(to: .signIn)
+                    } label: {
+                        HStack {
+                            Spacer()
+                            ArrowRightButton(
+                                title: "Already have an account?",
+                                font: .subheadline,
+                                isSpacer: false
+                            )
+                        }
+                    }
+                    Button {
+                        viewModel.registerUser()
+                    } label: {
+                        PrimaryButton(
+                            title: "Sign Up",
+                            foregroundColor: .white,
+                            backgroundColor: .green
+                        )
                     }
                 }
+                .padding(Const.buttonsInsets)
+                Spacer()
             }
-            .alert(item: $viewModel.alertItem) { alertItem in
+            .padding(Const.viewInsets)
+            .navigationTitle("Sign Up")
+            .alert(item: $viewModel.alertItem) { alert in
                 Alert(
-                    title: alertItem.title,
-                    message: alertItem.message,
-                    dismissButton: alertItem.dismissButton
+                    title: alert.title,
+                    message: alert.message,
+                    dismissButton: alert.dismissButton
                 )
             }
-            .navigationTitle("☺️ Мои данные")
         }
+        
     }
 }
 
 #Preview {
-    RegisterView(viewModel: ProfileViewModel())
+    RegisterView()
 }

@@ -5,6 +5,10 @@ import Foundation
 
 final class AuthManager {
     
+    var isAuthorizedUser: Bool {
+        return Auth.auth().currentUser != nil
+    }
+    
     init() {
         Auth.auth().useAppLanguage()
     }

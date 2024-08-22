@@ -27,7 +27,7 @@ struct ForgotPasswordView: View {
     
     // MARK: - State
     
-    @StateObject var viewModel = ProfileViewModel()
+    @EnvironmentObject var viewModel: ProfileViewModel
     @EnvironmentObject var router: RegisterRouter
     
     // MARK: - Body
@@ -44,7 +44,7 @@ struct ForgotPasswordView: View {
                         .multilineTextAlignment(.leading)
                     PrimaryTextField(
                         placeholder: "E-mail",
-                        value: $viewModel.user.email
+                        value: $viewModel.loginData.email
                     )
                     .textContentType(.emailAddress)
                     .keyboardType(.emailAddress)
