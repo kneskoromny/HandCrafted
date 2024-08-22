@@ -13,7 +13,7 @@ final class AuthManager {
         Auth.auth().useAppLanguage()
     }
     
-    func createUser(
+    func register(
         withEmail email: String,
         password: String,
         completion: @escaping (Error?) -> Void
@@ -23,13 +23,22 @@ final class AuthManager {
         }
     }
     
-    func signIn(
+    func login(
         withEmail email: String,
         password: String,
         completion: @escaping (Error?) -> Void
     ) {
         Auth.auth().signIn(withEmail: email, password: password) { _, error in
           completion(error)
+        }
+    }
+    
+    func logout(completion: @escaping (Error?) -> Void) {
+        do {
+            try Auth.auth().signOut()
+            completion(nil)
+        } catch let error {
+            completion(error)
         }
     }
     

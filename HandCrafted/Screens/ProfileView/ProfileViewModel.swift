@@ -6,7 +6,7 @@ final class ProfileViewModel: ObservableObject {
     enum AccountState {
         case auth, unAuth
     }
-    // TODO: исправить на SwiftData
+    // TODO: хранить польз данные для использования на разных экранах
     @AppStorage("user") private var userData: Data?
     
     @Published var loginData = LoginData()
@@ -24,7 +24,7 @@ final class ProfileViewModel: ObservableObject {
     
     func registerUser()  {
         isLoading = true
-        authManager.createUser(
+        authManager.register(
             withEmail: loginData.email,
             password: loginData.password) { [weak self] error in
                 guard let self else { return }
@@ -53,7 +53,7 @@ final class ProfileViewModel: ObservableObject {
     
     func loginUser() {
         isLoading = true
-        authManager.signIn(
+        authManager.login(
             withEmail: loginData.email,
             password: loginData.password) { [weak self] error in
                 guard let self else { return }
@@ -75,6 +75,22 @@ final class ProfileViewModel: ObservableObject {
             }
     }
     
+    func logoutUser() {
+        isLoading = true
+        authManager.logout { [weak self] error in
+            guard let self else { return }
+            isLoading = false
+            if error == nil {
+                self.user = User()
+                self.loginData = LoginData()
+                self.accountState = .unAuth
+            } else {
+                // TODO: Обработать ошибки Firebase
+                self.alertItem = AlertContext.invalidResponse
+            }
+        }
+    }
+    
     func saveUser() {
         isLoading = true
         dbManager.saveUser(user) { [weak self] error in
@@ -87,11 +103,11 @@ final class ProfileViewModel: ObservableObject {
                 self?.alertItem = AlertContext.invalidResponse
             }
         }
-//        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
-//          AnalyticsParameterItemID: "id- testId",
-//          AnalyticsParameterItemName: "testId",
-//          AnalyticsParameterContentType: "cont",
-//        ])
+        //        Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+        //          AnalyticsParameterItemID: "id- testId",
+        //          AnalyticsParameterItemName: "testId",
+        //          AnalyticsParameterContentType: "cont",
+        //        ])
     }
     
     func getUser() {
@@ -106,7 +122,7 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
-   
+    
     
     func sendPasswordReset(completion: @escaping () -> Void) {
         isLoading = true

@@ -12,11 +12,17 @@ struct ProfileView: View {
             bottom: 0,
             trailing: 8
         )
-        static let buttonInsets = EdgeInsets(
+        static let cellInsets = EdgeInsets(
             top: 0,
             leading: 8,
             bottom: 0,
             trailing: 8
+        )
+        static let buttonInsets = EdgeInsets(
+            top: 8,
+            leading: 0,
+            bottom: 0,
+            trailing: 0
         )
     }
     
@@ -62,7 +68,7 @@ struct ProfileView: View {
                             )
                         }
                         .frame(height: 44)
-                        .padding(Const.buttonInsets)
+                        .padding(Const.cellInsets)
                         Divider()
                         Button {
                             router.navigate(to: .favorites)
@@ -75,7 +81,7 @@ struct ProfileView: View {
                             )
                         }
                         .frame(height: 44)
-                        .padding(Const.buttonInsets)
+                        .padding(Const.cellInsets)
                         Divider()
                         Button {
                             router.navigate(to: .paymentMethods)
@@ -88,7 +94,7 @@ struct ProfileView: View {
                             )
                         }
                         .frame(height: 44)
-                        .padding(Const.buttonInsets)
+                        .padding(Const.cellInsets)
                         Divider()
                         Button {
                             router.navigate(to: .shippingAddresses)
@@ -101,7 +107,7 @@ struct ProfileView: View {
                             )
                         }
                         .frame(height: 44)
-                        .padding(Const.buttonInsets)
+                        .padding(Const.cellInsets)
                         Divider()
                         Button {
                             router.navigate(to: .settings)
@@ -114,6 +120,16 @@ struct ProfileView: View {
                             )
                         }
                         .frame(height: 44)
+                        .padding(Const.cellInsets)
+                        Button {
+                            viewModel.logoutUser()
+                        } label: {
+                            PrimaryButton(
+                                title: "Logout",
+                                foregroundColor: .white,
+                                backgroundColor: .red
+                            )
+                        }
                         .padding(Const.buttonInsets)
                         Spacer()
                     }
