@@ -41,11 +41,35 @@ struct ProfileView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         HStack(spacing: 16) {
-                            Image(systemName: "person.crop.circle.badge.questionmark")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .foregroundColor(.green)
+                            if let urlString = viewModel.user.avatarUrl,
+                               let url = URL(string: urlString) {
+                                // TODO: how to cache image?
+                                AsyncImage(url: url,
+                                           content: { image in
+                                    image
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 100, height: 100)
+                                        .cornerRadius(50)
+                                },
+                                           placeholder: {
+                                    ZStack(alignment: .center) {
+                                        Circle()
+                                        Text("😍")
+                                            .font(.largeTitle)
+                                    }
+                                    .frame(width: 100, height: 100)
+                                    .cornerRadius(50)
+                                })
+                            } else {
+                                ZStack(alignment: .center) {
+                                    Circle()
+                                    Text("😇")
+                                        .font(.largeTitle)
+                                }
                                 .frame(width: 100, height: 100)
+                                .cornerRadius(50)
+                            }
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(viewModel.user.name ?? "User without name :(")
                                     .font(Constant.AppFont.primary)

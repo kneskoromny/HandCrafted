@@ -1,11 +1,11 @@
+import PhotosUI
 import SwiftUI
-import SwiftData
 
 struct SettingsView: View {
     
     private enum Const {
         static let viewInsets = EdgeInsets(
-            top: 24,
+            top: 16,
             leading: 16,
             bottom: 0,
             trailing: 16
@@ -21,12 +21,75 @@ struct SettingsView: View {
     @EnvironmentObject var viewModel: ProfileViewModel
     @EnvironmentObject var router: AccountRouter
     
+    @State private var photosPickerItem: PhotosPickerItem? = nil
+    @State var isPhotoPickerPresented = false
+    
     var body: some View {
-//        VStack {
+        VStack {
             if viewModel.isLoading {
                 ProgressView("Loading...")
             } else {
                 ScrollView {
+                    VStack(alignment: .center, spacing: 8) {
+                        if let urlString = viewModel.user.avatarUrl,
+                           let url = URL(string: urlString) {
+                            AsyncImage(url: url,
+                                       content: { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 100, height: 100)
+                                    .cornerRadius(50)
+                            },
+                                       placeholder: {
+                                ZStack(alignment: .center) {
+                                    Circle()
+                                    Text("😍")
+                                        .font(.largeTitle)
+                                }
+                                .frame(width: 100, height: 100)
+                                .cornerRadius(50)
+                            })
+                        } else {
+                            ZStack(alignment: .center) {
+                                Circle()
+                                Text("😇")
+                                    .font(.largeTitle)
+                            }
+                            .frame(width: 100, height: 100)
+                            .cornerRadius(50)
+                        }
+                        
+                        PhotosPicker(
+                            selection: $photosPickerItem,
+                            matching: .images,
+                            photoLibrary: .shared()) {
+                                Text("Add photo")
+                                    .font(Constant.AppFont.secondary)
+                                    .foregroundStyle(.gray)
+                            }
+                            .onChange(of: photosPickerItem) { _, newValue in
+                                Task {
+                                    if let selectedImageData = try? await newValue?.loadTransferable(type: Data.self),
+                                       let uiImage = UIImage(data: selectedImageData) {
+                                        let compressedData = uiImage.jpegData(compressionQuality: 0.3)
+                                        viewModel.saveAvatar(data: compressedData)
+                                    } else {
+                                        print(#function, "krl_debug: error get image data")
+                                    }
+                                    //                                    do {
+                                    //                                        let selectedImageData = try await newValue?.loadTransferable(type: Data.self)
+                                    //                                        print(#function, "krl_test data: \(selectedImageData?.count)")
+                                    //                                        let uiImage = UIImage(data: selectedImageData)
+                                    //
+                                    //                                    } catch let error {
+                                    //                                        print(#function, "krl_test error: \(error)")
+                                    //                                    }
+                                }
+                            }
+                    }
+                    .padding(Const.viewInsets)
+                    
                     VStack(alignment: .leading, spacing: 24) {
                         Text("Personal information")
                             .font(Constant.AppFont.secondary)
@@ -97,32 +160,30 @@ struct SettingsView: View {
                         .padding(Const.buttonsInsets)
                         Spacer()
                     }
-                    .navigationTitle("Settings")
-                    .padding(Const.viewInsets)
-                    .navigationBarBackButtonHidden()
-                    .toolbar {
-                        ToolbarItem(placement: .topBarLeading) {
-                            Button {
-                                router.navigateBack()
-                            } label: {
-                                Label("Back", systemImage: "arrow.left")
-                            }
-                            .tint(.red)
-                        }
-                    }
-                    .alert(item: $viewModel.alertItem) { alert in
-                        Alert(
-                            title: alert.title,
-                            message: alert.message,
-                            dismissButton: alert.dismissButton
-                        )
-                    }
+                    
                 }
             }
-//        }
-//        .onAppear {
-//            viewModel.getUser()
-//        }
+        }
+        .navigationTitle("Settings")
+        .padding(Const.viewInsets)
+        .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    router.navigateBack()
+                } label: {
+                    Label("Back", systemImage: "arrow.left")
+                }
+                .tint(.red)
+            }
+        }
+        .alert(item: $viewModel.alertItem) { alert in
+            Alert(
+                title: alert.title,
+                message: alert.message,
+                dismissButton: alert.dismissButton
+            )
+        }
     }
 }
 

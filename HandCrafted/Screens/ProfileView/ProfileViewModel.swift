@@ -17,6 +17,7 @@ final class ProfileViewModel: ObservableObject {
     
     private let authManager = AuthManager()
     private let dbManager = DatabaseManager()
+    private let storageManager = StorageManager()
     
     init() {
         accountState = authManager.isAuthorizedUser ? .auth : .unAuth
@@ -122,7 +123,22 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
-    
+    func saveAvatar(data: Data?) {
+        isLoading = true
+        storageManager.saveAvatar(data: data) { [weak self] result in
+            guard let self else { return }
+            self.isLoading = false
+            switch result {
+            case .success(let urlString):
+                self.user.avatarUrl = urlString
+                self.saveUser()
+            case .failure(let error):
+                // TODO: Обработать ошибки Firebase
+                self.alertItem = AlertContext.invalidResponse
+            }
+
+        }
+    }
     
     func sendPasswordReset(completion: @escaping () -> Void) {
         isLoading = true

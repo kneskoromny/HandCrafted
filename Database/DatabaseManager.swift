@@ -16,17 +16,10 @@ final class DatabaseManager {
         completion: @escaping (Error?) -> Void
     ) {
         guard let id = Auth.auth().currentUser?.uid else { return }
-        let user = User(
-            id: id,
-            name: user.name,
-            email: user.email,
-            password: user.password,
-            birthday: user.birthday,
-            isSalesSubOn: user.isSalesSubOn,
-            isNewArrivalsSubOn: user.isNewArrivalsSubOn
-        )
+        var copy = user
+        copy.id = id
         do {
-            try ref.child("\(usersPath)/\(id)").setValue(from: user)
+            try ref.child("\(usersPath)/\(id)").setValue(from: copy)
             completion(nil)
         } catch let error {
             print(#function, "mytest - error: \(error)")
@@ -53,6 +46,7 @@ final class DatabaseManager {
                 email: value["email"] as? String,
                 password: value["password"] as? String,
                 birthday: value["birthday"] as? String,
+                avatarUrl: value["avatarUrl"] as? String,
                 isSalesSubOn: value["isSalesSubOn"] as? Bool ?? false,
                 isNewArrivalsSubOn: value["isNewArrivalsSubOn"] as? Bool ?? false
             )

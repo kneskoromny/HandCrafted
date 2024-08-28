@@ -36,6 +36,7 @@
 		F7B0D2AB2C275A6D0017DCD7 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B0D2AA2C275A6D0017DCD7 /* Alert.swift */; };
 		F7B0D2AD2C275A870017DCD7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B0D2AC2C275A870017DCD7 /* User.swift */; };
 		F7B0D2AF2C275AB40017DCD7 /* String+isValidEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B0D2AE2C275AB40017DCD7 /* String+isValidEmail.swift */; };
+		F7EAFD042C7E2DE90052088E /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EAFD032C7E2DE90052088E /* StorageManager.swift */; };
 		F7EEE8A22C1F05260045C760 /* HandCraftedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EEE8A12C1F05260045C760 /* HandCraftedApp.swift */; };
 		F7EEE8A42C1F05260045C760 /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EEE8A32C1F05260045C760 /* TabsView.swift */; };
 		F7EEE8A62C1F05280045C760 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F7EEE8A52C1F05280045C760 /* Assets.xcassets */; };
@@ -66,6 +67,7 @@
 		F7B0D2AA2C275A6D0017DCD7 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		F7B0D2AC2C275A870017DCD7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		F7B0D2AE2C275AB40017DCD7 /* String+isValidEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+isValidEmail.swift"; sourceTree = "<group>"; };
+		F7EAFD032C7E2DE90052088E /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		F7EEE89E2C1F05260045C760 /* HandCrafted.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HandCrafted.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7EEE8A12C1F05260045C760 /* HandCraftedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandCraftedApp.swift; sourceTree = "<group>"; };
 		F7EEE8A32C1F05260045C760 /* TabsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabsView.swift; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 			isa = PBXGroup;
 			children = (
 				F7FEF25B2C67FF9A00DE29FC /* DatabaseManager.swift */,
+				F7EAFD032C7E2DE90052088E /* StorageManager.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 			files = (
 				F7FEF2522C64CC8800DE29FC /* ForgotPasswordView.swift in Sources */,
 				F764FCDC2C6139C600506AA2 /* BasketView.swift in Sources */,
+				F7EAFD042C7E2DE90052088E /* StorageManager.swift in Sources */,
 				F7B0D2AF2C275AB40017DCD7 /* String+isValidEmail.swift in Sources */,
 				F70FC9132C6A45D700A6106E /* AccountRouter.swift in Sources */,
 				F7FEF2562C67BE3100DE29FC /* RegisterRouter.swift in Sources */,

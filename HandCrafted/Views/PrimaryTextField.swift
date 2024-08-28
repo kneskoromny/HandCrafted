@@ -2,6 +2,15 @@ import SwiftUI
 
 struct PrimaryTextField: View {
     
+    private enum Const {
+        static let viewInsets = EdgeInsets(
+            top: 8,
+            leading: 16,
+            bottom: 8,
+            trailing: 16
+        )
+    }
+    
     var placeholder: LocalizedStringKey
     var error: LocalizedStringKey?
     @Binding var value: String
@@ -19,7 +28,7 @@ struct PrimaryTextField: View {
                 text: $value
             )
             .textFieldStyle(.plain)
-            .font(.title2)
+            .font(.body)
             .textInputAutocapitalization(.never)
             .disableAutocorrection(true)
             if let error {
@@ -31,7 +40,7 @@ struct PrimaryTextField: View {
                 }
             }
         }
-        .padding()
+        .padding(Const.viewInsets)
         .background(Color.white)
         .cornerRadius(10)
         .clipped()
