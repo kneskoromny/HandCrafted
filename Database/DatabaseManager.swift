@@ -6,10 +6,7 @@ final class DatabaseManager {
     
     private let ref = Database.database(url: "https://handcrafted-af31d-default-rtdb.europe-west1.firebasedatabase.app/").reference()
     private let usersPath = "users"
-    
-    init() {
-        
-    }
+    private let productsPath = "products"
     
     func saveUser(
         _ user: User,
@@ -53,5 +50,22 @@ final class DatabaseManager {
             completion?(local)
         })
     }
+    
+    func getProductList(completion: (([Product]) -> Void)?) {
+    }
 
+}
+
+extension DatabaseManager {
+    
+    static func getMockCategoryList() async -> [Category] {
+        sleep(1)
+        return MockData.categories
+    }
+    
+    static func getMockProductList() async -> [Product] {
+        sleep(1)
+        return MockData.products
+    }
+    
 }

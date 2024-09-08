@@ -2,14 +2,14 @@ import SwiftUI
 
 struct TabsView: View {
     
-    @State private var selection = 3
+    @State private var selection = 1
     
     var body: some View {
         TabView(selection: $selection) {
-            CatalogView()
+            CatalogTabView()
                 .tabItem {
                     Label(
-                        "Catalog",
+                        "Каталог",
                         systemImage: "book"
                     )
                 }
@@ -17,7 +17,7 @@ struct TabsView: View {
             BasketView()
                 .tabItem {
                     Label(
-                        "Basket",
+                        "Корзина",
                         systemImage: "basket"
                     )
                 }
@@ -25,7 +25,7 @@ struct TabsView: View {
             ProfileTabView()
                 .tabItem {
                     Label(
-                        "Profile",
+                        "Профиль",
                         systemImage: "person"
                     )
                 }
