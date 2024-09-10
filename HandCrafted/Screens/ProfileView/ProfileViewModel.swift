@@ -54,40 +54,41 @@ final class ProfileViewModel: ObservableObject {
     
     func loginUser() {
         isLoading = true
-        authManager.login(
-            withEmail: loginData.email,
-            password: loginData.password) { [weak self] error in
-                guard let self else { return }
-                if error == nil {
-                    self.dbManager.getUser { user in
-                        self.isLoading = false
-                        if let user {
-                            self.user = user
-                            self.accountState = .auth
-                        } else {
-                            self.alertItem = AlertContext.invalidUserData
-                        }
-                    }
-                } else {
+        Task {
+            do {
+                let _ = try await authManager.login(
+                    withEmail: loginData.email,
+                    password: loginData.password
+                )
+                let user = try await dbManager.getUser()
+                await MainActor.run {
                     self.isLoading = false
-                    // TODO: Обработать ошибки Firebase
-                    self.alertItem = AlertContext.invalidResponse
+                    if let user {
+                        self.user = user
+                        self.accountState = .auth
+                    } else {
+                        self.alertItem = AlertContext.invalidUserData
+                    }
                 }
+            } catch {
+                print(#function, "mytest - error: \(error)")
             }
+        }
     }
     
     func logoutUser() {
         isLoading = true
-        authManager.logout { [weak self] error in
-            guard let self else { return }
-            isLoading = false
-            if error == nil {
-                self.user = User()
-                self.loginData = LoginData()
-                self.accountState = .unAuth
-            } else {
-                // TODO: Обработать ошибки Firebase
-                self.alertItem = AlertContext.invalidResponse
+        Task {
+            do {
+                try await authManager.logout()
+                await MainActor.run {
+                    isLoading = false
+                    self.user = User()
+                    self.loginData = LoginData()
+                    self.accountState = .unAuth
+                }
+            } catch {
+                print(#function, "mytest - error: \(error)")
             }
         }
     }
@@ -113,12 +114,19 @@ final class ProfileViewModel: ObservableObject {
     
     func getUser() {
         isLoading = true
-        dbManager.getUser { [weak self] user in
-            self?.isLoading = false
-            if let user {
-                self?.user = user
-            } else {
-                self?.alertItem = AlertContext.invalidUserData
+        Task {
+            do {
+                let user = try await dbManager.getUser()
+                await MainActor.run {
+                    self.isLoading = false
+                    if let user {
+                        self.user = user
+                    } else {
+                        self.alertItem = AlertContext.invalidUserData
+                    }
+                }
+            } catch {
+                print(#function, "mytest - error: \(error.localizedDescription)")
             }
         }
     }
@@ -136,7 +144,7 @@ final class ProfileViewModel: ObservableObject {
                 // TODO: Обработать ошибки Firebase
                 self.alertItem = AlertContext.invalidResponse
             }
-
+            
         }
     }
     
@@ -152,7 +160,5 @@ final class ProfileViewModel: ObservableObject {
             }
         }
     }
-    
-    
     
 }

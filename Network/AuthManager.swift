@@ -23,22 +23,19 @@ final class AuthManager {
         }
     }
     
-    func login(
-        withEmail email: String,
-        password: String,
-        completion: @escaping (Error?) -> Void
-    ) {
-        Auth.auth().signIn(withEmail: email, password: password) { _, error in
-          completion(error)
+    func login(withEmail email: String, password: String) async throws {
+        do {
+            _ = try await Auth.auth().signIn(withEmail: email, password: password)
+        } catch {
+            throw error
         }
     }
     
-    func logout(completion: @escaping (Error?) -> Void) {
+    func logout() async throws {
         do {
-            try Auth.auth().signOut()
-            completion(nil)
-        } catch let error {
-            completion(error)
+            let _ = try Auth.auth().signOut()
+        } catch {
+            throw error
         }
     }
     
