@@ -10,11 +10,11 @@ struct CatalogView: View {
     var body: some View {
         VStack {
             if viewModel.isLoading {
-                ProgressView("Loading...")
+                ProgressView("Минуточку...")
             } else {
                 List(viewModel.categoryList) { category in
                     Button {
-                        router.navigate(to: .list(MockData.products))
+                        router.navigate(to: .list(category: category))
                     } label: {
                         CategoryView(category: category)
                     }
@@ -38,5 +38,4 @@ struct CatalogView: View {
 
 #Preview {
     CatalogView()
-        .environmentObject(CatalogViewModel())
 }

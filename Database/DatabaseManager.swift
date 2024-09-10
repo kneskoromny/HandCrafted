@@ -59,10 +59,17 @@ final class DatabaseManager {
         for child in snapshot.children {
             if let childSnapshot = child as? DataSnapshot,
                let dict = childSnapshot.value as? [String: Any],
-               let name = dict["name"] as? String,
-               let imageUrl = dict["imageUrl"] as? String {
+               let name = dict["name"] as? String {
                 
-                let category = Category(name: name, imageUrl: imageUrl)
+                let description = dict["description"] as? String
+                let imageUrl = dict["imageUrl"] as? String
+                
+                
+                let category = Category(
+                    name: name,
+                    description: description,
+                    imageUrl: imageUrl
+                )
                 categories.append(category)
             }
         }

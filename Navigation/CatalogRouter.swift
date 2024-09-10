@@ -3,7 +3,7 @@ import SwiftUI
 final class CatalogRouter: ObservableObject {
     
     public enum Destination: Codable, Hashable {
-        case list(_ productList: [Product])
+        case list(category: Category)
         case detail(_ product: Product)
     }
     

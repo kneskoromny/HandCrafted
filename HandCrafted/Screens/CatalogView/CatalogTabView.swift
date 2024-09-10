@@ -10,15 +10,15 @@ struct CatalogTabView: View {
             CatalogView()
                 .navigationDestination(for: CatalogRouter.Destination.self) { destination in
                     switch destination {
-                    case .list(let productList):
-                        Text("Product List category: \(productList.first?.categoryName)")
+                    case .list(let category):
+                        ProductListView(category: category)
                     case .detail(let product):
                         Text("Product Name: \(product.name)")
                     }
                 }
-                .environmentObject(catalogViewModel)
-                .environmentObject(catalogRouter)
         }
+        .environmentObject(catalogViewModel)
+        .environmentObject(catalogRouter)
     }
 }
 

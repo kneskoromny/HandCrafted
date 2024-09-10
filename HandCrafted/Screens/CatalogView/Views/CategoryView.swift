@@ -15,8 +15,24 @@ struct CategoryView: View {
     
     var body: some View {
         HStack {
-            Text(category.name)
-                .font(Constant.AppFont.primary)
+            VStack {
+                HStack {
+                    Text(category.name)
+                        .font(Constant.AppFont.primary)
+                        .foregroundStyle(.black)
+                        .fontWeight(.semibold)
+                    Spacer()
+                }
+                if let description = category.description {
+                    HStack {
+                        Text(description)
+                            .font(Constant.AppFont.thirdly)
+                            .foregroundStyle(.gray)
+                            .multilineTextAlignment(.leading)
+                        Spacer()
+                    }
+                }
+            }
             Spacer()
             if let urlString = category.imageUrl,
                let url = URL(string: urlString) {
@@ -24,15 +40,13 @@ struct CategoryView: View {
                            content: { image in
                     image
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 150, height: 175)
+                        .aspectRatio(contentMode: .fill)
+//                        .frame(width: 150, height: 175)
                 },
                            placeholder: {
-                    Image(category.name.lowercased(), bundle: nil)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                    .frame(width: 150, height: 150)
+                    ProgressView()
                 })
+                .frame(width: 125, height: 125)
             } else {
                 ZStack(alignment: .center) {
                     Rectangle()
@@ -48,6 +62,7 @@ struct CategoryView: View {
         .background(Color.white)
         .cornerRadius(10)
         .clipped()
+//        .frame(height: 125)
     }
     
 }
@@ -55,6 +70,7 @@ struct CategoryView: View {
 #Preview {
     CategoryView(category: Category(
         name: "Платья",
+        description: "Самые красивые и легкие, что Вы носили",
         imageUrl: "https://example.com/images/tshirt1.png"
     )
     )

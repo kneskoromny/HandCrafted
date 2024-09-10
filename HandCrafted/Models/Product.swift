@@ -1,7 +1,8 @@
 import Foundation
 
-struct Product: Codable, Hashable {
+struct Product: Codable, Hashable, Identifiable {
     
+    var id = UUID()
     let categoryName: String
     let name: String
     let fabric: String

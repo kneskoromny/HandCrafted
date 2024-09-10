@@ -4,22 +4,27 @@ struct MockData {
     static let categories: [Category] = [
         Category(
             name: "Футболки",
+            description: "Описание футболок",
             imageUrl: "https://example.com/images/tshirt1.png"
         ),
         Category(
             name: "Брюки",
+            description: "Описание брюк",
             imageUrl: "https://example.com/images/tshirt1.png"
         ),
         Category(
             name: "Куртки",
+            description: "Описание курток",
             imageUrl: "https://example.com/images/tshirt1.png"
         ),
         Category(
             name: "Платья",
+            description: "Описание платьев",
             imageUrl: "https://example.com/images/tshirt1.png"
         ),
         Category(
             name: "Толстовки",
+            description: "Описание толстовок",
             imageUrl: "https://example.com/images/tshirt1.png"
         )
     ]

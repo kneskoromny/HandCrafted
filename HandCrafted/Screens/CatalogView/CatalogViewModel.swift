@@ -4,6 +4,7 @@ final class CatalogViewModel: ObservableObject {
     
     @Published var categoryList: [Category] = []
     @Published var productList: [Product] = []
+    @Published var filteredProductList: [Product] = []
     @Published var isLoading = false
     
     private let dbManager = DatabaseManager()
@@ -11,6 +12,7 @@ final class CatalogViewModel: ObservableObject {
     // MARK: - Public Methods
     
     func fetchData() {
+        guard categoryList.isEmpty else { return }
         isLoading = true
         Task {
             do {
@@ -25,6 +27,16 @@ final class CatalogViewModel: ObservableObject {
                 print(#function, "mytest - error: \(error.localizedDescription)")
             }
         }
+    }
+    
+    func fetchProductList(for category: Category) {
+        guard !productList.isEmpty else {
+            print(#function, "mytest - error: no loaded product list")
+            return
+        }
+        isLoading = true
+        filteredProductList = productList.filter { $0.categoryName == category.name }
+        isLoading = false
     }
     
     // MARK: - Private Methods
