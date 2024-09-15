@@ -55,7 +55,7 @@ struct UrlImageView: View {
     var product: Product
     
     var body: some View {
-        if let imageUrl = product.imageUrl,
+        if let imageUrl = product.imageUrls?.first,
            let url = URL(string: imageUrl) {
             AsyncImage(url: url,
                        content: { image in

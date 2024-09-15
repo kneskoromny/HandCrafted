@@ -9,10 +9,11 @@ struct Product: Codable, Hashable, Identifiable {
     let color: String
     let size: String
     let description: String
-    var imageUrl: String?
+    var imageUrls: [String]?
     let price: Int
     
     var isFavorite: Bool
+    var isInStock: Bool
     var isSale: Bool
     
 }

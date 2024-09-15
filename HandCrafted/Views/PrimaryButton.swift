@@ -8,15 +8,12 @@ struct PrimaryButton: View {
     
     var body: some View {
         Text(title)
-            .frame(
-                width: UIScreen.main.bounds.width - 32,
-                height: 50
-            )
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 44)
             .background(backgroundColor)
             .foregroundColor(foregroundColor)
             .font(.title3)
             .fontWeight(.semibold)
-            .cornerRadius(10)
+            .cornerRadius(8)
             .shadow(
                 color: backgroundColor,
                 radius: 1,

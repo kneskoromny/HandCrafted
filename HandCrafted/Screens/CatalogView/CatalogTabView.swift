@@ -13,7 +13,7 @@ struct CatalogTabView: View {
                     case .list(let category):
                         ProductListView(category: category)
                     case .detail(let product):
-                        Text("Product Name: \(product.name)")
+                        ProductDetailView(product: product)
                     }
                 }
         }

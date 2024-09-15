@@ -15,7 +15,7 @@ struct CategoryView: View {
     
     var body: some View {
         HStack {
-            VStack {
+            VStack(spacing: 8) {
                 HStack {
                     Text(category.name)
                         .font(Constant.AppFont.primary)
@@ -41,7 +41,6 @@ struct CategoryView: View {
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-//                        .frame(width: 150, height: 175)
                 },
                            placeholder: {
                     ProgressView()
@@ -62,7 +61,6 @@ struct CategoryView: View {
         .background(Color.white)
         .cornerRadius(10)
         .clipped()
-//        .frame(height: 125)
     }
     
 }

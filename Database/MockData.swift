@@ -39,9 +39,10 @@ struct MockData {
             color: "Белый",
             size: "M",
             description: "Удобная и легкая футболка из 100% хлопка. Подходит для повседневной носки.",
-            imageUrl: "https://example.com/images/tshirt1.png",
+            imageUrls: ["https://example.com/images/tshirt1.png"],
             price: 1500,
             isFavorite: false,
+            isInStock: true,
             isSale: false
         ),
         Product(
@@ -51,9 +52,10 @@ struct MockData {
             color: "Синий",
             size: "L",
             description: "Футболка с ярким принтом. Создана для тех, кто любит выделяться.",
-            imageUrl: "https://example.com/images/tshirt2.png",
+            imageUrls: ["https://example.com/images/tshirt2.png"],
             price: 1800,
             isFavorite: true,
+            isInStock: false,
             isSale: true
         ),
         Product(
@@ -63,9 +65,10 @@ struct MockData {
             color: "Черный",
             size: "S",
             description: "Футболка с длинным рукавом для прохладной погоды.",
-            imageUrl: "https://example.com/images/tshirt3.png",
+            imageUrls: ["https://example.com/images/tshirt3.png"],
             price: 2000,
             isFavorite: false,
+            isInStock: true,
             isSale: false
         ),
 
@@ -77,9 +80,10 @@ struct MockData {
             color: "Синий",
             size: "L",
             description: "Модные джинсы с узким кроем, идеально подчеркивающие фигуру.",
-            imageUrl: "https://example.com/images/jeans1.png",
+            imageUrls: ["https://example.com/images/jeans1.png"],
             price: 3500,
             isFavorite: true,
+            isInStock: true,
             isSale: true
         ),
         Product(
@@ -89,9 +93,10 @@ struct MockData {
             color: "Черный",
             size: "M",
             description: "Классические джинсы с прямым кроем для удобства и стиля.",
-            imageUrl: "https://example.com/images/jeans2.png",
+            imageUrls: ["https://example.com/images/jeans2.png"],
             price: 3200,
             isFavorite: false,
+            isInStock: false,
             isSale: false
         ),
         Product(
@@ -101,9 +106,10 @@ struct MockData {
             color: "Светло-синий",
             size: "XL",
             description: "Джинсы с эффектом потертости и разрывами для стильного образа.",
-            imageUrl: "https://example.com/images/jeans3.png",
+            imageUrls: ["https://example.com/images/jeans3.png"],
             price: 3800,
             isFavorite: false,
+            isInStock: false,
             isSale: true
         ),
 
@@ -115,9 +121,10 @@ struct MockData {
             color: "Черный",
             size: "XL",
             description: "Теплая и стильная куртка парка для холодной погоды.",
-            imageUrl: "https://example.com/images/parka1.png",
+            imageUrls: ["https://example.com/images/parka1.png"],
             price: 8500,
             isFavorite: false,
+            isInStock: true,
             isSale: false
         ),
         Product(
@@ -127,9 +134,10 @@ struct MockData {
             color: "Зеленый",
             size: "M",
             description: "Легкая куртка-бомбер для прохладных вечеров.",
-            imageUrl: "https://example.com/images/bomber1.png",
+            imageUrls: ["https://example.com/images/bomber1.png"],
             price: 4800,
             isFavorite: true,
+            isInStock: true,
             isSale: true
         ),
         Product(
@@ -139,9 +147,10 @@ struct MockData {
             color: "Коричневый",
             size: "L",
             description: "Классическая кожаная куртка для стильных мужчин.",
-            imageUrl: "https://example.com/images/leatherjacket1.png",
+            imageUrls: ["https://example.com/images/leatherjacket1.png"],
             price: 12000,
             isFavorite: false,
+            isInStock: false,
             isSale: false
         ),
 
@@ -153,9 +162,10 @@ struct MockData {
             color: "Красный",
             size: "S",
             description: "Легкое и элегантное платье для повседневных прогулок.",
-            imageUrl: "https://example.com/images/dress1.png",
+            imageUrls: ["https://example.com/images/dress1.png"],
             price: 4200,
             isFavorite: false,
+            isInStock: true,
             isSale: true
         ),
         Product(
@@ -165,9 +175,10 @@ struct MockData {
             color: "Черный",
             size: "M",
             description: "Элегантное вечернее платье для особых случаев.",
-            imageUrl: "https://example.com/images/dress2.png",
+            imageUrls: ["https://example.com/images/dress2.png"],
             price: 9600,
             isFavorite: true,
+            isInStock: false,
             isSale: false
         ),
         Product(
@@ -177,9 +188,10 @@ struct MockData {
             color: "Желтый",
             size: "L",
             description: "Летнее платье с ярким дизайном и удобным кроем.",
-            imageUrl: "https://example.com/images/dress3.png",
+            imageUrls: ["https://example.com/images/dress3.png"],
             price: 3800,
             isFavorite: false,
+            isInStock: false,
             isSale: true
         ),
 
@@ -191,9 +203,10 @@ struct MockData {
             color: "Серый",
             size: "M",
             description: "Удобная толстовка с капюшоном для спорта и активного отдыха.",
-            imageUrl: "https://example.com/images/hoodie1.png",
+            imageUrls: ["https://example.com/images/hoodie1.png"],
             price: 2900,
             isFavorite: true,
+            isInStock: true,
             isSale: false
         ),
         Product(
@@ -203,9 +216,10 @@ struct MockData {
             color: "Белый",
             size: "L",
             description: "Мягкая толстовка оверсайз для комфортного отдыха.",
-            imageUrl: "https://example.com/images/hoodie2.png",
+            imageUrls: ["https://example.com/images/hoodie2.png"],
             price: 3200,
             isFavorite: false,
+            isInStock: false,
             isSale: true
         ),
         Product(
@@ -215,9 +229,10 @@ struct MockData {
             color: "Черный",
             size: "XL",
             description: "Классическая толстовка для повседневного ношения.",
-            imageUrl: "https://example.com/images/hoodie3.png",
+            imageUrls: ["https://example.com/images/hoodie3.png"],
             price: 3100,
             isFavorite: true,
+            isInStock: true,
             isSale: false
         )
     ]

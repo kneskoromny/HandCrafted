@@ -64,7 +64,6 @@ final class DatabaseManager {
                 let description = dict["description"] as? String
                 let imageUrl = dict["imageUrl"] as? String
                 
-                
                 let category = Category(
                     name: name,
                     description: description,
@@ -91,9 +90,10 @@ final class DatabaseManager {
                let description = dict["description"] as? String,
                let price = dict["price"] as? Int,
                let isFavorite = dict["isFavorite"] as? Bool,
+               let isInStock = dict["isInStock"] as? Bool,
                let isSale = dict["isSale"] as? Bool {
                 
-                let imageUrl = dict["imageUrl"] as? String
+                let imageUrls = dict["imageUrls"] as? [String]
                 let product = Product(
                     categoryName: categoryName,
                     name: name,
@@ -101,9 +101,10 @@ final class DatabaseManager {
                     color: color,
                     size: size,
                     description: description,
-                    imageUrl: imageUrl,
+                    imageUrls: imageUrls,
                     price: price,
                     isFavorite: isFavorite,
+                    isInStock: isInStock,
                     isSale: isSale
                 )
                 products.append(product)

@@ -29,14 +29,30 @@ final class CatalogViewModel: ObservableObject {
         }
     }
     
-    func fetchProductList(for category: Category) {
+    func fetchProductList(categoryName: String) {
         guard !productList.isEmpty else {
             print(#function, "mytest - error: no loaded product list")
             return
         }
         isLoading = true
-        filteredProductList = productList.filter { $0.categoryName == category.name }
+        filteredProductList = productList.filter { $0.categoryName == categoryName }
         isLoading = false
+    }
+    
+    func fetchProductList(categoryName: String, exclude productName: String) {
+        guard !productList.isEmpty else {
+            print(#function, "mytest - error: no loaded product list")
+            return
+        }
+        filteredProductList = productList.filter { $0.categoryName == categoryName && $0.name != productName }
+    }
+    
+    func fetchProductList(categoryName: String, isInStock: Bool) {
+        guard !productList.isEmpty else {
+            print(#function, "mytest - error: no loaded product list")
+            return
+        }
+        filteredProductList = productList.filter { $0.categoryName == categoryName && $0.isInStock == isInStock }
     }
     
     // MARK: - Private Methods

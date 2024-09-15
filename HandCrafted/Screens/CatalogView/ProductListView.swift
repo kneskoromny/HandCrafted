@@ -29,7 +29,11 @@ struct ProductListView: View {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 32) {
                         ForEach(viewModel.filteredProductList) { product in
-                            ProductView(product: product)
+                            Button {
+                                router.navigate(to: .detail(product))
+                            } label: {
+                                ProductView(product: product)
+                            }
                         }
                     }
                     .padding(Const.viewInsets)
@@ -50,7 +54,7 @@ struct ProductListView: View {
             }
         }
         .onAppear {
-            viewModel.fetchProductList(for: category)
+            viewModel.fetchProductList(categoryName: category.name)
         }
     }
 }
