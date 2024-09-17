@@ -32,9 +32,20 @@ struct ProductView: View {
                 Spacer()
             }
             HStack {
-                Text("\(product.price) ₽")
-                    .font(Constant.AppFont.thirdly)
-                    .foregroundStyle(.black)
+                if let salePrice = product.price.sale {
+                    Text(String(product.price.standard))
+                        .strikethrough()
+                        .font(Constant.AppFont.thirdly)
+                        .foregroundStyle(.black)
+                    Text("\(salePrice) ₽")
+                        .font(Constant.AppFont.thirdly)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.red)
+                } else {
+                    Text("\(product.price.standard) ₽")
+                        .font(Constant.AppFont.thirdly)
+                        .foregroundStyle(.black)
+                }
                 Spacer()
             }
             
@@ -46,7 +57,7 @@ struct ProductView: View {
 }
 
 #Preview {
-    ProductView(product: MockData.products.first!)
+    ProductView(product: MockData.mockProduct)
         .environmentObject(CatalogViewModel())
 }
 
@@ -69,14 +80,7 @@ struct UrlImageView: View {
             .frame(width: 150, height: 175)
             .clipped()
         } else {
-            ZStack(alignment: .center) {
-                Rectangle()
-                    .foregroundStyle(.white)
-                Text("👗")
-                    .font(.largeTitle)
-            }
-            .frame(width: 100, height: 100)
-            .cornerRadius(50)
+            NoImageView(width: 150, height: 175)
         }
     }
     

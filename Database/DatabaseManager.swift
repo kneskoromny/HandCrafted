@@ -59,12 +59,14 @@ final class DatabaseManager {
         for child in snapshot.children {
             if let childSnapshot = child as? DataSnapshot,
                let dict = childSnapshot.value as? [String: Any],
-               let name = dict["name"] as? String {
+               let name = dict["name"] as? String,
+               let id = dict["id"] as? Int {
                 
                 let description = dict["description"] as? String
                 let imageUrl = dict["imageUrl"] as? String
                 
                 let category = Category(
+                    id: id,
                     name: name,
                     description: description,
                     imageUrl: imageUrl
@@ -72,7 +74,7 @@ final class DatabaseManager {
                 categories.append(category)
             }
         }
-        return categories
+        return categories.sorted(by: { $0.id < $1.id })
     }
     
     func getProductList() async throws -> [Product] {
@@ -82,36 +84,74 @@ final class DatabaseManager {
         for child in snapshot.children {
             if let childSnapshot = child as? DataSnapshot,
                let dict = childSnapshot.value as? [String: Any],
+               
+               // Основные поля продукта
                let categoryName = dict["categoryName"] as? String,
                let name = dict["name"] as? String,
+               
                let fabric = dict["fabric"] as? String,
-               let color = dict["color"] as? String,
-               let size = dict["size"] as? String,
-               let description = dict["description"] as? String,
-               let price = dict["price"] as? Int,
-               let isFavorite = dict["isFavorite"] as? Bool,
-               let isInStock = dict["isInStock"] as? Bool,
-               let isSale = dict["isSale"] as? Bool {
+               let composition = dict["composition"] as? String,
+               
+               let colorDict = dict["color"] as? [String: Any],
+               let colorName = colorDict["name"] as? String,
+               let colorList = colorDict["list"] as? [String],
                 
+               let description = dict["description"] as? String,
+               
+               // Поле цены (вложенный объект)
+               let priceDict = dict["price"] as? [String: Any],
+               let standardPrice = priceDict["standard"] as? Int {
+                
+                // Обработка опциональной распродажной цены
+                let salePrice = priceDict["sale"] as? Int
+                
+                // Поле размеров (массив объектов)
+                let sizesArray = dict["sizes"] as? [[String: Any]] ?? []
+                var sizes: [Size] = []
+                for sizeDict in sizesArray {
+                    if let name = sizeDict["name"] as? String,
+                       let isInStock = sizeDict["isInStock"] as? Bool,
+                       let isInSale = sizeDict["isInSale"] as? Bool,
+                       let list = sizeDict["list"] as? [String] {
+                        let size = Size(name: name, isInStock: isInStock, isInSale: isInSale, list: list)
+                        sizes.append(size)
+                    }
+                }
+                
+                // Поле изображений
                 let imageUrls = dict["imageUrls"] as? [String]
+                
+                // Поля статуса
+                let isFavorite = dict["isFavorite"] as? Bool ?? false
+                let isSale = dict["isSale"] as? Bool ?? false
+                
+                // Создание объекта Price
+                let price = Price(standard: standardPrice, sale: salePrice)
+                
+                let color = ProductColor(name: colorName, list: colorList)
+                
+                // Создание объекта Product
                 let product = Product(
                     categoryName: categoryName,
                     name: name,
                     fabric: fabric,
+                    composition: composition,
                     color: color,
-                    size: size,
+                    sizes: sizes,
                     description: description,
                     imageUrls: imageUrls,
                     price: price,
                     isFavorite: isFavorite,
-                    isInStock: isInStock,
                     isSale: isSale
                 )
+                
                 products.append(product)
             }
         }
+        
         return products
     }
+
     
 }
 
@@ -119,14 +159,14 @@ final class DatabaseManager {
 
 extension DatabaseManager {
     
-    static func getMockCategoryList() async -> [Category] {
-        sleep(1)
-        return MockData.categories
-    }
-    
-    static func getMockProductList() async -> [Product] {
-        sleep(1)
-        return MockData.products
-    }
+//    static func getMockCategoryList() async -> [Category] {
+//        sleep(1)
+//        return MockData.categories
+//    }
+//    
+//    static func getMockProductList() async -> [Product] {
+//        sleep(1)
+//        return MockData.products
+//    }
     
 }

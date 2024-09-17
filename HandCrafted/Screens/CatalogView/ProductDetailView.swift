@@ -16,13 +16,17 @@ struct ProductDetailView: View {
     
     var product: Product
     
+    var screenWidth: CGFloat = {
+        return UIScreen.main.bounds.width
+    }()
+    
     var body: some View {
         VStack {
             if viewModel.isLoading {
                 ProgressView("Минуточку...")
             } else {
                 ScrollView(.vertical, showsIndicators: false) {
-                    VStack(spacing: 32) {
+                    VStack(spacing: 24) {
                         if let imageUrls = product.imageUrls {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 LazyHStack(spacing: 0) {
@@ -37,31 +41,46 @@ struct ProductDetailView: View {
                                                        placeholder: {
                                                 ProgressView()
                                             })
-                                            .frame(width: 300, height: 350)
+                                            .frame(width: screenWidth - 16, height: screenWidth * 1.15)
                                             .clipped()
                                         } else {
-                                            ZStack(alignment: .center) {
-                                                Rectangle()
-                                                    .foregroundStyle(.white)
-                                                Text("👗")
-                                                    .font(.largeTitle)
-                                            }
-                                            .frame(width: 300, height: 350)
+                                            NoImageView(width: screenWidth - 16, height: screenWidth * 1.15)
                                         }
                                     }
                                 }
                             }
                         } else {
-                            // TODO: сделать нормальную заглушку
-                            ZStack(alignment: .center) {
-                                Rectangle()
-                                    .foregroundStyle(.white)
-                                Text("👗")
-                                    .font(.largeTitle)
-                            }
-                            .frame(width: 300, height: 350)
+                            NoImageView(width: screenWidth - 16, height: screenWidth * 1.15)
                         }
                         VStack(spacing: 32) {
+                            HStack {
+                                Button {
+                                    viewModel.sheetSelectType = .size
+                                    viewModel.isSheetPresented = true
+                                } label: {
+                                    SelectableButton(
+                                        title: "\(viewModel.selectedSize)",
+                                        font: Constant.AppFont.secondary,
+                                        foregroundColor: .black,
+                                        backgroundColor: .white,
+                                        height: 44,
+                                        isSelectable: true
+                                    )
+                                }
+                                Button {
+                                    viewModel.sheetSelectType = .color
+                                    viewModel.isSheetPresented = true
+                                } label: {
+                                    SelectableButton(
+                                        title: "\(product.color.name)",
+                                        font: Constant.AppFont.secondary,
+                                        foregroundColor: .black,
+                                        backgroundColor: .white,
+                                        height: 44,
+                                        isSelectable: true
+                                    )
+                                }
+                            }
                             HStack {
                                 VStack(spacing: 8) {
                                     HStack {
@@ -73,13 +92,7 @@ struct ProductDetailView: View {
                                         
                                     }
                                     HStack {
-                                        Text("Ткань: \(product.fabric)")
-                                            .font(Constant.AppFont.secondary)
-                                            .foregroundStyle(.gray)
-                                        Spacer()
-                                    }
-                                    HStack {
-                                        Text("Размер: \(product.size)")
+                                        Text("\(product.composition)")
                                             .font(Constant.AppFont.secondary)
                                             .foregroundStyle(.gray)
                                         Spacer()
@@ -89,23 +102,23 @@ struct ProductDetailView: View {
                                 VStack {
                                     HStack {
                                         Spacer()
-                                        Text("\(product.price) ₽")
-                                            .font(Constant.AppFont.primary)
-                                            .fontWeight(.bold)
-                                            .foregroundStyle(.black)
+                                        if let salePrice = product.price.sale {
+                                            Text(String(product.price.standard))
+                                                .strikethrough()
+                                                .font(Constant.AppFont.primary)
+                                                .foregroundStyle(.black)
+                                            Text("\(salePrice) ₽")
+                                                .font(Constant.AppFont.primary)
+                                                .fontWeight(.bold)
+                                                .foregroundStyle(.red)
+                                        } else {
+                                            Text("\(product.price.standard) ₽")
+                                                .font(Constant.AppFont.primary)
+                                                .fontWeight(.bold)
+                                                .foregroundStyle(.black)
+                                        }
                                     }
                                     Spacer()
-                                    Button {
-                                        print(#function, "mytest - size table btn did tapped")
-                                    } label: {
-                                        SecondaryButton(
-                                            title: "Таблица размеров",
-                                            font: Constant.AppFont.secondary,
-                                            foregroundColor: .gray,
-                                            backgroundColor: .white,
-                                            height: 32
-                                        )
-                                    }
                                 }
                             }
                             VStack(spacing: 16) {
@@ -117,18 +130,19 @@ struct ProductDetailView: View {
                                     Spacer()
                                 }
                                 HStack {
-                                    let text = product.isInStock ? "В наличии" : "Нет в наличии"
-                                    let color: Color = product.isInStock ? .green : .red
-                                    Text(text)
+                                    // TODO: настроить здесь
+//                                    let text = product.isInStock ? "В наличии" : "Нет в наличии"
+//                                    let color: Color = product.isInStock ? .green : .red
+                                    Text("Настроить отображение")
                                         .font(Constant.AppFont.secondary)
-                                        .foregroundStyle(color)
+                                        .foregroundStyle(.green)
                                         .fontWeight(.semibold)
                                         .multilineTextAlignment(.leading)
                                     Spacer()
                                 }
                                 HStack {
-                                    let text = product.isInStock ? "Этот товар есть в наличии и мы сможем доставить его сразу после оплаты." : "К сожалению, этого товара нет в наличии, но мы с удовольствием сошьем его для Вас после внесения оплаты."
-                                    Text(text)
+//                                    let text = product.isInStock ? "Этот товар есть в наличии и мы сможем отправить его сразу после оплаты." : "К сожалению, этого товара нет в наличии, но мы с удовольствием сошьем его для Вас после внесения оплаты."
+                                    Text("Настроить отображение")
                                         .font(Constant.AppFont.secondary)
                                         .foregroundStyle(.black)
                                         .multilineTextAlignment(.leading)
@@ -146,8 +160,8 @@ struct ProductDetailView: View {
                                 
                             }
                             HStack {
-                                let text = product.isInStock ? "Вам также может понравиться" : "Похожие товары в наличии"
-                                Text(text)
+//                                let text = product.isInStock ? "Вам также может понравиться" : "Похожие товары в наличии"
+                                Text("Настроить отображение")
                                     .font(Constant.AppFont.primary)
                                     .fontWeight(.semibold)
                                     .foregroundStyle(.black)
@@ -184,16 +198,30 @@ struct ProductDetailView: View {
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                if product.isInStock {
-                    viewModel.fetchProductList(categoryName: product.categoryName, exclude: product.name)
-                } else {
-                    viewModel.fetchProductList(categoryName: product.categoryName, isInStock: true)
-                }
+                // TODO: настроить здесь
+//                if product.isInStock {
+//                    viewModel.fetchProductList(categoryName: product.categoryName, exclude: product.name)
+//                } else {
+//                    viewModel.fetchProductList(categoryName: product.categoryName, isInStock: true)
+//                }
             }
         }
+        .sheet(
+            isPresented: $viewModel.isSheetPresented,
+            content: {
+                ProductSheetView(
+                    isPresented: $viewModel.isSheetPresented,
+                    type: viewModel.sheetSelectType,
+                    onDismiss: { size in
+                        viewModel.selectedSize = size
+                    }
+                )
+                    .presentationDetents([.height(300)])
+                    .presentationDragIndicator(.visible)
+            })
     }
 }
 
 #Preview {
-    ProductDetailView(product: MockData.products.first!)
+    ProductDetailView(product: MockData.mockProduct).environmentObject(CatalogViewModel())
 }

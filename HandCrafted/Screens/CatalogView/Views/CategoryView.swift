@@ -67,6 +67,7 @@ struct CategoryView: View {
 
 #Preview {
     CategoryView(category: Category(
+        id: 1,
         name: "Платья",
         description: "Самые красивые и легкие, что Вы носили",
         imageUrl: "https://example.com/images/tshirt1.png"

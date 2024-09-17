@@ -19,8 +19,6 @@ struct SecondaryButton: View {
                     .strokeBorder()
                     .tint(foregroundColor)
             }
-            
-
     }
 }
 

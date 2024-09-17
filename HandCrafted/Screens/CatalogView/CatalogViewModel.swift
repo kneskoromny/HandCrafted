@@ -2,10 +2,21 @@ import SwiftUI
 
 final class CatalogViewModel: ObservableObject {
     
+    // TODO: продолжить с выбора цвета и размеров
+    enum SheetSelectType {
+        case size, color
+    }
+    
     @Published var categoryList: [Category] = []
     @Published var productList: [Product] = []
     @Published var filteredProductList: [Product] = []
     @Published var isLoading = false
+    @Published var isSheetPresented = false
+    
+    @Published var selectedSize: String = "M"
+    @Published var selectedColor: String = "Белый"
+    
+    var sheetSelectType: SheetSelectType = .size
     
     private let dbManager = DatabaseManager()
     
@@ -35,7 +46,7 @@ final class CatalogViewModel: ObservableObject {
             return
         }
         isLoading = true
-        filteredProductList = productList.filter { $0.categoryName == categoryName }
+        filteredProductList = productList.filter { $0.categoryName == categoryName }.sorted(by: { $0.name < $1.name })
         isLoading = false
     }
     
@@ -52,7 +63,9 @@ final class CatalogViewModel: ObservableObject {
             print(#function, "mytest - error: no loaded product list")
             return
         }
-        filteredProductList = productList.filter { $0.categoryName == categoryName && $0.isInStock == isInStock }
+        filteredProductList = productList.filter { $0.categoryName == categoryName }
+        // TODO: разобраться здесь
+//        filteredProductList = productList.filter { $0.categoryName == categoryName && $0.isInStock == isInStock }
     }
     
     // MARK: - Private Methods

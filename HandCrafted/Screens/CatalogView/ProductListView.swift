@@ -6,7 +6,7 @@ struct ProductListView: View {
         static let viewInsets = EdgeInsets(
             top: 16,
             leading: 16,
-            bottom: 0,
+            bottom: 16,
             trailing: 16
         )
     }
