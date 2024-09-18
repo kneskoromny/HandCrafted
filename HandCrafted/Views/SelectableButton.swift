@@ -4,8 +4,6 @@ struct SelectableButton: View {
     
     var title: LocalizedStringKey
     var font: Font
-    var foregroundColor: Color
-    var backgroundColor: Color
     var height: CGFloat = 24
     var isSelectable: Bool
     
@@ -13,12 +11,13 @@ struct SelectableButton: View {
         HStack {
             Text(title)
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: height)
-                .background(backgroundColor)
-                .foregroundColor(foregroundColor)
+                .background(Color(uiColor: .systemBackground))
+                .foregroundColor(isSelectable ? .primary : .secondary)
                 .font(font)
+                .fontWeight(.semibold)
                 .padding(.leading)
+            Spacer()
             if isSelectable {
-                Spacer()
                 Image(uiImage: UIImage(named: "arrowDown")!)
                     .frame(width: height, height: height)
             }
@@ -26,7 +25,7 @@ struct SelectableButton: View {
         .overlay {
             RoundedRectangle(cornerRadius: 8)
                 .strokeBorder()
-                .tint(foregroundColor)
+                .tint(isSelectable ? .primary : .secondary)
         }
             
     }
@@ -36,8 +35,6 @@ struct SelectableButton: View {
     SelectableButton(
         title: "Selectable Button",
         font: .body,
-        foregroundColor: .black,
-        backgroundColor: .white,
         height: 44,
         isSelectable: true
     )

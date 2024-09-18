@@ -4,7 +4,7 @@ final class CatalogRouter: ObservableObject {
     
     public enum Destination: Codable, Hashable {
         case list(category: Category)
-        case detail(_ product: Product)
+        case detail
     }
     
     @Published var navPath = NavigationPath()

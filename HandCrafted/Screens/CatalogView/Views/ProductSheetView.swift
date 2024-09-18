@@ -2,11 +2,20 @@ import SwiftUI
 
 struct ProductSheetView: View {
     
-    let sizes = ["XS", "S", "M", "L", "XL", "XXL"] // Массив размеров
+    private enum Const {
+        static let viewInsets = EdgeInsets(
+            top: 16,
+            leading: 16,
+            bottom: 16,
+            trailing: 16
+        )
+    }
     
     @State var isSizeTablePresented = false
     @Binding var isPresented: Bool
+    
     var type: CatalogViewModel.SheetSelectType
+    var values: [String]
     var onDismiss: ((String) -> Void)?
     
     let columns = [
@@ -23,43 +32,26 @@ struct ProductSheetView: View {
                 .foregroundStyle(.black)
             
             LazyVGrid(columns: columns, spacing: 24) {
-                ForEach(sizes, id: \.self) { size in
+                ForEach(values, id: \.self) { value in
                     Button(action: {
-                        print("Выбран размер: \(size)")
-                        onDismiss?(size)
+                        onDismiss?(value)
                         isPresented = false
                     }) {
                         SecondaryButton(
-                            title: "\(size)",
+                            title: LocalizedStringKey(value),
                             font: .body,
-                            foregroundColor: .gray,
-                            backgroundColor: .white,
-                            height: 32
+                            foregroundColor: .primary,
+                            backgroundColor: Color(uiColor: .systemBackground),
+                            height: 44
                         )
                     }
                 }
             }
-            if type == .size {
-                Button {
-                    isSizeTablePresented = true
-                } label: {
-                    Text("Таблица размеров")
-                        .font(Constant.AppFont.secondary)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.gray)
-                }
-            }
         }
-        .padding()
-        .sheet(isPresented: $isSizeTablePresented, content: {
-            Rectangle()
-                .foregroundStyle(.foreground)
-                .presentationDetents([.medium])
-                .presentationDragIndicator(.visible)
-        })
+        .padding(Const.viewInsets)
     }
 }
 
 #Preview {
-    ProductSheetView(isPresented: .constant(true), type: .size)
+    ProductSheetView(isPresented: .constant(true), type: .size, values: ["S", "M", "L", "XL"])
 }

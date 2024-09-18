@@ -10,6 +10,8 @@ final class CatalogViewModel: ObservableObject {
     @Published var categoryList: [Category] = []
     @Published var productList: [Product] = []
     @Published var filteredProductList: [Product] = []
+    @Published var selectedProduct: Product?
+    
     @Published var isLoading = false
     @Published var isSheetPresented = false
     
@@ -66,6 +68,17 @@ final class CatalogViewModel: ObservableObject {
         filteredProductList = productList.filter { $0.categoryName == categoryName }
         // TODO: разобраться здесь
 //        filteredProductList = productList.filter { $0.categoryName == categoryName && $0.isInStock == isInStock }
+    }
+    
+    func updateSelectedProduct(with value: String) {
+        switch sheetSelectType {
+        case .size:
+            let selectedSize = selectedProduct?.sizes.first(where: { $0.name == value })
+            selectedProduct?.selectedSize = selectedSize
+        case .color:
+            selectedProduct = productList
+                .first(where: { $0.name == selectedProduct?.name && $0.color.name == value })
+        }
     }
     
     // MARK: - Private Methods

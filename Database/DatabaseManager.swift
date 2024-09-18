@@ -137,6 +137,7 @@ final class DatabaseManager {
                     fabric: fabric,
                     composition: composition,
                     color: color,
+                    selectedSize: sizes.first,
                     sizes: sizes,
                     description: description,
                     imageUrls: imageUrls,

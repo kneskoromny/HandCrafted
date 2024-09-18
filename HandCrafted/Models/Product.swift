@@ -31,6 +31,7 @@ struct Product: Codable, Hashable, Identifiable {
     let fabric: String
     let composition: String
     let color: ProductColor
+    var selectedSize: Size?
     var sizes: [Size]
     let description: String
     var imageUrls: [String]?

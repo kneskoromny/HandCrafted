@@ -12,8 +12,8 @@ struct CatalogTabView: View {
                     switch destination {
                     case .list(let category):
                         ProductListView(category: category)
-                    case .detail(let product):
-                        ProductDetailView(product: product)
+                    case .detail:
+                        ProductDetailView()
                     }
                 }
         }
