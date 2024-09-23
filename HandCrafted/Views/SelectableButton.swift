@@ -2,14 +2,14 @@ import SwiftUI
 
 struct SelectableButton: View {
     
-    var title: LocalizedStringKey
+    var title: String?
     var font: Font
     var height: CGFloat = 24
     var isSelectable: Bool
     
     var body: some View {
         HStack {
-            Text(title)
+            Text(title ?? "")
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: height)
                 .background(Color(uiColor: .systemBackground))
                 .foregroundColor(isSelectable ? .primary : .secondary)

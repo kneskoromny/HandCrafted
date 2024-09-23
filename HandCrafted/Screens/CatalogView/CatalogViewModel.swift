@@ -2,7 +2,6 @@ import SwiftUI
 
 final class CatalogViewModel: ObservableObject {
     
-    // TODO: продолжить с выбора цвета и размеров
     enum SheetSelectType {
         case size, color
     }
@@ -47,9 +46,7 @@ final class CatalogViewModel: ObservableObject {
             print(#function, "mytest - error: no loaded product list")
             return
         }
-        isLoading = true
         filteredProductList = productList.filter { $0.categoryName == categoryName }.sorted(by: { $0.name < $1.name })
-        isLoading = false
     }
     
     func fetchProductList(categoryName: String, exclude productName: String) {
@@ -70,16 +67,22 @@ final class CatalogViewModel: ObservableObject {
 //        filteredProductList = productList.filter { $0.categoryName == categoryName && $0.isInStock == isInStock }
     }
     
-    func updateSelectedProduct(with value: String) {
-        switch sheetSelectType {
-        case .size:
-            let selectedSize = selectedProduct?.sizes.first(where: { $0.name == value })
-            selectedProduct?.selectedSize = selectedSize
-        case .color:
-            selectedProduct = productList
-                .first(where: { $0.name == selectedProduct?.name && $0.color.name == value })
+    func getProduct(name: String, colorName: String) -> Product? {
+        return filteredProductList.first { product in
+            product.name == name && product.color.name == colorName
         }
     }
+    
+//    func updateSelectedProduct(with value: String) {
+//        switch sheetSelectType {
+//        case .size:
+//            let selectedSize = selectedProduct?.sizes.first(where: { $0.name == value })
+//            selectedProduct?.selectedSize = selectedSize
+//        case .color:
+//            selectedProduct = productList
+//                .first(where: { $0.name == selectedProduct?.name && $0.color.name == value })
+//        }
+//    }
     
     // MARK: - Private Methods
     

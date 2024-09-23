@@ -55,10 +55,7 @@ struct MockData {
         color: mockColor,
         sizes: mockSizes,
         description: "Удобная и легкая футболка из 100% хлопка. Подходит для повседневной носки.",
-        imageUrls: [
-            "https://example.com/images/tshirt1_1.png",
-            "https://example.com/images/tshirt1_2.png"
-        ],
+        imageUrls: [],
         price: mockPrice,
         isFavorite: true,
         isSale: true

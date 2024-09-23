@@ -6,7 +6,7 @@ struct LoginData {
     var confirmPassword = ""
 }
 
-struct User: Codable {
+struct User: Codable, Hashable, Identifiable {
     var id: String?
     var name: String?
     var email: String?

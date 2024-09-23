@@ -11,8 +11,10 @@ struct ProductDetailView: View {
         )
     }
     
-    @EnvironmentObject var viewModel: CatalogViewModel
+    @EnvironmentObject var catalogViewModel: CatalogViewModel
     @EnvironmentObject var router: CatalogRouter
+    
+    var product: Product
     
     var screenWidth: CGFloat = {
         return UIScreen.main.bounds.width
@@ -20,12 +22,12 @@ struct ProductDetailView: View {
     
     var body: some View {
         VStack {
-            if viewModel.isLoading {
+            if catalogViewModel.isLoading {
                 ProgressView("Минуточку...")
             } else {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 24) {
-                        if let imageUrls = viewModel.selectedProduct?.imageUrls {
+                        if let imageUrls = product.imageUrls {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 LazyHStack(spacing: 0) {
                                     ForEach(imageUrls.indices, id: \.self) { index in
@@ -53,38 +55,34 @@ struct ProductDetailView: View {
                         VStack(spacing: 32) {
                             HStack(spacing: 16) {
                                 Button {
-                                    viewModel.sheetSelectType = .size
-                                    viewModel.isSheetPresented = true
+                                    catalogViewModel.sheetSelectType = .size
+                                    catalogViewModel.isSheetPresented = true
                                 } label: {
-                                    let title = LocalizedStringKey((viewModel.selectedProduct?.selectedSize!.name)!)
-                                    let isSelectable = (viewModel.selectedProduct?.sizes.count)! > 1
                                     SelectableButton(
-                                        title: title,
+                                        title: product.selectedSize?.name,
                                         font: Constant.AppFont.secondary,
                                         height: 44,
-                                        isSelectable: isSelectable
+                                        isSelectable: product.sizes.count > 1
                                     )
                                 }
-                                .disabled(!((viewModel.selectedProduct?.sizes.count)! > 1))
+                                .disabled(product.sizes.count < 2)
                                 Button {
-                                    viewModel.sheetSelectType = .color
-                                    viewModel.isSheetPresented = true
+                                    catalogViewModel.sheetSelectType = .color
+                                    catalogViewModel.isSheetPresented = true
                                 } label: {
-                                    let title = LocalizedStringKey((viewModel.selectedProduct?.color.name)!)
-                                    let isSelectable = (viewModel.selectedProduct?.color.list.count)! > 1
                                     SelectableButton(
-                                        title: title,
+                                        title: product.color.name,
                                         font: Constant.AppFont.secondary,
                                         height: 44,
-                                        isSelectable: isSelectable
+                                        isSelectable: product.color.list.count > 1
                                     )
                                 }
-                                .disabled(!((viewModel.selectedProduct?.color.list.count)! > 1))
+                                .disabled(product.color.list.count < 2)
                             }
                             HStack {
                                 VStack(spacing: 8) {
                                     HStack {
-                                        Text(viewModel.selectedProduct!.name)
+                                        Text(product.name)
                                             .font(Constant.AppFont.primary)
                                             .fontWeight(.semibold)
                                             .foregroundStyle(.black)
@@ -92,7 +90,7 @@ struct ProductDetailView: View {
                                         
                                     }
                                     HStack {
-                                        Text(viewModel.selectedProduct!.composition)
+                                        Text(product.composition)
                                             .font(Constant.AppFont.secondary)
                                             .foregroundStyle(.gray)
                                         Spacer()
@@ -102,8 +100,8 @@ struct ProductDetailView: View {
                                 VStack {
                                     HStack {
                                         Spacer()
-                                        if let salePrice = viewModel.selectedProduct?.price.sale {
-                                            Text(String((viewModel.selectedProduct?.price.standard)!))
+                                        if let salePrice = product.price.sale {
+                                            Text(String(product.price.standard))
                                                 .strikethrough()
                                                 .font(Constant.AppFont.primary)
                                                 .foregroundStyle(.black)
@@ -112,12 +110,11 @@ struct ProductDetailView: View {
                                                 .fontWeight(.bold)
                                                 .foregroundStyle(.red)
                                         } else {
-                                            if let standardPrice = viewModel.selectedProduct?.price.standard {
-                                                Text("\(standardPrice) ₽")
-                                                    .font(Constant.AppFont.primary)
-                                                    .fontWeight(.bold)
-                                                    .foregroundStyle(.black)
-                                            }
+                                            Text("\(product.price.standard) ₽")
+                                                .font(Constant.AppFont.primary)
+                                                .fontWeight(.bold)
+                                                .foregroundStyle(.black)
+                                            
                                         }
                                     }
                                     Spacer()
@@ -125,15 +122,19 @@ struct ProductDetailView: View {
                             }
                             VStack(spacing: 16) {
                                 HStack {
-                                    Text(viewModel.selectedProduct!.description)
+                                    Text(product.description)
                                         .font(Constant.AppFont.secondary)
                                         .foregroundStyle(.black)
                                         .multilineTextAlignment(.leading)
                                     Spacer()
                                 }
                                 HStack {
-                                    let text = (viewModel.selectedProduct?.selectedSize!.isInStock)! ? "В наличии" : "Нет в наличии"
-                                    let color: Color = (viewModel.selectedProduct?.selectedSize!.isInStock)! ? .green : .red
+                                    let text = product.selectedSize?.isInStock == true
+                                    ? "В наличии"
+                                    : "Нет в наличии"
+                                    let color: Color = product.selectedSize?.isInStock == true
+                                    ? .green
+                                    : .red
                                     Text(text)
                                         .font(Constant.AppFont.secondary)
                                         .foregroundStyle(color)
@@ -142,7 +143,9 @@ struct ProductDetailView: View {
                                     Spacer()
                                 }
                                 HStack {
-                                    let text = (viewModel.selectedProduct?.selectedSize!.isInStock)! ? "Этот товар есть в наличии и мы сможем отправить его сразу после оплаты." : "К сожалению, этого товара нет в наличии, но мы с удовольствием сошьем его для Вас после внесения оплаты."
+                                    let text = product.selectedSize?.isInStock == true
+                                    ? "Этот товар есть в наличии и мы сможем отправить его сразу после оплаты."
+                                    : "К сожалению, этого товара нет в наличии, но мы с удовольствием сошьем его для Вас после внесения оплаты."
                                     Text(text)
                                         .font(Constant.AppFont.secondary)
                                         .foregroundStyle(.black)
@@ -151,7 +154,7 @@ struct ProductDetailView: View {
                                 }
                             }
                             Button {
-                                print(#function, "mytest - btn tapped")
+                                print(#function, "mytest - add to order: \(product.name)")
                             } label: {
                                 PrimaryButton(
                                     title: "Добавить в корзину",
@@ -161,7 +164,9 @@ struct ProductDetailView: View {
                                 
                             }
                             HStack {
-                                let text = (viewModel.selectedProduct?.selectedSize!.isInStock)! ? "Вам также может понравиться" : "Похожие товары в наличии"
+                                let text = product.selectedSize?.isInStock == true
+                                ? "Вам также может понравиться"
+                                : "Похожие товары в наличии"
                                 Text(text)
                                     .font(Constant.AppFont.primary)
                                     .fontWeight(.semibold)
@@ -170,10 +175,9 @@ struct ProductDetailView: View {
                             }
                             ScrollView(.horizontal, showsIndicators: false) {
                                 LazyHStack(spacing: 10) {
-                                    ForEach(viewModel.filteredProductList) { product in
+                                    ForEach(catalogViewModel.filteredProductList) { product in
                                         Button {
-                                            viewModel.selectedProduct = product
-                                            router.navigate(to: .detail)
+                                            router.navigate(to: .detail(product: product))
                                         } label: {
                                             ProductView(product: product)
                                         }
@@ -200,34 +204,56 @@ struct ProductDetailView: View {
         }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                if (viewModel.selectedProduct?.selectedSize!.isInStock)! {
-                    viewModel.fetchProductList(categoryName: viewModel.selectedProduct!.categoryName, exclude: viewModel.selectedProduct!.name)
+                if product.selectedSize?.isInStock == true {
+                    catalogViewModel.fetchProductList(
+                        categoryName: product.categoryName,
+                        exclude: product.name
+                    )
                 } else {
-                    viewModel.fetchProductList(categoryName: viewModel.selectedProduct!.categoryName, isInStock: true)
+                    catalogViewModel.fetchProductList(
+                        categoryName: product.categoryName,
+                        isInStock: true
+                    )
                 }
             }
         }
         .sheet(
-            isPresented: $viewModel.isSheetPresented,
+            isPresented: $catalogViewModel.isSheetPresented,
             content: {
-                let values = viewModel.sheetSelectType == .size
-                ? viewModel.selectedProduct?.sizes.first?.list
-                : viewModel.selectedProduct?.color.list
+                let values = catalogViewModel.sheetSelectType == .size
+                ? product.sizes.first?.list
+                : product.color.list
                 ProductSheetView(
-                    isPresented: $viewModel.isSheetPresented,
-                    type: viewModel.sheetSelectType,
+                    isPresented: $catalogViewModel.isSheetPresented,
+                    type: catalogViewModel.sheetSelectType,
                     values: values ?? [],
-                    onDismiss: { newValue in
-                        viewModel.updateSelectedProduct(with: newValue)
+                    onDismiss: {
+                        newValue in
+                        switch catalogViewModel.sheetSelectType {
+                        case .color:
+                            if let product = catalogViewModel.getProduct(
+                                name: product.name,
+                                colorName: newValue
+                            ) {
+                                router.navigate(to: .detail(product: product))
+                            }
+                        case .size:
+                            if let size = product.sizes.first(where: { $0.name == newValue }) {
+                                catalogViewModel.selectedProduct = product
+                                catalogViewModel.selectedProduct?.selectedSize = size
+                            }
+                        }
                     }
                 )
-                    .presentationDetents([.height(250)])
-                    .presentationDragIndicator(.visible)
+                .presentationDetents([.height(250)])
+                .presentationDragIndicator(.visible)
             })
     }
+    
 }
 
 #Preview {
-    ProductDetailView()
+    ProductDetailView(product: MockData.mockProduct)
         .environmentObject(CatalogViewModel())
+        .environmentObject(CatalogRouter())
 }

@@ -14,7 +14,7 @@ struct TabsView: View {
                     )
                 }
                 .tag(1)
-            BasketView()
+            BasketTabView()
                 .tabItem {
                     Label(
                         "Корзина",
@@ -30,8 +30,8 @@ struct TabsView: View {
                     )
                 }
                 .tag(3)
-            
         }
+        
     }
 }
 

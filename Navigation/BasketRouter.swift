@@ -1,9 +1,8 @@
 import SwiftUI
 
-final class CatalogRouter: ObservableObject {
+final class BasketRouter: ObservableObject {
     
     public enum Destination: Codable, Hashable {
-        case list(category: Category)
         case detail(product: Product)
     }
     
@@ -22,4 +21,3 @@ final class CatalogRouter: ObservableObject {
     }
     
 }
-
