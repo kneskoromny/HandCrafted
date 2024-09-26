@@ -29,7 +29,7 @@ struct ProfileView: View {
     // MARK: - State
     
     @EnvironmentObject var viewModel: ProfileViewModel
-    @EnvironmentObject var router: AccountRouter
+    @EnvironmentObject var appRouter: AppRouter
     
     // MARK: - Body
     
@@ -82,7 +82,7 @@ struct ProfileView: View {
                             }
                         }
                         Button {
-                            router.navigate(to: .orders)
+                            appRouter.navigate(to: .orders)
                         } label: {
                             ArrowRightButton(
                                 title: "My orders",
@@ -95,7 +95,7 @@ struct ProfileView: View {
                         .padding(Const.cellInsets)
                         Divider()
                         Button {
-                            router.navigate(to: .favorites)
+                            appRouter.navigate(to: .favorites)
                         } label: {
                             ArrowRightButton(
                                 title: "My favorites",
@@ -108,7 +108,7 @@ struct ProfileView: View {
                         .padding(Const.cellInsets)
                         Divider()
                         Button {
-                            router.navigate(to: .paymentMethods)
+                            appRouter.navigate(to: .paymentMethods)
                         } label: {
                             ArrowRightButton(
                                 title: "Payment methods",
@@ -121,7 +121,7 @@ struct ProfileView: View {
                         .padding(Const.cellInsets)
                         Divider()
                         Button {
-                            router.navigate(to: .shippingAddresses)
+                            appRouter.navigate(to: .shippingAddresses)
                         } label: {
                             ArrowRightButton(
                                 title: "Shipping addresses",
@@ -134,7 +134,7 @@ struct ProfileView: View {
                         .padding(Const.cellInsets)
                         Divider()
                         Button {
-                            router.navigate(to: .settings)
+                            appRouter.navigate(to: .settings)
                         } label: {
                             ArrowRightButton(
                                 title: "Settings",

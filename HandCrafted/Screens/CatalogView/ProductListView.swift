@@ -12,7 +12,7 @@ struct ProductListView: View {
     }
     
     @EnvironmentObject var viewModel: CatalogViewModel
-    @EnvironmentObject var router: CatalogRouter
+    @EnvironmentObject var appRouter: AppRouter
     
     var category: Category
     
@@ -30,7 +30,7 @@ struct ProductListView: View {
                     LazyVGrid(columns: columns, spacing: 32) {
                         ForEach(viewModel.filteredProductList) { product in
                             Button {
-                                router.navigate(to: .detail(product: product))
+                                appRouter.navigate(to: .detail(product: product))
                             } label: {
                                 ProductView(product: product)
                             }
@@ -46,7 +46,7 @@ struct ProductListView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    router.navigateBack()
+                    appRouter.navigateBack()
                 } label: {
                     Label("Back", systemImage: "arrow.left")
                 }
@@ -62,4 +62,5 @@ struct ProductListView: View {
 #Preview {
     ProductListView(category: MockData.categories.first!)
         .environmentObject(CatalogViewModel())
+        .environmentObject(AppRouter())
 }

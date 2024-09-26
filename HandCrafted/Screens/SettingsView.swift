@@ -19,7 +19,7 @@ struct SettingsView: View {
     }
     
     @EnvironmentObject var viewModel: ProfileViewModel
-    @EnvironmentObject var router: AccountRouter
+    @EnvironmentObject var appRouter: AppRouter
     
     @State private var photosPickerItem: PhotosPickerItem? = nil
     @State var isPhotoPickerPresented = false
@@ -170,7 +170,7 @@ struct SettingsView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    router.navigateBack()
+                    appRouter.navigateBack()
                 } label: {
                     Label("Back", systemImage: "arrow.left")
                 }

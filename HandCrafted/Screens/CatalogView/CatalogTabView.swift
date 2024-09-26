@@ -2,26 +2,28 @@ import SwiftUI
 
 struct CatalogTabView: View {
     
-    @ObservedObject var catalogViewModel = CatalogViewModel()
-    @ObservedObject var catalogRouter = CatalogRouter()
+    @StateObject var catalogViewModel = CatalogViewModel()
+    @EnvironmentObject var appRouter: AppRouter
     
     var body: some View {
-        NavigationStack(path: $catalogRouter.navPath) {
+        NavigationStack(path: $appRouter.navPath) {
             CatalogView()
-                .navigationDestination(for: CatalogRouter.Destination.self) { destination in
+                .navigationDestination(for: AppDestination.self) { destination in
                     switch destination {
                     case .list(let category):
                         ProductListView(category: category)
                     case .detail(let product):
                         ProductDetailView(product: product)
+                    default:
+                        Text("Ошибка роутинга 🙀")
                     }
                 }
         }
         .environmentObject(catalogViewModel)
-        .environmentObject(catalogRouter)
     }
 }
 
 #Preview {
     CatalogTabView()
+        .environmentObject(AppRouter())
 }

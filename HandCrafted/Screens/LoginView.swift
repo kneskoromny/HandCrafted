@@ -28,7 +28,7 @@ struct LoginView: View {
     // MARK: - State
     
     @EnvironmentObject var viewModel: ProfileViewModel
-    @EnvironmentObject var router: RegisterRouter
+    @EnvironmentObject var appRouter: AppRouter
     
     // MARK: - Body
     
@@ -55,7 +55,7 @@ struct LoginView: View {
                 
                 VStack(spacing: 16)  {
                     Button {
-                        router.navigate(to: .forgotPassword)
+                        appRouter.navigate(to: .forgotPassword)
                     } label: {
                         HStack {
                             Spacer()
@@ -85,7 +85,7 @@ struct LoginView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
-                        router.navigateBack()
+                        appRouter.navigateBack()
                     } label: {
                         Label("Back", systemImage: "arrow.left")
                     }

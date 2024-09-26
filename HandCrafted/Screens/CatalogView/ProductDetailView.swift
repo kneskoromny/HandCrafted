@@ -12,7 +12,7 @@ struct ProductDetailView: View {
     }
     
     @EnvironmentObject var catalogViewModel: CatalogViewModel
-    @EnvironmentObject var router: CatalogRouter
+    @EnvironmentObject var appRouter: AppRouter
     
     var product: Product
     
@@ -151,7 +151,7 @@ struct ProductDetailView: View {
                                     Spacer()
                                 }
                                 HStack {
-                                    var text: String = {
+                                    let text: String = {
                                         if let selectedProduct = catalogViewModel.selectedProduct {
                                             return selectedProduct.selectedSize?.isInStock == true
                                             ? "В наличии"
@@ -160,7 +160,7 @@ struct ProductDetailView: View {
                                             return "Не выбран размер"
                                         }
                                     }()
-                                    var color: Color = {
+                                    let color: Color = {
                                         if let selectedProduct = catalogViewModel.selectedProduct {
                                             return selectedProduct.selectedSize?.isInStock == true
                                             ? .green
@@ -177,7 +177,7 @@ struct ProductDetailView: View {
                                     Spacer()
                                 }
                                 HStack {
-                                    var text: String = {
+                                    let text: String = {
                                         if let selectedProduct = catalogViewModel.selectedProduct {
                                             return selectedProduct.selectedSize?.isInStock == true
                                             ? "Этот товар есть в наличии и мы сможем отправить его сразу после оплаты."
@@ -194,10 +194,7 @@ struct ProductDetailView: View {
                                 }
                             }
                             Button {
-                                // TODO: продолжить с алерта здесь
-                                print(#function, "mytest - add to order: \(product.name)")
                                 catalogViewModel.isAlertPresented = true
-                                
                             } label: {
                                 PrimaryButton(
                                     title: "Добавить в корзину",
@@ -219,7 +216,7 @@ struct ProductDetailView: View {
                                 LazyHStack(spacing: 10) {
                                     ForEach(catalogViewModel.filteredProductList) { product in
                                         Button {
-                                            router.navigate(to: .detail(product: product))
+                                            appRouter.navigate(to: .detail(product: product))
                                         } label: {
                                             ProductView(product: product)
                                         }
@@ -237,7 +234,7 @@ struct ProductDetailView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    router.navigateBack()
+                    appRouter.navigateBack()
                 } label: {
                     Label("Back", systemImage: "arrow.left")
                 }
@@ -277,7 +274,7 @@ struct ProductDetailView: View {
                                 name: product.name,
                                 colorName: newValue
                             ) {
-                                router.navigate(to: .detail(product: product))
+                                appRouter.navigate(to: .detail(product: product))
                             }
                         case .size:
                             if let size = product.sizes.first(where: { $0.name == newValue }) {
@@ -295,15 +292,11 @@ struct ProductDetailView: View {
             isPresented: $catalogViewModel.isAlertPresented) {
                 if catalogViewModel.selectedProduct != nil {
                     Button("В Корзину", role: .cancel) {
-                        print(#function, "mytest - to basket tap")
+                        appRouter.selectedTab = AppRouter.Tab.cart
                     }
-                    Button("Продолжить") {
-//                        catalogViewModel.isAlertPresented = false
-                    }
+                    Text("Продолжить")
                 } else {
-                    Button("OK") {
-//                        catalogViewModel.isAlertPresented = false
-                    }
+                    Text("OK")
                 }
             }
     message: {
@@ -316,5 +309,5 @@ struct ProductDetailView: View {
 #Preview {
     ProductDetailView(product: MockData.mockProduct)
         .environmentObject(CatalogViewModel())
-        .environmentObject(CatalogRouter())
+        .environmentObject(AppRouter())
 }

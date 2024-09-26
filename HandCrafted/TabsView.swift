@@ -2,10 +2,10 @@ import SwiftUI
 
 struct TabsView: View {
     
-    @State private var selection = 1
+    @ObservedObject private var appRouter = AppRouter()
     
     var body: some View {
-        TabView(selection: $selection) {
+        TabView(selection: $appRouter.selectedTab) {
             CatalogTabView()
                 .tabItem {
                     Label(
@@ -13,7 +13,7 @@ struct TabsView: View {
                         systemImage: "book"
                     )
                 }
-                .tag(1)
+                .tag(AppRouter.Tab.catalog)
             BasketTabView()
                 .tabItem {
                     Label(
@@ -21,7 +21,7 @@ struct TabsView: View {
                         systemImage: "basket"
                     )
                 }
-                .tag(2)
+                .tag(AppRouter.Tab.cart)
             ProfileTabView()
                 .tabItem {
                     Label(
@@ -29,8 +29,14 @@ struct TabsView: View {
                         systemImage: "person"
                     )
                 }
-                .tag(3)
+                .tag(AppRouter.Tab.account)
         }
+        .onChange(of: appRouter.selectedTab) { newTab, oldTab in
+            if newTab != oldTab {
+                appRouter.navPath = NavigationPath()
+            }
+        }
+        .environmentObject(appRouter)
         
     }
 }

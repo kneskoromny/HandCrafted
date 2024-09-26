@@ -27,7 +27,7 @@ struct RecoveryPasswordRequestedView: View {
     
     // MARK: - State
     
-    @EnvironmentObject var router: RegisterRouter
+    @EnvironmentObject var appRouter: AppRouter
     
     // MARK: - Body
     
@@ -40,7 +40,7 @@ struct RecoveryPasswordRequestedView: View {
                 .padding(Const.textInsets)
             
             Button {
-                router.navigateToRoot()
+                appRouter.navigateToRoot()
             } label: {
                 PrimaryButton(
                     title: "To Sign Up",
@@ -57,7 +57,7 @@ struct RecoveryPasswordRequestedView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    router.navigateToRoot()
+                    appRouter.navigateToRoot()
                 } label: {
                     Label("Back", systemImage: "arrow.left")
                 }
@@ -69,4 +69,5 @@ struct RecoveryPasswordRequestedView: View {
 
 #Preview {
     RecoveryPasswordRequestedView()
+        .environmentObject(AppRouter())
 }

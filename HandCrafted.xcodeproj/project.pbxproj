@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F70FC9132C6A45D700A6106E /* AccountRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70FC9122C6A45D700A6106E /* AccountRouter.swift */; };
 		F70FC9152C6A581100A6106E /* ArrowRightButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70FC9142C6A581100A6106E /* ArrowRightButton.swift */; };
 		F713CD7F2C9437FC00C4F647 /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F713CD7E2C9437FC00C4F647 /* SecondaryButton.swift */; };
 		F737B7F62C77796300BC7E64 /* Binding+toUnwrapped.swift in Sources */ = {isa = PBXBuildFile; fileRef = F737B7F52C77796300BC7E64 /* Binding+toUnwrapped.swift */; };
@@ -27,11 +26,9 @@
 		F770AC7D2C8C708A00161E02 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = F770AC7C2C8C708A00161E02 /* Category.swift */; };
 		F770AC7F2C8C70FA00161E02 /* CatalogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F770AC7E2C8C70FA00161E02 /* CatalogViewModel.swift */; };
 		F770AC812C8C71DE00161E02 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = F770AC802C8C71DE00161E02 /* Product.swift */; };
-		F770AC832C8C7C4800161E02 /* CatalogRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F770AC822C8C7C4800161E02 /* CatalogRouter.swift */; };
 		F770AC852C8C7EB600161E02 /* CatalogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F770AC842C8C7EB600161E02 /* CatalogView.swift */; };
 		F770AC872C8CA0F900161E02 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F770AC862C8CA0F900161E02 /* CategoryView.swift */; };
 		F770AC8A2C8CA19D00161E02 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F770AC892C8CA19D00161E02 /* MockData.swift */; };
-		F779EA702C9C77E20006ECFE /* BasketRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779EA6F2C9C77E20006ECFE /* BasketRouter.swift */; };
 		F779EA722C9C784F0006ECFE /* BasketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779EA712C9C784F0006ECFE /* BasketViewModel.swift */; };
 		F779EA762C9C7A230006ECFE /* BasketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F779EA752C9C7A230006ECFE /* BasketView.swift */; };
 		F78D90BC2C34745B00CD9DBC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F78D90BB2C34745B00CD9DBC /* GoogleService-Info.plist */; };
@@ -47,6 +44,8 @@
 		F78D90D12C34772F00CD9DBC /* FirebasePerformance in Frameworks */ = {isa = PBXBuildFile; productRef = F78D90D02C34772F00CD9DBC /* FirebasePerformance */; };
 		F78D90D32C34772F00CD9DBC /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = F78D90D22C34772F00CD9DBC /* FirebaseRemoteConfig */; };
 		F78D90D52C34772F00CD9DBC /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F78D90D42C34772F00CD9DBC /* FirebaseStorage */; };
+		F79534772CA5AC96001E7AE2 /* AppRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79534762CA5AC96001E7AE2 /* AppRouter.swift */; };
+		F79534792CA5C3CD001E7AE2 /* AppDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79534782CA5C3CD001E7AE2 /* AppDestination.swift */; };
 		F79FDC542C9A132000BCA68A /* NoImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F79FDC532C9A132000BCA68A /* NoImageView.swift */; };
 		F7B0D2A92C275A3B0017DCD7 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B0D2A82C275A3B0017DCD7 /* ProfileViewModel.swift */; };
 		F7B0D2AB2C275A6D0017DCD7 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B0D2AA2C275A6D0017DCD7 /* Alert.swift */; };
@@ -61,13 +60,11 @@
 		F7FEF2502C617FB800DE29FC /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FEF24F2C617FB800DE29FC /* RegisterView.swift */; };
 		F7FEF2522C64CC8800DE29FC /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FEF2512C64CC8800DE29FC /* ForgotPasswordView.swift */; };
 		F7FEF2542C64DA9D00DE29FC /* RecoveryPasswordRequestedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FEF2532C64DA9D00DE29FC /* RecoveryPasswordRequestedView.swift */; };
-		F7FEF2562C67BE3100DE29FC /* RegisterRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FEF2552C67BE3100DE29FC /* RegisterRouter.swift */; };
 		F7FEF2592C67D2C800DE29FC /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FEF2582C67D2C700DE29FC /* AuthManager.swift */; };
 		F7FEF25C2C67FF9A00DE29FC /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FEF25B2C67FF9A00DE29FC /* DatabaseManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F70FC9122C6A45D700A6106E /* AccountRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRouter.swift; sourceTree = "<group>"; };
 		F70FC9142C6A581100A6106E /* ArrowRightButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowRightButton.swift; sourceTree = "<group>"; };
 		F713CD7E2C9437FC00C4F647 /* SecondaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButton.swift; sourceTree = "<group>"; };
 		F737B7F52C77796300BC7E64 /* Binding+toUnwrapped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+toUnwrapped.swift"; sourceTree = "<group>"; };
@@ -87,14 +84,14 @@
 		F770AC7C2C8C708A00161E02 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		F770AC7E2C8C70FA00161E02 /* CatalogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewModel.swift; sourceTree = "<group>"; };
 		F770AC802C8C71DE00161E02 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
-		F770AC822C8C7C4800161E02 /* CatalogRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogRouter.swift; sourceTree = "<group>"; };
 		F770AC842C8C7EB600161E02 /* CatalogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogView.swift; sourceTree = "<group>"; };
 		F770AC862C8CA0F900161E02 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		F770AC892C8CA19D00161E02 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
-		F779EA6F2C9C77E20006ECFE /* BasketRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketRouter.swift; sourceTree = "<group>"; };
 		F779EA712C9C784F0006ECFE /* BasketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketViewModel.swift; sourceTree = "<group>"; };
 		F779EA752C9C7A230006ECFE /* BasketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketView.swift; sourceTree = "<group>"; };
 		F78D90BB2C34745B00CD9DBC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F79534762CA5AC96001E7AE2 /* AppRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouter.swift; sourceTree = "<group>"; };
+		F79534782CA5C3CD001E7AE2 /* AppDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDestination.swift; sourceTree = "<group>"; };
 		F79FDC532C9A132000BCA68A /* NoImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoImageView.swift; sourceTree = "<group>"; };
 		F7B0D2A82C275A3B0017DCD7 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		F7B0D2AA2C275A6D0017DCD7 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
@@ -110,7 +107,6 @@
 		F7FEF24F2C617FB800DE29FC /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		F7FEF2512C64CC8800DE29FC /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		F7FEF2532C64DA9D00DE29FC /* RecoveryPasswordRequestedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPasswordRequestedView.swift; sourceTree = "<group>"; };
-		F7FEF2552C67BE3100DE29FC /* RegisterRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterRouter.swift; sourceTree = "<group>"; };
 		F7FEF2582C67D2C700DE29FC /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		F7FEF25B2C67FF9A00DE29FC /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -146,7 +142,6 @@
 				F770AC7E2C8C70FA00161E02 /* CatalogViewModel.swift */,
 				F770AC882C8CA0FF00161E02 /* Views */,
 				F75831112C909AD700736C5F /* ProductListView.swift */,
-				F75831132C90A37300736C5F /* ProductView.swift */,
 				F7C48A832C917B75008D2EAC /* ProductDetailView.swift */,
 			);
 			path = CatalogView;
@@ -166,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				F770AC862C8CA0F900161E02 /* CategoryView.swift */,
+				F75831132C90A37300736C5F /* ProductView.swift */,
 				F768E9022C96E5AB00E92AAC /* ProductSheetView.swift */,
 			);
 			path = Views;
@@ -284,10 +280,8 @@
 		F7FEF2572C67BE3A00DE29FC /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				F7FEF2552C67BE3100DE29FC /* RegisterRouter.swift */,
-				F70FC9122C6A45D700A6106E /* AccountRouter.swift */,
-				F770AC822C8C7C4800161E02 /* CatalogRouter.swift */,
-				F779EA6F2C9C77E20006ECFE /* BasketRouter.swift */,
+				F79534762CA5AC96001E7AE2 /* AppRouter.swift */,
+				F79534782CA5C3CD001E7AE2 /* AppDestination.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -408,17 +402,15 @@
 				F75831142C90A37300736C5F /* ProductView.swift in Sources */,
 				F7B0D2AF2C275AB40017DCD7 /* String+isValidEmail.swift in Sources */,
 				F770AC852C8C7EB600161E02 /* CatalogView.swift in Sources */,
-				F70FC9132C6A45D700A6106E /* AccountRouter.swift in Sources */,
-				F7FEF2562C67BE3100DE29FC /* RegisterRouter.swift in Sources */,
 				F7EEE8A42C1F05260045C760 /* TabsView.swift in Sources */,
 				F768E9032C96E5AB00E92AAC /* ProductSheetView.swift in Sources */,
 				F7403A082C28345D00A9A138 /* PrimaryButton.swift in Sources */,
 				F737B7F62C77796300BC7E64 /* Binding+toUnwrapped.swift in Sources */,
 				F770AC7D2C8C708A00161E02 /* Category.swift in Sources */,
-				F779EA702C9C77E20006ECFE /* BasketRouter.swift in Sources */,
 				F74F26F52C73A1810095DC2E /* SettingsView.swift in Sources */,
 				F7B0D2AD2C275A870017DCD7 /* User.swift in Sources */,
 				F770AC8A2C8CA19D00161E02 /* MockData.swift in Sources */,
+				F79534792CA5C3CD001E7AE2 /* AppDestination.swift in Sources */,
 				F74F26F32C739F720095DC2E /* Constant.swift in Sources */,
 				F770AC812C8C71DE00161E02 /* Product.swift in Sources */,
 				F70FC9152C6A581100A6106E /* ArrowRightButton.swift in Sources */,
@@ -428,6 +420,7 @@
 				F770AC7F2C8C70FA00161E02 /* CatalogViewModel.swift in Sources */,
 				F79FDC542C9A132000BCA68A /* NoImageView.swift in Sources */,
 				F737B7F82C77987600BC7E64 /* ProfileTabView.swift in Sources */,
+				F79534772CA5AC96001E7AE2 /* AppRouter.swift in Sources */,
 				F779EA722C9C784F0006ECFE /* BasketViewModel.swift in Sources */,
 				F7B0D2AB2C275A6D0017DCD7 /* Alert.swift in Sources */,
 				F7403A062C282E8C00A9A138 /* LoginView.swift in Sources */,
@@ -438,7 +431,6 @@
 				F764FCDA2C6138E600506AA2 /* CatalogTabView.swift in Sources */,
 				F7EEE8A22C1F05260045C760 /* HandCraftedApp.swift in Sources */,
 				F764FCDF2C6170AE00506AA2 /* PrimaryTextField.swift in Sources */,
-				F770AC832C8C7C4800161E02 /* CatalogRouter.swift in Sources */,
 				F7FEF25C2C67FF9A00DE29FC /* DatabaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

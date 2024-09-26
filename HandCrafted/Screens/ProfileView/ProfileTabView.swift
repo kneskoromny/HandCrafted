@@ -3,16 +3,15 @@ import SwiftData
 
 struct ProfileTabView: View {
     
-    @ObservedObject var profileViewModel = ProfileViewModel()
-    @ObservedObject var registerRouter = RegisterRouter()
-    @ObservedObject var accountRouter = AccountRouter()
+    @StateObject var profileViewModel = ProfileViewModel()
+    @EnvironmentObject var appRouter: AppRouter
     
     var body: some View {
         switch profileViewModel.accountState {
         case .auth:
-            NavigationStack(path: $accountRouter.navPath) {
+            NavigationStack(path: $appRouter.navPath) {
                 ProfileView()
-                    .navigationDestination(for: AccountRouter.Destination.self) { destination in
+                    .navigationDestination(for: AppDestination.self) { destination in
                         switch destination {
                         case .orders:
                             Text("Orders View")
@@ -24,16 +23,17 @@ struct ProfileTabView: View {
                             Text("Payment Methods View")
                         case .settings:
                             SettingsView()
+                        default:
+                            Text("Ошибка роутинга 🙀")
                         }
                     }
             }
-            .environmentObject(accountRouter)
             .environmentObject(profileViewModel)
             
         case .unAuth:
-            NavigationStack(path: $registerRouter.navPath) {
+            NavigationStack(path: $appRouter.navPath) {
                 RegisterView()
-                    .navigationDestination(for: RegisterRouter.Destination.self) { destination in
+                    .navigationDestination(for: AppDestination.self) { destination in
                         switch destination {
                         case .signIn:
                             LoginView()
@@ -41,10 +41,11 @@ struct ProfileTabView: View {
                             ForgotPasswordView()
                         case .recoveryRequested:
                             RecoveryPasswordRequestedView()
+                        default:
+                            Text("Ошибка роутинга 🙀")
                         }
                     }
             }
-            .environmentObject(registerRouter)
             .environmentObject(profileViewModel)
         }
     }
@@ -54,5 +55,6 @@ struct ProfileTabView: View {
 struct AccountView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileView()
+            .environmentObject(AppRouter())
     }
 }

@@ -28,7 +28,7 @@ struct ForgotPasswordView: View {
     // MARK: - State
     
     @EnvironmentObject var viewModel: ProfileViewModel
-    @EnvironmentObject var router: RegisterRouter
+    @EnvironmentObject var appRouter: AppRouter
     
     // MARK: - Body
     
@@ -53,7 +53,7 @@ struct ForgotPasswordView: View {
                 Button {
                     // TODO: Network
                     viewModel.sendPasswordReset {
-                        self.router.navigate(to: .recoveryRequested)
+                        self.appRouter.navigate(to: .recoveryRequested)
                     }
                 } label: {
                     PrimaryButton(
@@ -71,7 +71,7 @@ struct ForgotPasswordView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
-                        router.navigateBack()
+                        appRouter.navigateBack()
                     } label: {
                         Label("Back", systemImage: "arrow.left")
                     }

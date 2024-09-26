@@ -5,7 +5,7 @@ struct CatalogView: View {
     // MARK: - State
     
     @EnvironmentObject var viewModel: CatalogViewModel
-    @EnvironmentObject var router: CatalogRouter
+    @EnvironmentObject var appRouter: AppRouter
     
     var body: some View {
         VStack {
@@ -14,7 +14,7 @@ struct CatalogView: View {
             } else {
                 List(viewModel.categoryList) { category in
                     Button {
-                        router.navigate(to: .list(category: category))
+                        appRouter.navigate(to: .list(category: category))
                     } label: {
                         CategoryView(category: category)
                     }
@@ -38,4 +38,6 @@ struct CatalogView: View {
 
 #Preview {
     CatalogView()
+        .environmentObject(CatalogViewModel())
+        .environmentObject(AppRouter())
 }

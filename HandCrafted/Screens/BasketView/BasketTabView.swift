@@ -2,24 +2,26 @@ import SwiftUI
 
 struct BasketTabView: View {
     
-    @ObservedObject var viewModel = BasketViewModel()
-    @ObservedObject var router = BasketRouter()
+    @StateObject var viewModel = BasketViewModel()
+    @EnvironmentObject var appRouter: AppRouter
     
     var body: some View {
         NavigationView {
             BasketView()
-                .navigationDestination(for: BasketRouter.Destination.self) { destination in
+                .navigationDestination(for: AppDestination.self) { destination in
                     switch destination {
                     case .detail(let product):
                         ProductDetailView(product: product)
+                    default:
+                        Text("Ошибка роутинга 🙀")
                     }
                 }
         }
         .environmentObject(viewModel)
-        .environmentObject(router)
     }
 }
 
 #Preview {
     BasketTabView()
+        .environmentObject(AppRouter())
 }

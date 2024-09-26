@@ -3,7 +3,7 @@ import SwiftUI
 struct BasketView: View {
     
     @EnvironmentObject var viewModel: BasketViewModel
-    @EnvironmentObject var router: BasketRouter
+    @EnvironmentObject var appRouter: AppRouter
     
     var body: some View {
         VStack {
@@ -12,7 +12,7 @@ struct BasketView: View {
             } else {
                 List(viewModel.productList) { product in
                     Button {
-                        router.navigate(to: .detail(product: product))
+                        appRouter.navigate(to: .detail(product: product))
                     } label: {
                         Text(product.name)
                     }
@@ -33,4 +33,6 @@ struct BasketView: View {
 
 #Preview {
     BasketView()
+        .environmentObject(BasketViewModel())
+        .environmentObject(AppRouter())
 }

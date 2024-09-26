@@ -22,7 +22,7 @@ struct RegisterView: View {
     // MARK: - State
     
     @EnvironmentObject var viewModel: ProfileViewModel
-    @EnvironmentObject var router: RegisterRouter
+    @EnvironmentObject var appRouter: AppRouter
     
     // MARK: - Body
     
@@ -48,7 +48,7 @@ struct RegisterView: View {
                 
                 VStack(spacing: 16)  {
                     Button {
-                        router.navigate(to: .signIn)
+                        appRouter.navigate(to: .signIn)
                     } label: {
                         HStack {
                             Spacer()
