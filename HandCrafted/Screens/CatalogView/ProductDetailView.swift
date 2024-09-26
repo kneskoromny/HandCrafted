@@ -54,30 +54,44 @@ struct ProductDetailView: View {
                         }
                         VStack(spacing: 32) {
                             HStack(spacing: 16) {
-                                Button {
-                                    catalogViewModel.sheetSelectType = .size
-                                    catalogViewModel.isSheetPresented = true
-                                } label: {
-                                    SelectableButton(
-                                        title: product.selectedSize?.name,
-                                        font: Constant.AppFont.secondary,
-                                        height: 44,
-                                        isSelectable: product.sizes.count > 1
-                                    )
+                                VStack(spacing: 8) {
+                                    HStack {
+                                        Text("Размер")
+                                        Spacer()
+                                    }
+                                    Button {
+                                        catalogViewModel.sheetSelectType = .size
+                                        catalogViewModel.isSheetPresented = true
+                                    } label: {
+                                        SelectableButton(
+                                            title: catalogViewModel.selectedProduct == nil ? "Выберите" : catalogViewModel.selectedProduct?.selectedSize?.name,
+                                            font: Constant.AppFont.secondary,
+                                            color: catalogViewModel.selectedProduct == nil ? .secondary : .primary,
+                                            height: 44,
+                                            isSelectable: true
+                                        )
+                                    }
+                                    .disabled(product.sizes.count < 2)
                                 }
-                                .disabled(product.sizes.count < 2)
-                                Button {
-                                    catalogViewModel.sheetSelectType = .color
-                                    catalogViewModel.isSheetPresented = true
-                                } label: {
-                                    SelectableButton(
-                                        title: product.color.name,
-                                        font: Constant.AppFont.secondary,
-                                        height: 44,
-                                        isSelectable: product.color.list.count > 1
-                                    )
+                                VStack(spacing: 8) {
+                                    HStack {
+                                        Text("Цвет")
+                                        Spacer()
+                                    }
+                                    Button {
+                                        catalogViewModel.sheetSelectType = .color
+                                        catalogViewModel.isSheetPresented = true
+                                    } label: {
+                                        SelectableButton(
+                                            title: product.color.name,
+                                            font: Constant.AppFont.secondary,
+                                            color: .primary,
+                                            height: 44,
+                                            isSelectable: product.color.list.count > 1
+                                        )
+                                    }
+                                    .disabled(product.color.list.count < 2)
                                 }
-                                .disabled(product.color.list.count < 2)
                             }
                             HStack {
                                 VStack(spacing: 8) {
@@ -100,21 +114,29 @@ struct ProductDetailView: View {
                                 VStack {
                                     HStack {
                                         Spacer()
-                                        if let salePrice = product.price.sale {
-                                            Text(String(product.price.standard))
-                                                .strikethrough()
-                                                .font(Constant.AppFont.primary)
-                                                .foregroundStyle(.black)
-                                            Text("\(salePrice) ₽")
-                                                .font(Constant.AppFont.primary)
-                                                .fontWeight(.bold)
-                                                .foregroundStyle(.red)
+                                        if let selectedProduct = catalogViewModel.selectedProduct {
+                                            if selectedProduct.selectedSize?.isInSale == true,
+                                               let salePrice = product.price.sale {
+                                                Text(String(product.price.standard))
+                                                    .strikethrough()
+                                                    .font(Constant.AppFont.primary)
+                                                    .foregroundStyle(.black)
+                                                Text("\(salePrice) ₽")
+                                                    .font(Constant.AppFont.primary)
+                                                    .fontWeight(.bold)
+                                                    .foregroundStyle(.red)
+                                            } else {
+                                                Text("\(product.price.standard) ₽")
+                                                    .font(Constant.AppFont.primary)
+                                                    .fontWeight(.bold)
+                                                    .foregroundStyle(.black)
+                                                
+                                            }
                                         } else {
-                                            Text("\(product.price.standard) ₽")
+                                            Text("")
                                                 .font(Constant.AppFont.primary)
                                                 .fontWeight(.bold)
                                                 .foregroundStyle(.black)
-                                            
                                         }
                                     }
                                     Spacer()
@@ -129,12 +151,24 @@ struct ProductDetailView: View {
                                     Spacer()
                                 }
                                 HStack {
-                                    let text = product.selectedSize?.isInStock == true
-                                    ? "В наличии"
-                                    : "Нет в наличии"
-                                    let color: Color = product.selectedSize?.isInStock == true
-                                    ? .green
-                                    : .red
+                                    var text: String = {
+                                        if let selectedProduct = catalogViewModel.selectedProduct {
+                                            return selectedProduct.selectedSize?.isInStock == true
+                                            ? "В наличии"
+                                            : "Нет в наличии"
+                                        } else {
+                                            return "Не выбран размер"
+                                        }
+                                    }()
+                                    var color: Color = {
+                                        if let selectedProduct = catalogViewModel.selectedProduct {
+                                            return selectedProduct.selectedSize?.isInStock == true
+                                            ? .green
+                                            : .red
+                                        } else {
+                                            return .secondary
+                                        }
+                                    }()
                                     Text(text)
                                         .font(Constant.AppFont.secondary)
                                         .foregroundStyle(color)
@@ -143,9 +177,15 @@ struct ProductDetailView: View {
                                     Spacer()
                                 }
                                 HStack {
-                                    let text = product.selectedSize?.isInStock == true
-                                    ? "Этот товар есть в наличии и мы сможем отправить его сразу после оплаты."
-                                    : "К сожалению, этого товара нет в наличии, но мы с удовольствием сошьем его для Вас после внесения оплаты."
+                                    var text: String = {
+                                        if let selectedProduct = catalogViewModel.selectedProduct {
+                                            return selectedProduct.selectedSize?.isInStock == true
+                                            ? "Этот товар есть в наличии и мы сможем отправить его сразу после оплаты."
+                                            : "К сожалению, этого товара нет в наличии, но мы с удовольствием сошьем его для Вас после внесения оплаты."
+                                        } else {
+                                            return "Выберите размер и мы покажем информацию о наличии и цене"
+                                        }
+                                    }()
                                     Text(text)
                                         .font(Constant.AppFont.secondary)
                                         .foregroundStyle(.black)
@@ -154,14 +194,16 @@ struct ProductDetailView: View {
                                 }
                             }
                             Button {
+                                // TODO: продолжить с алерта здесь
                                 print(#function, "mytest - add to order: \(product.name)")
+                                catalogViewModel.isAlertPresented = true
+                                
                             } label: {
                                 PrimaryButton(
                                     title: "Добавить в корзину",
                                     foregroundColor: .white,
                                     backgroundColor: .red
                                 )
-                                
                             }
                             HStack {
                                 let text = product.selectedSize?.isInStock == true
@@ -248,8 +290,27 @@ struct ProductDetailView: View {
                 .presentationDetents([.height(250)])
                 .presentationDragIndicator(.visible)
             })
+        .alert(
+            catalogViewModel.alertTitle,
+            isPresented: $catalogViewModel.isAlertPresented) {
+                if catalogViewModel.selectedProduct != nil {
+                    Button("В Корзину", role: .cancel) {
+                        print(#function, "mytest - to basket tap")
+                    }
+                    Button("Продолжить") {
+//                        catalogViewModel.isAlertPresented = false
+                    }
+                } else {
+                    Button("OK") {
+//                        catalogViewModel.isAlertPresented = false
+                    }
+                }
+            }
+    message: {
+        Text(catalogViewModel.alertMessage)
     }
-    
+}
+
 }
 
 #Preview {

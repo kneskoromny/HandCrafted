@@ -4,6 +4,7 @@ struct SelectableButton: View {
     
     var title: String?
     var font: Font
+    var color: Color
     var height: CGFloat = 24
     var isSelectable: Bool
     
@@ -12,7 +13,7 @@ struct SelectableButton: View {
             Text(title ?? "")
                 .frame(minWidth: 0, maxWidth: .infinity, minHeight: height)
                 .background(Color(uiColor: .systemBackground))
-                .foregroundColor(isSelectable ? .primary : .secondary)
+                .foregroundColor(color)
                 .font(font)
                 .fontWeight(.semibold)
                 .padding(.leading)
@@ -25,7 +26,7 @@ struct SelectableButton: View {
         .overlay {
             RoundedRectangle(cornerRadius: 8)
                 .strokeBorder()
-                .tint(isSelectable ? .primary : .secondary)
+                .tint(color)
         }
             
     }
@@ -35,6 +36,7 @@ struct SelectableButton: View {
     SelectableButton(
         title: "Selectable Button",
         font: .body,
+        color: .secondary,
         height: 44,
         isSelectable: true
     )

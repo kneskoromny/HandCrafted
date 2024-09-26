@@ -14,6 +14,14 @@ final class CatalogViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var isSheetPresented = false
     
+    @Published var isAlertPresented = false
+    var alertTitle: String {
+        return selectedProduct == nil ? "Выберите размер" : "Отличный выбор 🙏"
+    }
+    var alertMessage: String {
+        return selectedProduct == nil ? "" : "Продолжить покупки?"
+    }
+    
     @Published var selectedSize: String = "M"
     @Published var selectedColor: String = "Белый"
     
