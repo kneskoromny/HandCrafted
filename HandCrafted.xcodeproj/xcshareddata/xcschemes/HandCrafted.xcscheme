@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F7EEE89D2C1F05260045C760"
-               BuildableName = "HandCrafted.app"
+               BuildableName = "&#x425;&#x432;&#x43e;&#x44f;.app"
                BlueprintName = "HandCrafted"
                ReferencedContainer = "container:HandCrafted.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F7EEE89D2C1F05260045C760"
-            BuildableName = "HandCrafted.app"
+            BuildableName = "&#x425;&#x432;&#x43e;&#x44f;.app"
             BlueprintName = "HandCrafted"
             ReferencedContainer = "container:HandCrafted.xcodeproj">
          </BuildableReference>
@@ -68,7 +68,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F7EEE89D2C1F05260045C760"
-            BuildableName = "HandCrafted.app"
+            BuildableName = "&#x425;&#x432;&#x43e;&#x44f;.app"
             BlueprintName = "HandCrafted"
             ReferencedContainer = "container:HandCrafted.xcodeproj">
          </BuildableReference>
