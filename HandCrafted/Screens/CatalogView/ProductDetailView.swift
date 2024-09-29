@@ -2,6 +2,8 @@ import SwiftUI
 
 struct ProductDetailView: View {
     
+    // MARK: - Types
+    
     private enum Const {
         static let viewInsets = EdgeInsets(
             top: 0,
@@ -11,46 +13,37 @@ struct ProductDetailView: View {
         )
     }
     
-    @EnvironmentObject var catalogViewModel: CatalogViewModel
-    @EnvironmentObject var appRouter: AppRouter
+    // MARK: - Observables
+    
+    @EnvironmentObject var catVm: CatalogViewModel
+    @EnvironmentObject var router: AppRouter
+    
+    // MARK: - Internal Properties
     
     var product: Product
-    
     var screenWidth: CGFloat = {
         return UIScreen.main.bounds.width
     }()
     
+    // MARK: - Body
+    
     var body: some View {
         VStack {
-            if catalogViewModel.isLoading {
+            if catVm.isLoading {
                 ProgressView("Минуточку...")
             } else {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 24) {
                         if let imageUrls = product.imageUrls {
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                LazyHStack(spacing: 0) {
-                                    ForEach(imageUrls.indices, id: \.self) { index in
-                                        if let url = URL(string: imageUrls[index]) {
-                                            AsyncImage(url: url,
-                                                       content: { image in
-                                                image
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                            },
-                                                       placeholder: {
-                                                ProgressView()
-                                            })
-                                            .frame(width: screenWidth - 16, height: screenWidth * 1.15)
-                                            .clipped()
-                                        } else {
-                                            NoImageView(width: screenWidth - 16, height: screenWidth * 1.15)
-                                        }
-                                    }
-                                }
-                            }
+                            ProductImagesScrollView(
+                                strUrls: imageUrls,
+                                screenWidth: screenWidth
+                            )
                         } else {
-                            NoImageView(width: screenWidth - 16, height: screenWidth * 1.15)
+                            NoImageView(
+                                width: screenWidth - 16,
+                                height: screenWidth * 1.15
+                            )
                         }
                         VStack(spacing: 32) {
                             HStack(spacing: 16) {
@@ -60,15 +53,13 @@ struct ProductDetailView: View {
                                         Spacer()
                                     }
                                     Button {
-                                        catalogViewModel.sheetSelectType = .size
-                                        catalogViewModel.isSheetPresented = true
+                                        catVm.selectButtonTapped(type: .size)
                                     } label: {
                                         SelectableButton(
-                                            title: catalogViewModel.selectedProduct == nil ? "Выберите" : catalogViewModel.selectedProduct?.selectedSize?.name,
+                                            title: catVm.sizeSelectButtonTitle,
                                             font: Constant.AppFont.secondary,
-                                            color: catalogViewModel.selectedProduct == nil ? .secondary : .primary,
                                             height: 44,
-                                            isSelectable: true
+                                            disabled: product.sizes.count < 2
                                         )
                                     }
                                     .disabled(product.sizes.count < 2)
@@ -79,15 +70,13 @@ struct ProductDetailView: View {
                                         Spacer()
                                     }
                                     Button {
-                                        catalogViewModel.sheetSelectType = .color
-                                        catalogViewModel.isSheetPresented = true
+                                        catVm.selectButtonTapped(type: .color)
                                     } label: {
                                         SelectableButton(
                                             title: product.color.name,
                                             font: Constant.AppFont.secondary,
-                                            color: .primary,
                                             height: 44,
-                                            isSelectable: product.color.list.count > 1
+                                            disabled: product.color.list.count < 2
                                         )
                                     }
                                     .disabled(product.color.list.count < 2)
@@ -99,14 +88,14 @@ struct ProductDetailView: View {
                                         Text(product.name)
                                             .font(Constant.AppFont.primary)
                                             .fontWeight(.semibold)
-                                            .foregroundStyle(.black)
+                                            .foregroundStyle(.primary)
                                         Spacer()
                                         
                                     }
                                     HStack {
                                         Text(product.composition)
                                             .font(Constant.AppFont.secondary)
-                                            .foregroundStyle(.gray)
+                                            .foregroundStyle(.secondary)
                                         Spacer()
                                     }
                                 }
@@ -114,30 +103,7 @@ struct ProductDetailView: View {
                                 VStack {
                                     HStack {
                                         Spacer()
-                                        if let selectedProduct = catalogViewModel.selectedProduct {
-                                            if selectedProduct.selectedSize?.isInSale == true,
-                                               let salePrice = product.price.sale {
-                                                Text(String(product.price.standard))
-                                                    .strikethrough()
-                                                    .font(Constant.AppFont.primary)
-                                                    .foregroundStyle(.black)
-                                                Text("\(salePrice) ₽")
-                                                    .font(Constant.AppFont.primary)
-                                                    .fontWeight(.bold)
-                                                    .foregroundStyle(.red)
-                                            } else {
-                                                Text("\(product.price.standard) ₽")
-                                                    .font(Constant.AppFont.primary)
-                                                    .fontWeight(.bold)
-                                                    .foregroundStyle(.black)
-                                                
-                                            }
-                                        } else {
-                                            Text("")
-                                                .font(Constant.AppFont.primary)
-                                                .fontWeight(.bold)
-                                                .foregroundStyle(.black)
-                                        }
+                                        PriceView(product: catVm.selectedProduct)
                                     }
                                     Spacer()
                                 }
@@ -146,84 +112,43 @@ struct ProductDetailView: View {
                                 HStack {
                                     Text(product.description)
                                         .font(Constant.AppFont.secondary)
-                                        .foregroundStyle(.black)
+                                        .foregroundStyle(.primary)
                                         .multilineTextAlignment(.leading)
                                     Spacer()
                                 }
                                 HStack {
-                                    let text: String = {
-                                        if let selectedProduct = catalogViewModel.selectedProduct {
-                                            return selectedProduct.selectedSize?.isInStock == true
-                                            ? "В наличии"
-                                            : "Нет в наличии"
-                                        } else {
-                                            return "Не выбран размер"
-                                        }
-                                    }()
-                                    let color: Color = {
-                                        if let selectedProduct = catalogViewModel.selectedProduct {
-                                            return selectedProduct.selectedSize?.isInStock == true
-                                            ? .green
-                                            : .red
-                                        } else {
-                                            return .secondary
-                                        }
-                                    }()
-                                    Text(text)
+                                    Text(catVm.availabilityLabelText)
                                         .font(Constant.AppFont.secondary)
-                                        .foregroundStyle(color)
+                                        .foregroundStyle(catVm.availabilityLabelColor)
                                         .fontWeight(.semibold)
                                         .multilineTextAlignment(.leading)
                                     Spacer()
                                 }
                                 HStack {
-                                    let text: String = {
-                                        if let selectedProduct = catalogViewModel.selectedProduct {
-                                            return selectedProduct.selectedSize?.isInStock == true
-                                            ? "Этот товар есть в наличии и мы сможем отправить его сразу после оплаты."
-                                            : "К сожалению, этого товара нет в наличии, но мы с удовольствием сошьем его для Вас после внесения оплаты."
-                                        } else {
-                                            return "Выберите размер и мы покажем информацию о наличии и цене"
-                                        }
-                                    }()
-                                    Text(text)
+                                    Text(catVm.availabilityInfoText)
                                         .font(Constant.AppFont.secondary)
-                                        .foregroundStyle(.black)
+                                        .foregroundStyle(.primary)
                                         .multilineTextAlignment(.leading)
                                     Spacer()
                                 }
                             }
                             Button {
-                                catalogViewModel.isAlertPresented = true
+                                catVm.addToCartButtonTapped()
                             } label: {
                                 PrimaryButton(
                                     title: "Добавить в корзину",
-                                    foregroundColor: .white,
-                                    backgroundColor: .red
+                                    foregroundColor: .white, // color
+                                    backgroundColor: .red // color
                                 )
                             }
                             HStack {
-                                let text = product.selectedSize?.isInStock == true
-                                ? "Вам также может понравиться"
-                                : "Похожие товары в наличии"
-                                Text(text)
+                                Text(catVm.similarProductsTitle)
                                     .font(Constant.AppFont.primary)
                                     .fontWeight(.semibold)
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(.primary)
                                 Spacer()
                             }
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                LazyHStack(spacing: 10) {
-                                    ForEach(catalogViewModel.filteredProductList) { product in
-                                        Button {
-                                            appRouter.navigate(to: .detail(product: product))
-                                        } label: {
-                                            ProductView(product: product)
-                                        }
-                                    }
-                                }
-                            }
-                            
+                            SimilarProductsScrollView()
                         }
                         .padding(Const.viewInsets)
                     }
@@ -234,7 +159,9 @@ struct ProductDetailView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    appRouter.navigateBack()
+                    catVm.removeSelectedProduct()
+                    catVm.clearFilteredProductList()
+                    router.navigateBack()
                 } label: {
                     Label("Back", systemImage: "arrow.left")
                 }
@@ -242,44 +169,52 @@ struct ProductDetailView: View {
             }
         }
         .onAppear {
+            if product.sizes.count < 2 {
+                catVm.selectedProduct = product
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 if product.selectedSize?.isInStock == true {
-                    catalogViewModel.fetchProductList(
+                    catVm.filterProductList(
                         categoryName: product.categoryName,
                         exclude: product.name
                     )
                 } else {
-                    catalogViewModel.fetchProductList(
+                    catVm.filterProductList(
                         categoryName: product.categoryName,
                         isInStock: true
                     )
                 }
             }
         }
+        .onTapGesture {
+            print(#function, "mytest - tap gesture")
+        }
         .sheet(
-            isPresented: $catalogViewModel.isSheetPresented,
+            isPresented: $catVm.isSheetPresented,
             content: {
-                let values = catalogViewModel.sheetSelectType == .size
+                let values = catVm.sheetSelectType == .size
                 ? product.sizes.first?.list
                 : product.color.list
                 ProductSheetView(
-                    isPresented: $catalogViewModel.isSheetPresented,
-                    type: catalogViewModel.sheetSelectType,
+                    isPresented: $catVm.isSheetPresented,
+                    type: catVm.sheetSelectType,
                     values: values ?? [],
                     onDismiss: {
                         newValue in
-                        switch catalogViewModel.sheetSelectType {
+                        switch catVm.sheetSelectType {
                         case .color:
-                            if let product = catalogViewModel.getProduct(
+                            if let product = catVm.getProduct(
                                 name: product.name,
                                 colorName: newValue
                             ) {
-                                appRouter.navigate(to: .detail(product: product))
+                                catVm.removeSelectedProduct()
+                                catVm.clearFilteredProductList()
+                                router.navigate(to: .detail(product: product))
                             }
                         case .size:
                             if let size = product.sizes.first(where: { $0.name == newValue }) {
-                                catalogViewModel.selectedProduct = product
-                                catalogViewModel.selectedProduct?.selectedSize = size
+                                catVm.selectedProduct = product
+                                catVm.selectedProduct?.selectedSize = size
                             }
                         }
                     }
@@ -288,19 +223,19 @@ struct ProductDetailView: View {
                 .presentationDragIndicator(.visible)
             })
         .alert(
-            catalogViewModel.alertTitle,
-            isPresented: $catalogViewModel.isAlertPresented) {
-                if catalogViewModel.selectedProduct != nil {
+            catVm.alertTitle,
+            isPresented: $catVm.isAlertPresented) {
+                if catVm.selectedProduct != nil {
                     Button("В Корзину", role: .cancel) {
-                        appRouter.selectedTab = AppRouter.Tab.cart
+                        router.selectedTab = AppRouter.Tab.cart
                     }
-                    Text("Продолжить")
+                    Button("Продолжить") {}
                 } else {
-                    Text("OK")
+                    Button("OK") {}
                 }
             }
     message: {
-        Text(catalogViewModel.alertMessage)
+        Text(catVm.alertMessage)
     }
 }
 
@@ -310,4 +245,95 @@ struct ProductDetailView: View {
     ProductDetailView(product: MockData.mockProduct)
         .environmentObject(CatalogViewModel())
         .environmentObject(AppRouter())
+}
+
+// MARK: - ProductImagesScrollView
+
+struct ProductImagesScrollView: View {
+    
+    var strUrls: [String]
+    var screenWidth: CGFloat
+    
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 0) {
+                ForEach(strUrls.indices, id: \.self) { index in
+                    if let url = URL(string: strUrls[index]) {
+                        AsyncImage(url: url,
+                                   content: { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        },
+                                   placeholder: {
+                            ProgressView()
+                        })
+                        .frame(width: screenWidth - 16, height: screenWidth * 1.15)
+                        .clipped()
+                    } else {
+                        NoImageView(
+                            width: screenWidth - 16,
+                            height: screenWidth * 1.15
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+// MARK: - SimilarProductsScrollView
+
+struct SimilarProductsScrollView: View {
+    
+    @EnvironmentObject var catVm: CatalogViewModel
+    @EnvironmentObject var router: AppRouter
+    
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 10) {
+                ForEach(catVm.filteredProductList) { product in
+                    Button {
+                        catVm.removeSelectedProduct()
+                        catVm.clearFilteredProductList()
+                        router.navigate(to: .detail(product: product))
+                    } label: {
+                        ProductView(product: product)
+                    }
+                }
+            }
+        }
+    }
+    
+}
+
+// MARK: - PriceView
+
+struct PriceView: View {
+    
+    var product: Product?
+    
+    var body: some View {
+        if let product {
+            if product.selectedSize?.isInSale == true,
+               let salePrice = product.price.sale {
+                Text(String(product.price.standard))
+                    .strikethrough()
+                    .font(Constant.AppFont.primary)
+                    .foregroundStyle(.black)
+                Text("\(salePrice) ₽")
+                    .font(Constant.AppFont.primary)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.red)
+            } else {
+                Text("\(product.price.standard) ₽")
+                    .font(Constant.AppFont.primary)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.black)
+                
+            }
+        } else {
+            Text("")
+        }
+    }
 }

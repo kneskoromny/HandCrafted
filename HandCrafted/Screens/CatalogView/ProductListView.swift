@@ -54,7 +54,7 @@ struct ProductListView: View {
             }
         }
         .onAppear {
-            viewModel.fetchProductList(categoryName: category.name)
+            viewModel.filterProductList(categoryName: category.name)
         }
     }
 }
