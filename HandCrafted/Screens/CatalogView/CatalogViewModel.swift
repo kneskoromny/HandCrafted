@@ -2,9 +2,13 @@ import SwiftUI
 
 final class CatalogViewModel: ObservableObject {
     
+    // MARK: - Types
+    
     enum SheetSelectType {
         case size, color
     }
+    
+    // MARK: - Observable
     
     @Published var categoryList: [Category] = []
     @Published var productList: [Product] = []
@@ -12,9 +16,38 @@ final class CatalogViewModel: ObservableObject {
     @Published var selectedProduct: Product?
     
     @Published var isLoading = false
-    @Published var isSheetPresented = false
-    
+    @Published var isSheetPresented = false {
+        // FIXME: сворачивается шит при открытии новой карточки из похожих и тапе на размер/цвет
+        didSet {
+            print(#function, "mytest - is presented: \(isSheetPresented)")
+        }
+    }
     @Published var isAlertPresented = false
+    
+    // MARK: - Internal Properties
+    
+    var sheetSelectType: SheetSelectType = .size
+    
+    // MARK: - Private Propertied
+    
+    private let dbManager = DatabaseManager()
+    
+    // MARK: - Private Methods
+    
+    private func fetchProductList() async throws -> [Product] {
+        return try await dbManager.getProductList()
+    }
+    
+    private func fetchCategoryList() async throws -> [Category] {
+        return try await dbManager.getCategoryList()
+    }
+    
+}
+
+// MARK: - Computed Properties
+
+extension CatalogViewModel {
+    
     var alertTitle: String {
         return selectedProduct == nil ? "Выберите размер" : "Отличный выбор 🙏"
     }
@@ -22,14 +55,61 @@ final class CatalogViewModel: ObservableObject {
         return selectedProduct == nil ? "" : "Продолжить покупки?"
     }
     
-    @Published var selectedSize: String = "M"
-    @Published var selectedColor: String = "Белый"
+    var sizeSelectButtonTitle: String? {
+        if selectedProduct == nil {
+            return "Выберите"
+        } else {
+            return selectedProduct?.selectedSize?.name
+        }
+    }
     
-    var sheetSelectType: SheetSelectType = .size
+    var sizeSelectButtonColor: Color {
+        return selectedProduct == nil ? .secondary : .primary
+    }
     
-    private let dbManager = DatabaseManager()
+    var availabilityLabelText: String {
+        if let selectedProduct {
+            return selectedProduct.selectedSize?.isInStock == true
+            ? "В наличии"
+            : "Нет в наличии"
+        } else {
+            return "Не выбран размер"
+        }
+    }
+    var availabilityLabelColor: Color {
+        if let selectedProduct {
+            return selectedProduct.selectedSize?.isInStock == true
+            ? .green
+            : .red
+        } else {
+            return .secondary
+        }
+    }
     
-    // MARK: - Public Methods
+    var availabilityInfoText: String {
+        if let selectedProduct {
+            return selectedProduct.selectedSize?.isInStock == true
+            ? "Этот товар есть в наличии и мы сможем отправить его сразу после оплаты."
+            : "К сожалению, этого товара нет в наличии, но мы с удовольствием сошьем его для Вас после внесения оплаты."
+        } else {
+            return "Выберите размер и мы покажем информацию о наличии и цене"
+        }
+    }
+    
+    var similarProductsTitle: String {
+        if let selectedProduct,
+           selectedProduct.selectedSize?.isInStock == true {
+            return "Вам также может понравиться"
+        } else {
+            return "Похожие товары в наличии"
+        }
+    }
+    
+}
+
+// MARK: - Network Methods
+
+extension CatalogViewModel {
     
     func fetchData() {
         guard categoryList.isEmpty else { return }
@@ -49,30 +129,43 @@ final class CatalogViewModel: ObservableObject {
         }
     }
     
-    func fetchProductList(categoryName: String) {
+}
+
+// MARK: - Filter Methods
+
+extension CatalogViewModel {
+    
+    func filterProductList(categoryName: String) {
         guard !productList.isEmpty else {
             print(#function, "mytest - error: no loaded product list")
             return
         }
-        filteredProductList = productList.filter { $0.categoryName == categoryName }.sorted(by: { $0.name < $1.name })
+        filteredProductList = productList
+            .filter { $0.categoryName == categoryName }
+            .sorted(by: { $0.name < $1.name })
     }
     
-    func fetchProductList(categoryName: String, exclude productName: String) {
+    func filterProductList(categoryName: String, exclude productName: String) {
         guard !productList.isEmpty else {
             print(#function, "mytest - error: no loaded product list")
             return
         }
-        filteredProductList = productList.filter { $0.categoryName == categoryName && $0.name != productName }
+        filteredProductList = productList
+            .filter { $0.categoryName == categoryName && $0.name != productName }
     }
     
-    func fetchProductList(categoryName: String, isInStock: Bool) {
+    func filterProductList(categoryName: String, isInStock: Bool) {
         guard !productList.isEmpty else {
             print(#function, "mytest - error: no loaded product list")
             return
         }
-        filteredProductList = productList.filter { $0.categoryName == categoryName }
-        // TODO: разобраться здесь
-//        filteredProductList = productList.filter { $0.categoryName == categoryName && $0.isInStock == isInStock }
+        productList.forEach({ product in
+            if product.categoryName == categoryName {
+                if let isInStock = product.sizes.first(where: { $0.isInStock == true }) {
+                    filteredProductList.append(product)
+                }
+            }
+        })
     }
     
     func getProduct(name: String, colorName: String) -> Product? {
@@ -81,25 +174,27 @@ final class CatalogViewModel: ObservableObject {
         }
     }
     
-//    func updateSelectedProduct(with value: String) {
-//        switch sheetSelectType {
-//        case .size:
-//            let selectedSize = selectedProduct?.sizes.first(where: { $0.name == value })
-//            selectedProduct?.selectedSize = selectedSize
-//        case .color:
-//            selectedProduct = productList
-//                .first(where: { $0.name == selectedProduct?.name && $0.color.name == value })
-//        }
-//    }
+}
+
+// MARK: - User Interaction Methods
+
+extension CatalogViewModel {
     
-    // MARK: - Private Methods
-    
-    private func fetchProductList() async throws -> [Product] {
-        return try await dbManager.getProductList()
+    func selectButtonTapped(type: SheetSelectType) {
+        sheetSelectType = type
+        isSheetPresented = true
     }
     
-    private func fetchCategoryList() async throws -> [Category] {
-        return try await dbManager.getCategoryList()
+    func addToCartButtonTapped() {
+        isAlertPresented = true
+    }
+    
+    func removeSelectedProduct() {
+        selectedProduct = nil
+    }
+    
+    func clearFilteredProductList() {
+        filteredProductList = []
     }
     
 }

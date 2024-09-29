@@ -4,9 +4,12 @@ struct SelectableButton: View {
     
     var title: String?
     var font: Font
-    var color: Color
     var height: CGFloat = 24
-    var isSelectable: Bool
+    var disabled: Bool
+    
+    private var color: Color {
+        return disabled ? .secondary : .primary
+    }
     
     var body: some View {
         HStack {
@@ -18,7 +21,7 @@ struct SelectableButton: View {
                 .fontWeight(.semibold)
                 .padding(.leading)
             Spacer()
-            if isSelectable {
+            if !disabled {
                 Image(uiImage: UIImage(named: "arrowDown")!)
                     .frame(width: height, height: height)
             }
@@ -36,8 +39,7 @@ struct SelectableButton: View {
     SelectableButton(
         title: "Selectable Button",
         font: .body,
-        color: .secondary,
         height: 44,
-        isSelectable: true
+        disabled: false
     )
 }
