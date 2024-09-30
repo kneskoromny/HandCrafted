@@ -3,6 +3,7 @@ import SwiftUI
 struct TabsView: View {
     
     @ObservedObject private var appRouter = AppRouter()
+    @StateObject private var basVm = BasketViewModel()
     
     var body: some View {
         TabView(selection: $appRouter.selectedTab) {
@@ -22,6 +23,7 @@ struct TabsView: View {
                     )
                 }
                 .tag(AppRouter.Tab.cart)
+                .badge(basVm.productList.count)
             ProfileTabView()
                 .tabItem {
                     Label(
@@ -37,6 +39,7 @@ struct TabsView: View {
             }
         }
         .environmentObject(appRouter)
+        .environmentObject(basVm)
         
     }
 }

@@ -2,21 +2,24 @@ import SwiftUI
 
 struct BasketView: View {
     
-    @EnvironmentObject var viewModel: BasketViewModel
+    @EnvironmentObject var basVm: BasketViewModel
     @EnvironmentObject var appRouter: AppRouter
     
     var body: some View {
         VStack {
-            if viewModel.isLoading {
+            if basVm.isLoading {
                 ProgressView("Минуточку...")
             } else {
-                List(viewModel.productList) { product in
+                List(basVm.productList) { product in
                     Button {
                         appRouter.navigate(to: .detail(product: product))
                     } label: {
-                        Text(product.name)
+                        BasketProductView(
+                            product: product,
+                            height: 125
+                        )
                     }
-                    .tint(Color.black)
+                    .tint(.primary)
                     .listRowInsets(EdgeInsets())
                 }
                 .scrollIndicators(.hidden)
@@ -26,7 +29,7 @@ struct BasketView: View {
                 
             }
         }
-        .navigationTitle("Моя корзина")
+        .navigationTitle("Корзина")
         .navigationBarBackButtonHidden()
     }
 }

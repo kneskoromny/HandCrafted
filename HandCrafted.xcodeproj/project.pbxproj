@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F70B64C82CAB36B100C5E483 /* UrlImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70B64C72CAB36B100C5E483 /* UrlImageView.swift */; };
+		F70B64CA2CAB376D00C5E483 /* BasketProductView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70B64C92CAB376D00C5E483 /* BasketProductView.swift */; };
 		F70FC9152C6A581100A6106E /* ArrowRightButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70FC9142C6A581100A6106E /* ArrowRightButton.swift */; };
 		F713CD7F2C9437FC00C4F647 /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F713CD7E2C9437FC00C4F647 /* SecondaryButton.swift */; };
 		F737B7F62C77796300BC7E64 /* Binding+toUnwrapped.swift in Sources */ = {isa = PBXBuildFile; fileRef = F737B7F52C77796300BC7E64 /* Binding+toUnwrapped.swift */; };
@@ -65,6 +67,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F70B64C72CAB36B100C5E483 /* UrlImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlImageView.swift; sourceTree = "<group>"; };
+		F70B64C92CAB376D00C5E483 /* BasketProductView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketProductView.swift; sourceTree = "<group>"; };
 		F70FC9142C6A581100A6106E /* ArrowRightButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowRightButton.swift; sourceTree = "<group>"; };
 		F713CD7E2C9437FC00C4F647 /* SecondaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButton.swift; sourceTree = "<group>"; };
 		F737B7F52C77796300BC7E64 /* Binding+toUnwrapped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+toUnwrapped.swift"; sourceTree = "<group>"; };
@@ -134,13 +138,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F70B64CB2CAB378F00C5E483 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F70B64C92CAB376D00C5E483 /* BasketProductView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		F764FCD82C6138A600506AA2 /* CatalogView */ = {
 			isa = PBXGroup;
 			children = (
+				F770AC882C8CA0FF00161E02 /* Views */,
 				F764FCD92C6138E600506AA2 /* CatalogTabView.swift */,
 				F770AC842C8C7EB600161E02 /* CatalogView.swift */,
 				F770AC7E2C8C70FA00161E02 /* CatalogViewModel.swift */,
-				F770AC882C8CA0FF00161E02 /* Views */,
 				F75831112C909AD700736C5F /* ProductListView.swift */,
 				F7C48A832C917B75008D2EAC /* ProductDetailView.swift */,
 			);
@@ -150,6 +162,7 @@
 		F764FCDD2C6139CA00506AA2 /* BasketView */ = {
 			isa = PBXGroup;
 			children = (
+				F70B64CB2CAB378F00C5E483 /* Views */,
 				F764FCDB2C6139C600506AA2 /* BasketTabView.swift */,
 				F779EA752C9C7A230006ECFE /* BasketView.swift */,
 				F779EA712C9C784F0006ECFE /* BasketViewModel.swift */,
@@ -212,6 +225,7 @@
 				F70FC9142C6A581100A6106E /* ArrowRightButton.swift */,
 				F764FCDE2C6170AE00506AA2 /* PrimaryTextField.swift */,
 				F79FDC532C9A132000BCA68A /* NoImageView.swift */,
+				F70B64C72CAB36B100C5E483 /* UrlImageView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -400,6 +414,7 @@
 				F7EAFD042C7E2DE90052088E /* StorageManager.swift in Sources */,
 				F779EA762C9C7A230006ECFE /* BasketView.swift in Sources */,
 				F75831142C90A37300736C5F /* ProductView.swift in Sources */,
+				F70B64CA2CAB376D00C5E483 /* BasketProductView.swift in Sources */,
 				F7B0D2AF2C275AB40017DCD7 /* String+isValidEmail.swift in Sources */,
 				F770AC852C8C7EB600161E02 /* CatalogView.swift in Sources */,
 				F7EEE8A42C1F05260045C760 /* TabsView.swift in Sources */,
@@ -409,6 +424,7 @@
 				F770AC7D2C8C708A00161E02 /* Category.swift in Sources */,
 				F74F26F52C73A1810095DC2E /* SettingsView.swift in Sources */,
 				F7B0D2AD2C275A870017DCD7 /* User.swift in Sources */,
+				F70B64C82CAB36B100C5E483 /* UrlImageView.swift in Sources */,
 				F770AC8A2C8CA19D00161E02 /* MockData.swift in Sources */,
 				F79534792CA5C3CD001E7AE2 /* AppDestination.swift in Sources */,
 				F74F26F32C739F720095DC2E /* Constant.swift in Sources */,

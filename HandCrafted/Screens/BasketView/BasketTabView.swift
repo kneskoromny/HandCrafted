@@ -2,7 +2,7 @@ import SwiftUI
 
 struct BasketTabView: View {
     
-    @StateObject var viewModel = BasketViewModel()
+    @EnvironmentObject var basVm: BasketViewModel
     @EnvironmentObject var appRouter: AppRouter
     
     var body: some View {
@@ -17,11 +17,11 @@ struct BasketTabView: View {
                     }
                 }
         }
-        .environmentObject(viewModel)
     }
 }
 
 #Preview {
     BasketTabView()
         .environmentObject(AppRouter())
+        .environmentObject(BasketViewModel())
 }

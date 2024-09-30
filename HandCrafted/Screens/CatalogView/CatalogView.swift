@@ -4,21 +4,22 @@ struct CatalogView: View {
     
     // MARK: - State
     
-    @EnvironmentObject var viewModel: CatalogViewModel
+    @EnvironmentObject var catVm: CatalogViewModel
+    @EnvironmentObject var basVm: BasketViewModel
     @EnvironmentObject var appRouter: AppRouter
     
     var body: some View {
         VStack {
-            if viewModel.isLoading {
+            if catVm.isLoading {
                 ProgressView("Минуточку...")
             } else {
-                List(viewModel.categoryList) { category in
+                List(catVm.categoryList) { category in
                     Button {
                         appRouter.navigate(to: .list(category: category))
                     } label: {
                         CategoryView(category: category)
                     }
-                    .tint(Color.black)
+                    .tint(.primary)
                     .listRowInsets(EdgeInsets())
                 }
                 .scrollIndicators(.hidden)
@@ -31,7 +32,7 @@ struct CatalogView: View {
         .navigationTitle("Каталог")
         .navigationBarBackButtonHidden()
         .onAppear {
-            viewModel.fetchData()
+            catVm.fetchData()
         }
     }
 }
@@ -39,5 +40,6 @@ struct CatalogView: View {
 #Preview {
     CatalogView()
         .environmentObject(CatalogViewModel())
+        .environmentObject(BasketViewModel())
         .environmentObject(AppRouter())
 }

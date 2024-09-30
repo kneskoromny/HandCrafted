@@ -2,7 +2,9 @@ import SwiftUI
 
 struct CatalogTabView: View {
     
-    @StateObject var catalogViewModel = CatalogViewModel()
+    @StateObject var catVm = CatalogViewModel()
+    
+    @EnvironmentObject var basVm: BasketViewModel
     @EnvironmentObject var appRouter: AppRouter
     
     var body: some View {
@@ -19,11 +21,12 @@ struct CatalogTabView: View {
                     }
                 }
         }
-        .environmentObject(catalogViewModel)
+        .environmentObject(catVm)
     }
 }
 
 #Preview {
     CatalogTabView()
         .environmentObject(AppRouter())
+        .environmentObject(BasketViewModel())
 }
