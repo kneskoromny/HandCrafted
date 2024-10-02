@@ -2,10 +2,14 @@ import SwiftUI
 
 final class BasketViewModel: ObservableObject {
     
-    @Published var orderItems: [OrderItem] = []
+    @Published var orderItems: [OrderItem]
     
     @Published var isLoading = false
     @Published var isAlertPresented = false
+    
+    init(orderItems: [OrderItem]) {
+        self.orderItems = orderItems
+    }
     
     func increaseQuantity(orderItem: OrderItem) {
         guard let orderItem = orderItems
@@ -57,29 +61,6 @@ final class BasketViewModel: ObservableObject {
     
     func removeAllProducts() {
         orderItems.removeAll()
-    }
-    
-}
-
-final class OrderItem: Identifiable, ObservableObject {
-    
-    let product: Product
-    @Published var quantity: Int = 1
-    @Published var totalPrice: Int = 0
-    
-    lazy var onePiecePrice: Int = {
-        if
-            let _ = product.selectedSize?.isInSale,
-            let salePrice = product.price.sale {
-            return salePrice
-        } else {
-            return product.price.standard
-        }
-    }()
-    
-    init(product: Product) {
-        self.product = product
-        self.totalPrice = onePiecePrice
     }
     
 }
