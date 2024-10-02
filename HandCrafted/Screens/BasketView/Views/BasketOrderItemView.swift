@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct BasketProductView: View {
+struct BasketOrderItemView: View {
     
     private enum Const {
         static let viewInsets = EdgeInsets(
@@ -12,21 +12,21 @@ struct BasketProductView: View {
     }
     
     @EnvironmentObject var basVm: BasketViewModel
+    @StateObject var orderItem: OrderItem
     
-    var product: Product
     var height: CGFloat
     
     var body: some View {
         HStack(spacing: 4) {
             UrlImageView(
-                urlString: product.imageUrls?.first,
+                urlString: orderItem.product.imageUrls?.first,
                 width: height / 1.15,
                 height: height
             )
             Spacer()
             VStack(spacing: 8) {
                 HStack {
-                    Text(product.name)
+                    Text(orderItem.product.name)
                         .font(Constant.AppFont.secondary)
                         .foregroundStyle(.primary)
                         .fontWeight(.bold)
@@ -34,7 +34,7 @@ struct BasketProductView: View {
                 }
                 .padding(.top)
                 HStack(spacing: 8) {
-                    if let selectedSize = product.selectedSize?.name {
+                    if let selectedSize = orderItem.product.selectedSize?.name {
                     HStack(spacing: 4) {
                         Text("Размер: ")
                             .font(Constant.AppFont.thirdly)
@@ -48,7 +48,7 @@ struct BasketProductView: View {
                         Text("Цвет: ")
                             .font(Constant.AppFont.thirdly)
                             .foregroundStyle(.secondary)
-                        Text(product.color.name)
+                        Text(orderItem.product.color.name)
                             .font(Constant.AppFont.thirdly)
                             .foregroundStyle(.primary)
                         
@@ -58,23 +58,29 @@ struct BasketProductView: View {
                 Spacer()
                 HStack(spacing: 16) {
                     Button {
-                        
+                        if orderItem.quantity == 1 {
+                            basVm.isAlertPresented = true
+                        } else {
+                            basVm.reduceQuantity(orderItem: orderItem)
+                            basVm.calculatePrice(orderItem: orderItem)
+                        }
                     } label: {
                         QuantitySelectButton(text: "-")
                     }
                     .foregroundStyle(.primary)
-                    Text("1")
+                    Text("\(orderItem.quantity)")
                         .font(Constant.AppFont.secondary)
                         .foregroundStyle(.primary)
                         .fontWeight(.semibold)
                     Button {
-                        
+                        basVm.increaseQuantity(orderItem: orderItem)
+                        basVm.calculatePrice(orderItem: orderItem)
                     } label: {
                         QuantitySelectButton(text: "+")
                     }
                     .foregroundStyle(.primary)
                     Spacer()
-                    Text("1 ₽")
+                    Text("\(orderItem.totalPrice) ₽")
                         .font(Constant.AppFont.primary)
                         .foregroundStyle(.primary)
                         .fontWeight(.semibold)
@@ -87,15 +93,26 @@ struct BasketProductView: View {
         .cornerRadius(10)
         .clipped()
         .frame(height: height)
+        .alert(
+            "Удалить?",
+            isPresented: $basVm.isAlertPresented) {
+                Button("Отмена", role: .cancel) {}
+                Button("Удалить") {
+                    basVm.removeOrderItem(orderItem)
+                }
+            } message: {
+                Text("Вы точно хотите удалить товар из Корзины?")
+            }
     }
 }
 
 #Preview {
-    BasketProductView(
-        product: MockData.mockProduct,
+    BasketOrderItemView(
+        orderItem: OrderItem(
+            product: MockData.mockProduct
+        ),
         height: 125
     )
-    .environmentObject(BasketViewModel())
 }
 
 struct QuantitySelectButton: View {

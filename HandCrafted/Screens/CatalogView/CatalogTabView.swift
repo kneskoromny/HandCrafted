@@ -2,18 +2,17 @@ import SwiftUI
 
 struct CatalogTabView: View {
     
-    @StateObject var catVm = CatalogViewModel()
-    
-    @EnvironmentObject var basVm: BasketViewModel
-    @EnvironmentObject var appRouter: AppRouter
+    @EnvironmentObject private var router: AppRouter
     
     var body: some View {
-        NavigationStack(path: $appRouter.navPath) {
+        NavigationStack(path: $router.navPath) {
             CatalogView()
                 .navigationDestination(for: AppDestination.self) { destination in
                     switch destination {
                     case .list(let category):
-                        ProductListView(category: category)
+                        ProductListView(
+                            category: category
+                        )
                     case .detail(let product):
                         ProductDetailView(product: product)
                     default:
@@ -21,12 +20,10 @@ struct CatalogTabView: View {
                     }
                 }
         }
-        .environmentObject(catVm)
     }
 }
 
 #Preview {
     CatalogTabView()
         .environmentObject(AppRouter())
-        .environmentObject(BasketViewModel())
 }

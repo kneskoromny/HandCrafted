@@ -11,8 +11,8 @@ struct ProductListView: View {
         )
     }
     
-    @EnvironmentObject var viewModel: CatalogViewModel
-    @EnvironmentObject var appRouter: AppRouter
+    @EnvironmentObject var catVm: CatalogViewModel
+    @EnvironmentObject var router: AppRouter
     
     var category: Category
     
@@ -23,14 +23,14 @@ struct ProductListView: View {
     
     var body: some View {
         VStack {
-            if viewModel.isLoading {
+            if catVm.isLoading {
                 ProgressView("Минуточку...")
             } else {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 32) {
-                        ForEach(viewModel.filteredProductList) { product in
+                        ForEach(catVm.filteredProductList) { product in
                             Button {
-                                appRouter.navigate(to: .detail(product: product))
+                                router.navigate(to: .detail(product: product))
                             } label: {
                                 ProductView(product: product)
                             }
@@ -46,7 +46,7 @@ struct ProductListView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    appRouter.navigateBack()
+                    router.navigateBack()
                 } label: {
                     Label("Back", systemImage: "arrow.left")
                 }
@@ -54,13 +54,15 @@ struct ProductListView: View {
             }
         }
         .onAppear {
-            viewModel.filterProductList(categoryName: category.name)
+            catVm.filterProductList(categoryName: category.name)
         }
     }
 }
 
 #Preview {
-    ProductListView(category: MockData.categories.first!)
+    ProductListView(
+        category: MockData.categories.first!
+    )
         .environmentObject(CatalogViewModel())
         .environmentObject(AppRouter())
 }

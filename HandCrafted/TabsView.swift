@@ -2,11 +2,13 @@ import SwiftUI
 
 struct TabsView: View {
     
-    @ObservedObject private var appRouter = AppRouter()
+    @ObservedObject private var router = AppRouter()
+    
+    @StateObject private var catVm = CatalogViewModel()
     @StateObject private var basVm = BasketViewModel()
     
     var body: some View {
-        TabView(selection: $appRouter.selectedTab) {
+        TabView(selection: $router.selectedTab) {
             CatalogTabView()
                 .tabItem {
                     Label(
@@ -23,7 +25,7 @@ struct TabsView: View {
                     )
                 }
                 .tag(AppRouter.Tab.cart)
-                .badge(basVm.productList.count)
+                .badge(basVm.orderItems.count)
             ProfileTabView()
                 .tabItem {
                     Label(
@@ -33,13 +35,14 @@ struct TabsView: View {
                 }
                 .tag(AppRouter.Tab.account)
         }
-        .onChange(of: appRouter.selectedTab) { newTab, oldTab in
+        .onChange(of: router.selectedTab) { newTab, oldTab in
             if newTab != oldTab {
-                appRouter.navPath = NavigationPath()
+                router.navPath = NavigationPath()
             }
         }
-        .environmentObject(appRouter)
+        .environmentObject(router)
         .environmentObject(basVm)
+        .environmentObject(catVm)
         
     }
 }
