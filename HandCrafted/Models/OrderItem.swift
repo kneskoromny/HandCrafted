@@ -19,7 +19,17 @@ final class OrderItem: Identifiable, ObservableObject {
     init(product: Product, quantity: Int) {
         self.product = product
         self.quantity = quantity
-        self.totalPrice = onePiecePrice
+        self.reCalculatePrice()
+//        self.totalPrice = onePiecePrice
+    }
+    
+    func reCalculatePrice() {
+        if quantity == 1 {
+            totalPrice = onePiecePrice
+        } else {
+            let calculatedPrice = product.price.standard * (quantity - 1)
+            totalPrice = onePiecePrice + calculatedPrice
+        }
     }
     
 }

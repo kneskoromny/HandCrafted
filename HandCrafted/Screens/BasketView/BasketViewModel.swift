@@ -1,9 +1,12 @@
 import SwiftUI
 
+// FIXME: Не работает
+
+
+// TODO: Не сделано
+
+
 final class BasketViewModel: ObservableObject {
-    // TODO: продолжить с дебага сохраненных товаров
-    // не сохраняется кол-во товара из корзины
-    // неправильная общая цена в сохраненном товаре (если несколько)
     @AppStorage("savedOrderItems") var savedOrderItems: [OrderItemDto]?
     
     @Published var orderItems: [OrderItem] = []
@@ -39,6 +42,7 @@ final class BasketViewModel: ObservableObject {
             return
         }
         orderItem.quantity += 1
+        orderItem.reCalculatePrice()
         print(#function, "mytest - item: \(orderItem.product.name), quantity: \(orderItem.quantity)")
         // TODO: перезаписать в AppStorage
     }
@@ -55,23 +59,9 @@ final class BasketViewModel: ObservableObject {
             return
         }
         orderItem.quantity -= 1
+        orderItem.reCalculatePrice()
         print(#function, "mytest - item: \(orderItem.product.name), quantity: \(orderItem.quantity)")
         // TODO: перезаписать в AppStorage
-    }
-    
-    func calculatePrice(orderItem: OrderItem) {
-        guard let orderItem = orderItems
-            .first(where: {$0.product == orderItem.product })
-        else {
-            return
-        }
-        if orderItem.quantity == 1 {
-            orderItem.totalPrice = orderItem.onePiecePrice
-        } else {
-            let onePiecePrice = orderItem.onePiecePrice
-            let calculatedPrice = orderItem.product.price.standard * (orderItem.quantity - 1)
-            orderItem.totalPrice = onePiecePrice + calculatedPrice
-        }
     }
     
     func addProduct(_ product: Product) {

@@ -1,5 +1,11 @@
 import SwiftUI
 
+// FIXME: Не работает
+
+
+// TODO: Не сделано
+// отображение цены распродажи
+
 struct BasketOrderItemView: View {
     
     private enum Const {
@@ -61,10 +67,8 @@ struct BasketOrderItemView: View {
                         basVm.selectedItem = orderItem
                         if orderItem.quantity == 1 {
                             basVm.isAlertPresented = true
-//                            print(#function, "mytest - item: \(orderItem.product.name)")
                         } else {
                             basVm.reduceQuantity()
-//                            basVm.calculatePrice(orderItem: orderItem)
                         }
                     } label: {
                         QuantitySelectButton(text: "-")
@@ -76,18 +80,17 @@ struct BasketOrderItemView: View {
                         .fontWeight(.semibold)
                     Button {
                         basVm.selectedItem = orderItem
-                        
                         basVm.increaseQuantity()
-//                        basVm.calculatePrice(orderItem: orderItem)
                     } label: {
                         QuantitySelectButton(text: "+")
                     }
                     .foregroundStyle(.primary)
                     Spacer()
                     Text("\(orderItem.totalPrice) ₽")
-                        .font(Constant.AppFont.primary)
+                        .font(Constant.AppFont.secondary)
                         .foregroundStyle(.primary)
                         .fontWeight(.semibold)
+                    
                 }
                 .padding(.bottom)
             }
