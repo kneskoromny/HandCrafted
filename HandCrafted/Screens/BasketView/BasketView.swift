@@ -28,6 +28,16 @@ struct BasketView: View {
         }
         .navigationTitle("Корзина")
         .navigationBarBackButtonHidden()
+        .alert(
+            "Удалить?",
+            isPresented: $basVm.isAlertPresented) {
+                Button("Отмена", role: .cancel) {}
+                Button("Удалить") {
+                    basVm.removeOrderItem()
+                }
+            } message: {
+                Text("Вы точно хотите удалить товар из Корзины?")
+            }
 
     }
 }

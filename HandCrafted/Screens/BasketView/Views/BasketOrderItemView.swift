@@ -58,11 +58,13 @@ struct BasketOrderItemView: View {
                 Spacer()
                 HStack(spacing: 16) {
                     Button {
+                        basVm.selectedItem = orderItem
                         if orderItem.quantity == 1 {
                             basVm.isAlertPresented = true
+//                            print(#function, "mytest - item: \(orderItem.product.name)")
                         } else {
-                            basVm.reduceQuantity(orderItem: orderItem)
-                            basVm.calculatePrice(orderItem: orderItem)
+                            basVm.reduceQuantity()
+//                            basVm.calculatePrice(orderItem: orderItem)
                         }
                     } label: {
                         QuantitySelectButton(text: "-")
@@ -73,8 +75,10 @@ struct BasketOrderItemView: View {
                         .foregroundStyle(.primary)
                         .fontWeight(.semibold)
                     Button {
-                        basVm.increaseQuantity(orderItem: orderItem)
-                        basVm.calculatePrice(orderItem: orderItem)
+                        basVm.selectedItem = orderItem
+                        
+                        basVm.increaseQuantity()
+//                        basVm.calculatePrice(orderItem: orderItem)
                     } label: {
                         QuantitySelectButton(text: "+")
                     }
@@ -93,23 +97,15 @@ struct BasketOrderItemView: View {
         .cornerRadius(10)
         .clipped()
         .frame(height: height)
-        .alert(
-            "Удалить?",
-            isPresented: $basVm.isAlertPresented) {
-                Button("Отмена", role: .cancel) {}
-                Button("Удалить") {
-                    basVm.removeOrderItem(orderItem)
-                }
-            } message: {
-                Text("Вы точно хотите удалить товар из Корзины?")
-            }
+        
     }
 }
 
 #Preview {
     BasketOrderItemView(
         orderItem: OrderItem(
-            product: MockData.mockProduct
+            product: MockData.mockProduct,
+            quantity: 1
         ),
         height: 125
     )

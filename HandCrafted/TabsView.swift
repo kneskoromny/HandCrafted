@@ -2,6 +2,8 @@ import SwiftUI
 
 struct TabsView: View {
     
+    @Environment(\.scenePhase) private var scenePhase
+    
     @ObservedObject private var router = AppRouter()
     
     @StateObject private var catVm = CatalogViewModel()
@@ -40,6 +42,12 @@ struct TabsView: View {
                 router.navPath = NavigationPath()
             }
         }
+        .onChange(of: scenePhase, { _, newValue in
+            if newValue == .inactive {
+                print(#function, "mytest - state change to inactive")
+                basVm.saveOrderItems()
+            }
+        })
         .environmentObject(router)
         .environmentObject(basVm)
         .environmentObject(catVm)
