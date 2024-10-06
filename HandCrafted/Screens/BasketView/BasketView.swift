@@ -3,6 +3,7 @@ import SwiftUI
 struct BasketView: View {
     
     @EnvironmentObject var basVm: BasketViewModel
+    @EnvironmentObject var router: AppRouter
     
     var body: some View {
         VStack {
@@ -41,17 +42,6 @@ struct BasketView: View {
                                 .listRowInsets(EdgeInsets())
                             }
                         }
-                        .alert(
-                            "Удалить?",
-                            isPresented: $basVm.isRemoveItemAlert) {
-                                Button("Отмена", role: .cancel) {}
-                                Button("Удалить") {
-                                    basVm.removeOrderItem()
-                                    basVm.calculateTotalPrice()
-                                }
-                            } message: {
-                                Text("Вы точно хотите удалить товар из Корзины?")
-                            }
                         if !basVm.orderItems.isEmpty {
                             Section {
                                 VStack(spacing: 16) {
@@ -68,7 +58,16 @@ struct BasketView: View {
                                             .padding(.trailing)
                                     }
                                     Button {
-                                        basVm.isOrderAlert = true
+                                        basVm.alertType = basVm.isAuthUser 
+                                        ? .preOrder(
+                                            totalPrice: basVm.totalPrice,
+                                            action: {
+                                                self.basVm.sendOrder()
+                                            })
+                                        : .unAuthUser(action: {
+                                            router.selectedTab = .account
+                                        })
+                                        basVm.isAlertPresented = true
                                     } label: {
                                         PrimaryButton(
                                             title: "Заказать",
@@ -80,19 +79,6 @@ struct BasketView: View {
                                 .listRowInsets(EdgeInsets())
                                 .listRowBackground(Color.clear)
                             }
-                            .alert(
-                                "Почти готово!",
-                                isPresented: $basVm.isOrderAlert) {
-                                    Button("Отмена", role: .cancel) {}
-                                    Button("Подтверждаю") {
-                                        basVm.sendOrder()
-                                    }
-                                } message: {
-                                    Text("""
-                                Вы подтверждаете заказ
-                                на общую сумму \(basVm.totalPrice) ₽?
-                                """)
-                                }
                         }
                     }
                     .listStyle(.insetGrouped)
@@ -104,6 +90,9 @@ struct BasketView: View {
         }
         .navigationTitle("Корзина")
         .navigationBarBackButtonHidden()
+        .alert(isPresented: $basVm.isAlertPresented) {
+            return basVm.alertType?.view ?? Alert(title: Text(""))
+        }
     }
 }
 

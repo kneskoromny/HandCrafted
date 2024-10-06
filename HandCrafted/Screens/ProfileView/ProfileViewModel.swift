@@ -20,7 +20,7 @@ final class ProfileViewModel: ObservableObject {
     private let storageManager = StorageManager()
     
     init() {
-        accountState = authManager.isAuthorizedUser ? .auth : .unAuth
+        accountState = authManager.isAuthUser ? .auth : .unAuth
     }
     
     func registerUser()  {

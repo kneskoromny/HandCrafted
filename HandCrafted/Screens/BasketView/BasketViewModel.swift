@@ -13,10 +13,16 @@ final class BasketViewModel: ObservableObject {
     @Published var orderItems: [OrderItem] = []
     @Published var totalPrice = 0
     @Published var isLoading = false
-    @Published var isRemoveItemAlert = false
-    @Published var isOrderAlert = false
+    @Published var isAlertPresented = false
     
+    var alertType: AlertType?
     var selectedItem: OrderItem?
+    
+    var isAuthUser: Bool {
+        return authManager.isAuthUser
+    }
+    
+    private let authManager = AuthManager()
     
     init() {
         loadOrdersFromStorage()
