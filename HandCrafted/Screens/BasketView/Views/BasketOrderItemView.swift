@@ -69,6 +69,7 @@ struct BasketOrderItemView: View {
                             basVm.isAlertPresented = true
                         } else {
                             basVm.reduceQuantity()
+                            basVm.calculateTotalPrice()
                         }
                     } label: {
                         QuantitySelectButton(text: "-")
@@ -81,6 +82,7 @@ struct BasketOrderItemView: View {
                     Button {
                         basVm.selectedItem = orderItem
                         basVm.increaseQuantity()
+                        basVm.calculateTotalPrice()
                     } label: {
                         QuantitySelectButton(text: "+")
                     }

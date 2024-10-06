@@ -1,16 +1,17 @@
 import SwiftUI
 
 // FIXME: Не работает
-
+// при быстром сворачивании прил не успевает записать в дефолтс
 
 // TODO: Не сделано
 
 
 final class BasketViewModel: ObservableObject {
+    
     @AppStorage("savedOrderItems") var savedOrderItems: [OrderItemDto]?
     
     @Published var orderItems: [OrderItem] = []
-    
+    @Published var totalPrice = 0
     @Published var isLoading = false
     @Published var isAlertPresented = false
     
@@ -22,6 +23,7 @@ final class BasketViewModel: ObservableObject {
                 OrderItem(product: $0.product, quantity: $0.quantity)
             }
             self.orderItems = orderItems
+            calculateTotalPrice()
             orderItems.forEach { item in
                 print(#function, "mytest - init item: \(item.product.name), quantity: \(item.quantity)")
             }
@@ -42,7 +44,7 @@ final class BasketViewModel: ObservableObject {
             return
         }
         orderItem.quantity += 1
-        orderItem.reCalculatePrice()
+        orderItem.calculatePrice()
         print(#function, "mytest - item: \(orderItem.product.name), quantity: \(orderItem.quantity)")
         // TODO: перезаписать в AppStorage
     }
@@ -59,7 +61,7 @@ final class BasketViewModel: ObservableObject {
             return
         }
         orderItem.quantity -= 1
-        orderItem.reCalculatePrice()
+        orderItem.calculatePrice()
         print(#function, "mytest - item: \(orderItem.product.name), quantity: \(orderItem.quantity)")
         // TODO: перезаписать в AppStorage
     }
@@ -104,6 +106,12 @@ final class BasketViewModel: ObservableObject {
         }
         self.savedOrderItems = savedOrderItems
         print(#function, "mytest - save \(savedOrderItems.count) items")
+    }
+    
+    func calculateTotalPrice() {
+        self.totalPrice = orderItems.reduce(0) { partialResult, item in
+            item.totalPrice + partialResult
+        }
     }
     
 }

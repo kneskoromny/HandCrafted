@@ -21,10 +21,10 @@ struct CatalogView: View {
                     .tint(.primary)
                     .listRowInsets(EdgeInsets())
                 }
-                .scrollIndicators(.hidden)
-                .contentMargins(16)
-                .listRowSpacing(16)
                 .listStyle(.insetGrouped)
+                .scrollIndicators(.hidden)
+                .listRowSpacing(16)
+                .contentMargins(.top, 24)
                 
             }
         }

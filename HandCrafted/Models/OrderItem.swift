@@ -19,11 +19,10 @@ final class OrderItem: Identifiable, ObservableObject {
     init(product: Product, quantity: Int) {
         self.product = product
         self.quantity = quantity
-        self.reCalculatePrice()
-//        self.totalPrice = onePiecePrice
+        self.calculatePrice()
     }
     
-    func reCalculatePrice() {
+    func calculatePrice() {
         if quantity == 1 {
             totalPrice = onePiecePrice
         } else {
