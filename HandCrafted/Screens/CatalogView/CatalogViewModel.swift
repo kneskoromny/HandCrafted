@@ -19,7 +19,7 @@ final class CatalogViewModel: ObservableObject {
     @Published var isSheetPresented = false {
         // FIXME: сворачивается шит при открытии новой карточки из похожих и тапе на размер/цвет
         didSet {
-            print(#function, "mytest - is presented: \(isSheetPresented)")
+//            print(#function, "mytest - is presented: \(isSheetPresented)")
         }
     }
     @Published var isAlertPresented = false

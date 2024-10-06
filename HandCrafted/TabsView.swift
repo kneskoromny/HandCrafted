@@ -2,10 +2,15 @@ import SwiftUI
 
 struct TabsView: View {
     
-    @ObservedObject private var appRouter = AppRouter()
+    @Environment(\.scenePhase) private var scenePhase
+    
+    @ObservedObject private var router = AppRouter()
+    
+    @StateObject private var catVm = CatalogViewModel()
+    @StateObject private var basVm = BasketViewModel()
     
     var body: some View {
-        TabView(selection: $appRouter.selectedTab) {
+        TabView(selection: $router.selectedTab) {
             CatalogTabView()
                 .tabItem {
                     Label(
@@ -22,6 +27,7 @@ struct TabsView: View {
                     )
                 }
                 .tag(AppRouter.Tab.cart)
+                .badge(basVm.orderItems.count)
             ProfileTabView()
                 .tabItem {
                     Label(
@@ -31,12 +37,20 @@ struct TabsView: View {
                 }
                 .tag(AppRouter.Tab.account)
         }
-        .onChange(of: appRouter.selectedTab) { newTab, oldTab in
+        .onChange(of: router.selectedTab) { newTab, oldTab in
             if newTab != oldTab {
-                appRouter.navPath = NavigationPath()
+                router.navPath = NavigationPath()
             }
         }
-        .environmentObject(appRouter)
+        .onChange(of: scenePhase, { _, newValue in
+            if newValue == .inactive {
+                print(#function, "mytest - state change to inactive")
+                basVm.saveOrderItems()
+            }
+        })
+        .environmentObject(router)
+        .environmentObject(basVm)
+        .environmentObject(catVm)
         
     }
 }

@@ -15,7 +15,11 @@ struct ProductView: View {
     
     var body: some View {
         VStack {
-            UrlImageView(product: product)
+            UrlImageView(
+                urlString: product.imageUrls?.first,
+                width: 150,
+                height: 175
+            )
             HStack {
                 Text(product.name)
                     .font(Constant.AppFont.secondary)
@@ -58,30 +62,4 @@ struct ProductView: View {
 
 #Preview {
     ProductView(product: MockData.mockProduct)
-        .environmentObject(CatalogViewModel())
-}
-
-struct UrlImageView: View {
-    
-    var product: Product
-    
-    var body: some View {
-        if let imageUrl = product.imageUrls?.first,
-           let url = URL(string: imageUrl) {
-            AsyncImage(url: url,
-                       content: { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            },
-                       placeholder: {
-                ProgressView()
-            })
-            .frame(width: 150, height: 175)
-            .clipped()
-        } else {
-            NoImageView(width: 150, height: 175)
-        }
-    }
-    
 }

@@ -16,6 +16,8 @@ struct ProductDetailView: View {
     // MARK: - Observables
     
     @EnvironmentObject var catVm: CatalogViewModel
+    @EnvironmentObject var basVm: BasketViewModel
+    
     @EnvironmentObject var router: AppRouter
     
     // MARK: - Internal Properties
@@ -225,11 +227,17 @@ struct ProductDetailView: View {
         .alert(
             catVm.alertTitle,
             isPresented: $catVm.isAlertPresented) {
-                if catVm.selectedProduct != nil {
+                if let selectedProduct = catVm.selectedProduct {
                     Button("В Корзину", role: .cancel) {
+                        basVm.addProduct(selectedProduct)
+                        catVm.removeSelectedProduct()
                         router.selectedTab = AppRouter.Tab.cart
                     }
-                    Button("Продолжить") {}
+                    Button("Продолжить") {
+                        basVm.addProduct(selectedProduct)
+                        catVm.removeSelectedProduct()
+                        router.navigateBack()
+                    }
                 } else {
                     Button("OK") {}
                 }
@@ -242,7 +250,9 @@ struct ProductDetailView: View {
 }
 
 #Preview {
-    ProductDetailView(product: MockData.mockProduct)
+    ProductDetailView(
+        product: MockData.mockProduct
+    )
         .environmentObject(CatalogViewModel())
         .environmentObject(AppRouter())
 }

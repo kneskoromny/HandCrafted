@@ -4,34 +4,34 @@ struct CatalogView: View {
     
     // MARK: - State
     
-    @EnvironmentObject var viewModel: CatalogViewModel
-    @EnvironmentObject var appRouter: AppRouter
+    @EnvironmentObject var catVm: CatalogViewModel
+    @EnvironmentObject var router: AppRouter
     
     var body: some View {
         VStack {
-            if viewModel.isLoading {
+            if catVm.isLoading {
                 ProgressView("Минуточку...")
             } else {
-                List(viewModel.categoryList) { category in
+                List(catVm.categoryList) { category in
                     Button {
-                        appRouter.navigate(to: .list(category: category))
+                        router.navigate(to: .list(category: category))
                     } label: {
                         CategoryView(category: category)
                     }
-                    .tint(Color.black)
+                    .tint(.primary)
                     .listRowInsets(EdgeInsets())
                 }
-                .scrollIndicators(.hidden)
-                .contentMargins(16)
-                .listRowSpacing(16)
                 .listStyle(.insetGrouped)
+                .scrollIndicators(.hidden)
+                .listRowSpacing(16)
+                .contentMargins(.top, 24)
                 
             }
         }
         .navigationTitle("Каталог")
         .navigationBarBackButtonHidden()
         .onAppear {
-            viewModel.fetchData()
+            catVm.fetchData()
         }
     }
 }
