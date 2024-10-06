@@ -13,23 +13,14 @@ final class BasketViewModel: ObservableObject {
     @Published var orderItems: [OrderItem] = []
     @Published var totalPrice = 0
     @Published var isLoading = false
-    @Published var isAlertPresented = false
+    @Published var isRemoveItemAlert = false
+    @Published var isOrderAlert = false
     
     var selectedItem: OrderItem?
     
     init() {
-        if let savedOrderItems {
-            let orderItems = savedOrderItems.map { 
-                OrderItem(product: $0.product, quantity: $0.quantity)
-            }
-            self.orderItems = orderItems
-            calculateTotalPrice()
-            orderItems.forEach { item in
-                print(#function, "mytest - init item: \(item.product.name), quantity: \(item.quantity)")
-            }
-        } else {
-            print(#function, "mytest - order items not found")
-        }
+        loadOrdersFromStorage()
+        calculateTotalPrice()
     }
     
     func increaseQuantity() {
@@ -90,10 +81,6 @@ final class BasketViewModel: ObservableObject {
         self.selectedItem = nil
     }
     
-    func removeAllProducts() {
-        orderItems.removeAll()
-    }
-    
     func saveOrderItems() {
         guard !orderItems.isEmpty else {
             return
@@ -114,4 +101,36 @@ final class BasketViewModel: ObservableObject {
         }
     }
     
+}
+
+// MARK: - Network
+
+extension BasketViewModel {
+    
+    func sendOrder() {
+        // .. sending order
+        
+        orderItems.removeAll()
+        savedOrderItems = nil
+        selectedItem = nil
+    }
+}
+
+// MARK: - Private Methods
+
+private extension BasketViewModel {
+   
+    func loadOrdersFromStorage() {
+        if let savedOrderItems {
+            let orderItems = savedOrderItems.map {
+                OrderItem(product: $0.product, quantity: $0.quantity)
+            }
+            self.orderItems = orderItems
+            orderItems.forEach { item in
+                print(#function, "mytest - init item: \(item.product.name), quantity: \(item.quantity)")
+            }
+        } else {
+            print(#function, "mytest - stored order items not found")
+        }
+    }
 }

@@ -66,7 +66,7 @@ struct BasketOrderItemView: View {
                     Button {
                         basVm.selectedItem = orderItem
                         if orderItem.quantity == 1 {
-                            basVm.isAlertPresented = true
+                            basVm.isRemoveItemAlert = true
                         } else {
                             basVm.reduceQuantity()
                             basVm.calculateTotalPrice()
