@@ -2,15 +2,6 @@ import SwiftUI
 
 struct BasketView: View {
     
-    private enum Const {
-        static let btnSectionInsets =  EdgeInsets(
-            top: 16,
-            leading: 0,
-            bottom: 0,
-            trailing: 0
-        )
-    }
-    
     @EnvironmentObject var basVm: BasketViewModel
     
     var body: some View {
@@ -30,34 +21,34 @@ struct BasketView: View {
                             .tint(.primary)
                             .listRowInsets(EdgeInsets())
                         }
-                        if !basVm.orderItems.isEmpty {
-                            Section {
-                                VStack(spacing: 16) {
-                                    HStack {
-                                        Text("Общая сумма:")
-                                            .font(Constant.AppFont.secondary)
-                                            .fontWeight(.bold)
-                                            .foregroundStyle(.secondary)
-                                        Spacer()
-                                        Text("\(basVm.totalPrice) ₽")
-                                            .font(Constant.AppFont.primary)
-                                            .fontWeight(.bold)
-                                            .foregroundStyle(.primary)
-                                            .padding(.trailing)
-                                    }
-                                    Button {
-                                        print(#function, "mytest - order btn tapped")
-                                    } label: {
-                                        PrimaryButton(
-                                            title: "Заказать",
-                                            foregroundColor: Color(uiColor: .systemBackground),
-                                            backgroundColor: .red
-                                        )
-                                    }
+                    }
+                    if !basVm.orderItems.isEmpty {
+                        Section {
+                            VStack(spacing: 16) {
+                                HStack {
+                                    Text("Общая сумма:")
+                                        .font(Constant.AppFont.secondary)
+                                        .fontWeight(.bold)
+                                        .foregroundStyle(.secondary)
+                                    Spacer()
+                                    Text("\(basVm.totalPrice) ₽")
+                                        .font(Constant.AppFont.primary)
+                                        .fontWeight(.bold)
+                                        .foregroundStyle(.primary)
+                                        .padding(.trailing)
                                 }
-                                .listRowInsets(Const.btnSectionInsets)
-                                .listRowBackground(Color.clear)
+                                Button {
+                                    print(#function, "mytest - order btn tapped")
+                                } label: {
+                                    PrimaryButton(
+                                        title: "Заказать",
+                                        foregroundColor: Color(uiColor: .systemBackground),
+                                        backgroundColor: .red
+                                    )
+                                }
                             }
+                            .listRowInsets(EdgeInsets())
+                            .listRowBackground(Color.clear)
                         }
                     }
                 }
@@ -65,8 +56,8 @@ struct BasketView: View {
                 .scrollIndicators(.hidden)
                 .listRowSpacing(16)
                 .contentMargins(.top, 24)
-            }
         }
+    }
         .navigationTitle("Корзина")
         .navigationBarBackButtonHidden()
         .alert(
@@ -80,8 +71,8 @@ struct BasketView: View {
             } message: {
                 Text("Вы точно хотите удалить товар из Корзины?")
             }
-        
-    }
+    
+}
 }
 
 #Preview {
