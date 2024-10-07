@@ -9,6 +9,10 @@ final class AuthManager {
         return Auth.auth().currentUser != nil
     }
     
+    var userId: String? {
+        return Auth.auth().currentUser?.uid
+    }
+    
     init() {
         Auth.auth().useAppLanguage()
     }

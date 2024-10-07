@@ -4,7 +4,7 @@ import SwiftUI
 // при быстром сворачивании прил не успевает записать в дефолтс
 
 // TODO: Не сделано
-
+// настроить идентификатор заказа учитывая город и тд (более понятная форма)
 
 final class BasketViewModel: ObservableObject {
     
@@ -22,7 +22,10 @@ final class BasketViewModel: ObservableObject {
         return authManager.isAuthUser
     }
     
+    // MARK: - Managers
+    
     private let authManager = AuthManager()
+    private let dbManager = DatabaseManager()
     
     init() {
         loadOrdersFromStorage()
@@ -114,11 +117,37 @@ final class BasketViewModel: ObservableObject {
 extension BasketViewModel {
     
     func sendOrder() {
-        // .. sending order
-        
-        orderItems.removeAll()
-        savedOrderItems = nil
-        selectedItem = nil
+        guard let userId = authManager.userId else {
+            print(#function, "mytest - no user")
+            return
+        }
+        let itemsDtos = orderItems
+            .compactMap {
+                OrderItemDto(
+                    product: $0.product,
+                    quantity: $0.quantity
+                )
+            }
+        let orderDto = OrderDto(
+            id: UUID().uuidString,
+            userId: userId,
+            status: OrderStatus.created.rawValue,
+            items: itemsDtos
+        )
+        isLoading = true
+        Task {
+            do {
+                try dbManager.saveOrder(orderDto)
+                await MainActor.run {
+                    orderItems.removeAll()
+                    savedOrderItems = nil
+                    selectedItem = nil
+                    isLoading = false
+                }
+            } catch {
+                print(#function, "mytest - error: \(error.localizedDescription)")
+            }
+        }
     }
 }
 

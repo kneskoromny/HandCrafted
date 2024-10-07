@@ -27,9 +27,9 @@ extension AlertType {
         case .preOrder(let totalPrice, let action):
             return Alert(
                 title: Text("Почти готово!"),
-                message: Text("Вы подтверждаете заказ на общую сумму \(totalPrice) ₽?"),
+                message: Text("Вы отправляете заказ на общую сумму \(totalPrice) ₽?"),
                 primaryButton: .default(
-                    Text("Подтверждаю"),
+                    Text("Отправить 🚀"),
                     action: action
                 ),
                 secondaryButton: .cancel(Text("Отмена"))

@@ -33,8 +33,26 @@ final class OrderItem: Identifiable, ObservableObject {
     
 }
 
+enum OrderStatus: Int {
+    case created
+    case payed
+    case inProcess
+    case ready
+    case delivered
+}
+
+struct OrderDto: Codable {
+    
+    let id: String
+    let userId: String
+    let status: OrderStatus.RawValue
+    let items: [OrderItemDto]
+    
+}
+
 struct OrderItemDto: Codable {
     
     let product: Product
     let quantity: Int
+    
 }

@@ -9,8 +9,15 @@ final class DatabaseManager {
         static let usersPath = "users"
         static let productsPath = "products"
         static let categoriesPath = "categories"
+        static let orders = "orders"
     }
     private let ref = Database.database(url: Const.dbUrl).reference()
+    
+}
+
+// MARK: - User Methods
+
+extension DatabaseManager {
     
     func saveUser(
         _ user: User,
@@ -52,6 +59,12 @@ final class DatabaseManager {
         return local
     }
     
+}
+
+// MARK: - Category Methods
+
+extension DatabaseManager {
+    
     func getCategoryList() async throws -> [Category] {
         let snapshot = try await ref.child(Const.categoriesPath).getData()
         var categories: [Category] = []
@@ -76,6 +89,12 @@ final class DatabaseManager {
         }
         return categories.sorted(by: { $0.id < $1.id })
     }
+    
+}
+
+// MARK: - Product Methods
+
+extension DatabaseManager {
     
     func getProductList() async throws -> [Product] {
         let snapshot = try await ref.child(Const.productsPath).getData()
@@ -152,22 +171,22 @@ final class DatabaseManager {
         
         return products
     }
-
-    
 }
 
-// MARK: - Mock Methods
+// MARK: - Order Methods
 
 extension DatabaseManager {
     
-//    static func getMockCategoryList() async -> [Category] {
-//        sleep(1)
-//        return MockData.categories
-//    }
-//    
-//    static func getMockProductList() async -> [Product] {
-//        sleep(1)
-//        return MockData.products
-//    }
+    func saveOrder(_ order: OrderDto) throws {
+        try ref.child("\(Const.orders)/\(order.id)").setValue(from: order)
+        
+//        do {
+//            try ref.child("\(Const.usersPath)/\(id)").setValue(from: copy)
+//            completion(nil)
+//        } catch let error {
+//            print(#function, "mytest - error: \(error)")
+//            completion(error)
+//        }
+    }
     
 }
