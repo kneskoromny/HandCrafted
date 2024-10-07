@@ -4,10 +4,11 @@ enum AppDestination: Codable, Hashable, Identifiable {
     
     // Каталог
     case list(category: Category)
-    case detail(product: Product)
+    case productDetail(_ product: Product)
 
     // Профиль
     case orders
+    case orderDetail(_ order: Order)
     case favorites
     case shippingAddresses
     case paymentMethods

@@ -15,6 +15,8 @@ final class ProfileViewModel: ObservableObject {
     @Published var accountState: AccountState = .unAuth
     @Published var isLoading = false
     
+    var orders: [Order] = []
+    
     private let authManager = AuthManager()
     private let dbManager = DatabaseManager()
     private let storageManager = StorageManager()
@@ -112,11 +114,13 @@ final class ProfileViewModel: ObservableObject {
         //        ])
     }
     
-    func getUser() {
+    func getUserInfo() {
         isLoading = true
         Task {
             do {
                 let user = try await dbManager.getUser()
+                let orders = try await dbManager.getOrderList()
+                
                 await MainActor.run {
                     self.isLoading = false
                     if let user {
@@ -124,6 +128,7 @@ final class ProfileViewModel: ObservableObject {
                     } else {
                         self.alertItem = AlertContext.invalidUserData
                     }
+                    self.orders = orders
                 }
             } catch {
                 print(#function, "mytest - error: \(error.localizedDescription)")

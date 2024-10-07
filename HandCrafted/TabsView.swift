@@ -27,7 +27,7 @@ struct TabsView: View {
                     )
                 }
                 .tag(AppRouter.Tab.cart)
-                .badge(basVm.orderItems.count)
+                .badge(basVm.productItems.count)
             AccountTabView()
                 .tabItem {
                     Label(

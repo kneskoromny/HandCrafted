@@ -8,15 +8,15 @@ import SwiftUI
 
 final class BasketViewModel: ObservableObject {
     
-    @AppStorage("savedOrderItems") var savedOrderItems: [OrderItemDto]?
+    @AppStorage("savedOrderItems") var savedOrderItems: [OrderItem]?
     
-    @Published var orderItems: [OrderItem] = []
+    @Published var productItems: [ProductItem] = []
     @Published var totalPrice = 0
     @Published var isLoading = false
     @Published var isAlertPresented = false
     
     var alertType: AlertType?
-    var selectedItem: OrderItem?
+    var selectedItem: ProductItem?
     
     var isAuthUser: Bool {
         return authManager.isAuthUser
@@ -35,7 +35,7 @@ final class BasketViewModel: ObservableObject {
     func increaseQuantity() {
         guard 
             let selectedItem,
-            let orderItem = orderItems
+            let orderItem = productItems
             .first(where: {
                 $0.product == selectedItem.product
             })
@@ -52,7 +52,7 @@ final class BasketViewModel: ObservableObject {
     func reduceQuantity() {
         guard
             let selectedItem,
-            let orderItem = orderItems
+            let orderItem = productItems
             .first(where: {
                 $0.product == selectedItem.product
             })
@@ -67,9 +67,9 @@ final class BasketViewModel: ObservableObject {
     }
     
     func addProduct(_ product: Product) {
-        let item = OrderItem(product: product, quantity: 1)
-        orderItems.append(item)
-        orderItems.forEach { item in
+        let item = ProductItem(product: product, quantity: 1)
+        productItems.append(item)
+        productItems.forEach { item in
             print(#function, "mytest - item: \(item.product.name), quantity: \(item.quantity)")
         }
     }
@@ -77,35 +77,38 @@ final class BasketViewModel: ObservableObject {
     func removeOrderItem() {
         guard 
             let selectedItem,
-            let index = orderItems
-            .firstIndex(where: { 
+            let index = productItems
+            .firstIndex(where: {
                 $0.product == selectedItem.product
             }) else {
             print(#function, "mytest - orderItem not found")
             return
         }
-        let item = orderItems[index]
-        orderItems.remove(at: index)
+        let item = productItems[index]
+        productItems.remove(at: index)
         print(#function, "mytest - removing product: \(item.product.name), quantity: \(item.quantity), index: \(index)")
         self.selectedItem = nil
     }
     
     func saveOrderItems() {
-        guard !orderItems.isEmpty else {
+        guard !productItems.isEmpty else {
             return
         }
         if savedOrderItems?.isEmpty == false {
             savedOrderItems?.removeAll()
         }
-        let savedOrderItems = orderItems.compactMap {
-            OrderItemDto(product: $0.product, quantity: $0.quantity)
+        let savedOrderItems = productItems.compactMap {
+            OrderItem(
+                product: $0.product,
+                quantity: $0.quantity
+            )
         }
         self.savedOrderItems = savedOrderItems
         print(#function, "mytest - save \(savedOrderItems.count) items")
     }
     
     func calculateTotalPrice() {
-        self.totalPrice = orderItems.reduce(0) { partialResult, item in
+        self.totalPrice = productItems.reduce(0) { partialResult, item in
             item.totalPrice + partialResult
         }
     }
@@ -116,30 +119,50 @@ final class BasketViewModel: ObservableObject {
 
 extension BasketViewModel {
     
+    func loadUser() {
+        isLoading = true
+        Task {
+            do {
+                let _ = try await dbManager.getUser()
+                await MainActor.run {
+                    self.isLoading = false
+                }
+            } catch {
+                print(#function, "mytest - error: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     func sendOrder() {
-        guard let userId = authManager.userId else {
+        guard 
+            let user = dbManager.user,
+            let orderId = getOrderId(user: user)
+        else {
             print(#function, "mytest - no user")
             return
         }
-        let itemsDtos = orderItems
+        let orderItems = productItems
             .compactMap {
-                OrderItemDto(
+                OrderItem(
                     product: $0.product,
                     quantity: $0.quantity
                 )
             }
-        let orderDto = OrderDto(
-            id: UUID().uuidString,
-            userId: userId,
+        let date = Date().formatted(date: .numeric, time: .omitted)
+        let order = Order(
+            id: orderId,
+            userId: user.id ?? "",
             status: OrderStatus.created.rawValue,
-            items: itemsDtos
+            totalPrice: totalPrice,
+            date: date,
+            items: orderItems
         )
         isLoading = true
         Task {
             do {
-                try dbManager.saveOrder(orderDto)
+                try dbManager.saveOrder(order)
                 await MainActor.run {
-                    orderItems.removeAll()
+                    productItems.removeAll()
                     savedOrderItems = nil
                     selectedItem = nil
                     isLoading = false
@@ -157,15 +180,27 @@ private extension BasketViewModel {
    
     func loadOrdersFromStorage() {
         if let savedOrderItems {
-            let orderItems = savedOrderItems.map {
-                OrderItem(product: $0.product, quantity: $0.quantity)
+            let productItems = savedOrderItems.map {
+                ProductItem(product: $0.product, quantity: $0.quantity)
             }
-            self.orderItems = orderItems
-            orderItems.forEach { item in
+            self.productItems = productItems
+            productItems.forEach { item in
                 print(#function, "mytest - init item: \(item.product.name), quantity: \(item.quantity)")
             }
         } else {
             print(#function, "mytest - stored order items not found")
         }
+    }
+    
+    func getOrderId(user: User) -> String? {
+        let converted = user.city?.replacingOccurrences(of: "\"", with: "").uppercased()
+        // TODO: добавить год к айди заказа
+        guard
+            let orderNumber = (1...1000).randomElement(),
+            let cityId = converted?.prefix(3) else {
+            print(#function, "mytest - no user")
+            return nil
+        }
+        return "\(cityId) - \(orderNumber)"
     }
 }

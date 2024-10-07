@@ -2,8 +2,8 @@ import SwiftUI
 
 struct ArrowRightButton: View {
     
-    var title: LocalizedStringKey
-    var subtitle: LocalizedStringKey?
+    var title: String
+    var subtitle: String?
     var font: Font
     var isSpacer: Bool
     

@@ -14,7 +14,7 @@ struct AccountTabView: View {
                     .navigationDestination(for: AppDestination.self) { destination in
                         switch destination {
                         case .orders:
-                            Text("Orders View")
+                            MyOrdersView(orders: profileViewModel.orders)
                         case .favorites:
                             Text("Favorites View")
                         case .shippingAddresses:

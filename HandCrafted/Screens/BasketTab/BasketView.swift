@@ -10,7 +10,7 @@ struct BasketView: View {
             if basVm.isLoading {
                 ProgressView("Минуточку...")
             } else {
-                if basVm.orderItems.isEmpty {
+                if basVm.productItems.isEmpty {
                     VStack(spacing: 48) {
                         Image("orderSuccess", bundle: nil)
                             .resizable()
@@ -31,7 +31,7 @@ struct BasketView: View {
                 } else {
                     List {
                         Section {
-                            ForEach(basVm.orderItems) { item in
+                            ForEach(basVm.productItems) { item in
                                 Button {} label: {
                                     BasketOrderItemView(
                                         orderItem: item,
@@ -42,7 +42,7 @@ struct BasketView: View {
                                 .listRowInsets(EdgeInsets())
                             }
                         }
-                        if !basVm.orderItems.isEmpty {
+                        if !basVm.productItems.isEmpty {
                             Section {
                                 VStack(spacing: 16) {
                                     HStack {
@@ -90,6 +90,9 @@ struct BasketView: View {
         }
         .navigationTitle("Корзина")
         .navigationBarBackButtonHidden()
+        .onAppear {
+            basVm.loadUser()
+        }
         .alert(isPresented: $basVm.isAlertPresented) {
             return basVm.alertType?.view ?? Alert(title: Text(""))
         }
