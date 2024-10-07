@@ -14,7 +14,7 @@ enum AppDestination: Codable, Hashable, Identifiable {
     case settings
 
     // Регистрация
-    case signIn
+    case signUp
     case forgotPassword
     case recoveryRequested
     

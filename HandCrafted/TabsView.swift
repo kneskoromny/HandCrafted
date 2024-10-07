@@ -28,10 +28,10 @@ struct TabsView: View {
                 }
                 .tag(AppRouter.Tab.cart)
                 .badge(basVm.orderItems.count)
-            ProfileTabView()
+            AccountTabView()
                 .tabItem {
                     Label(
-                        "Профиль",
+                        "Аккаунт",
                         systemImage: "person"
                     )
                 }

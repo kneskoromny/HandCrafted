@@ -48,6 +48,10 @@ struct OrderDto: Codable {
     let status: OrderStatus.RawValue
     let items: [OrderItemDto]
     
+    // TODO: добавить
+    // let totalPrice: Int
+    // let date: Date
+    
 }
 
 struct OrderItemDto: Codable {
