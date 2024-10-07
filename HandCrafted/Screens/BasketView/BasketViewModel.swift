@@ -4,7 +4,7 @@ import SwiftUI
 // при быстром сворачивании прил не успевает записать в дефолтс
 
 // TODO: Не сделано
-
+// настроить идентификатор заказа учитывая город и тд (более понятная форма)
 
 final class BasketViewModel: ObservableObject {
     
@@ -15,21 +15,21 @@ final class BasketViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var isAlertPresented = false
     
+    var alertType: AlertType?
     var selectedItem: OrderItem?
     
+    var isAuthUser: Bool {
+        return authManager.isAuthUser
+    }
+    
+    // MARK: - Managers
+    
+    private let authManager = AuthManager()
+    private let dbManager = DatabaseManager()
+    
     init() {
-        if let savedOrderItems {
-            let orderItems = savedOrderItems.map { 
-                OrderItem(product: $0.product, quantity: $0.quantity)
-            }
-            self.orderItems = orderItems
-            calculateTotalPrice()
-            orderItems.forEach { item in
-                print(#function, "mytest - init item: \(item.product.name), quantity: \(item.quantity)")
-            }
-        } else {
-            print(#function, "mytest - order items not found")
-        }
+        loadOrdersFromStorage()
+        calculateTotalPrice()
     }
     
     func increaseQuantity() {
@@ -90,10 +90,6 @@ final class BasketViewModel: ObservableObject {
         self.selectedItem = nil
     }
     
-    func removeAllProducts() {
-        orderItems.removeAll()
-    }
-    
     func saveOrderItems() {
         guard !orderItems.isEmpty else {
             return
@@ -114,4 +110,62 @@ final class BasketViewModel: ObservableObject {
         }
     }
     
+}
+
+// MARK: - Network
+
+extension BasketViewModel {
+    
+    func sendOrder() {
+        guard let userId = authManager.userId else {
+            print(#function, "mytest - no user")
+            return
+        }
+        let itemsDtos = orderItems
+            .compactMap {
+                OrderItemDto(
+                    product: $0.product,
+                    quantity: $0.quantity
+                )
+            }
+        let orderDto = OrderDto(
+            id: UUID().uuidString,
+            userId: userId,
+            status: OrderStatus.created.rawValue,
+            items: itemsDtos
+        )
+        isLoading = true
+        Task {
+            do {
+                try dbManager.saveOrder(orderDto)
+                await MainActor.run {
+                    orderItems.removeAll()
+                    savedOrderItems = nil
+                    selectedItem = nil
+                    isLoading = false
+                }
+            } catch {
+                print(#function, "mytest - error: \(error.localizedDescription)")
+            }
+        }
+    }
+}
+
+// MARK: - Private Methods
+
+private extension BasketViewModel {
+   
+    func loadOrdersFromStorage() {
+        if let savedOrderItems {
+            let orderItems = savedOrderItems.map {
+                OrderItem(product: $0.product, quantity: $0.quantity)
+            }
+            self.orderItems = orderItems
+            orderItems.forEach { item in
+                print(#function, "mytest - init item: \(item.product.name), quantity: \(item.quantity)")
+            }
+        } else {
+            print(#function, "mytest - stored order items not found")
+        }
+    }
 }

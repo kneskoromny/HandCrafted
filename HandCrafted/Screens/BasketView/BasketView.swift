@@ -2,33 +2,45 @@ import SwiftUI
 
 struct BasketView: View {
     
-    private enum Const {
-        static let btnSectionInsets =  EdgeInsets(
-            top: 16,
-            leading: 0,
-            bottom: 0,
-            trailing: 0
-        )
-    }
-    
     @EnvironmentObject var basVm: BasketViewModel
+    @EnvironmentObject var router: AppRouter
     
     var body: some View {
         VStack {
             if basVm.isLoading {
                 ProgressView("Минуточку...")
             } else {
-                List {
-                    Section {
-                        ForEach(basVm.orderItems) { item in
-                            Button {} label: {
-                                BasketOrderItemView(
-                                    orderItem: item,
-                                    height: 125
-                                )
+                if basVm.orderItems.isEmpty {
+                    VStack(spacing: 48) {
+                        Image("orderSuccess", bundle: nil)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 200, height: 200)
+                        VStack(spacing: 16) {
+                            Text("Нет товаров")
+                                .font(Constant.AppFont.primary)
+                                .fontWeight(.bold)
+                                .foregroundStyle(.primary)
+                            Text("Добавьте понравившиеся товары из Каталога, чтобы поскорее их заказать ☺️")
+                                .font(Constant.AppFont.secondary)
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
+                    }
+                    .padding()
+                } else {
+                    List {
+                        Section {
+                            ForEach(basVm.orderItems) { item in
+                                Button {} label: {
+                                    BasketOrderItemView(
+                                        orderItem: item,
+                                        height: 125
+                                    )
+                                }
+                                .tint(.primary)
+                                .listRowInsets(EdgeInsets())
                             }
-                            .tint(.primary)
-                            .listRowInsets(EdgeInsets())
                         }
                         if !basVm.orderItems.isEmpty {
                             Section {
@@ -46,7 +58,16 @@ struct BasketView: View {
                                             .padding(.trailing)
                                     }
                                     Button {
-                                        print(#function, "mytest - order btn tapped")
+                                        basVm.alertType = basVm.isAuthUser 
+                                        ? .preOrder(
+                                            totalPrice: basVm.totalPrice,
+                                            action: {
+                                                self.basVm.sendOrder()
+                                            })
+                                        : .unAuthUser(action: {
+                                            router.selectedTab = .account
+                                        })
+                                        basVm.isAlertPresented = true
                                     } label: {
                                         PrimaryButton(
                                             title: "Заказать",
@@ -55,32 +76,23 @@ struct BasketView: View {
                                         )
                                     }
                                 }
-                                .listRowInsets(Const.btnSectionInsets)
+                                .listRowInsets(EdgeInsets())
                                 .listRowBackground(Color.clear)
                             }
                         }
                     }
+                    .listStyle(.insetGrouped)
+                    .scrollIndicators(.hidden)
+                    .listRowSpacing(16)
+                    .contentMargins(.top, 24)
                 }
-                .listStyle(.insetGrouped)
-                .scrollIndicators(.hidden)
-                .listRowSpacing(16)
-                .contentMargins(.top, 24)
             }
         }
         .navigationTitle("Корзина")
         .navigationBarBackButtonHidden()
-        .alert(
-            "Удалить?",
-            isPresented: $basVm.isAlertPresented) {
-                Button("Отмена", role: .cancel) {}
-                Button("Удалить") {
-                    basVm.removeOrderItem()
-                    basVm.calculateTotalPrice()
-                }
-            } message: {
-                Text("Вы точно хотите удалить товар из Корзины?")
-            }
-        
+        .alert(isPresented: $basVm.isAlertPresented) {
+            return basVm.alertType?.view ?? Alert(title: Text(""))
+        }
     }
 }
 

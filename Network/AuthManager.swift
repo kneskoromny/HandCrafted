@@ -5,8 +5,12 @@ import Foundation
 
 final class AuthManager {
     
-    var isAuthorizedUser: Bool {
+    var isAuthUser: Bool {
         return Auth.auth().currentUser != nil
+    }
+    
+    var userId: String? {
+        return Auth.auth().currentUser?.uid
     }
     
     init() {

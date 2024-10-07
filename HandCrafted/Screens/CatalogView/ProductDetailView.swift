@@ -230,6 +230,7 @@ struct ProductDetailView: View {
                 if let selectedProduct = catVm.selectedProduct {
                     Button("В Корзину", role: .cancel) {
                         basVm.addProduct(selectedProduct)
+                        basVm.calculateTotalPrice()
                         catVm.removeSelectedProduct()
                         router.selectedTab = AppRouter.Tab.cart
                     }
