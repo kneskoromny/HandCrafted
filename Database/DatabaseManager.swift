@@ -179,14 +179,6 @@ extension DatabaseManager {
     
     func saveOrder(_ order: OrderDto) throws {
         try ref.child("\(Const.orders)/\(order.id)").setValue(from: order)
-        
-//        do {
-//            try ref.child("\(Const.usersPath)/\(id)").setValue(from: copy)
-//            completion(nil)
-//        } catch let error {
-//            print(#function, "mytest - error: \(error)")
-//            completion(error)
-//        }
     }
     
 }
