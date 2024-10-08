@@ -48,7 +48,7 @@ struct RegisterView: View {
                 
                 VStack(spacing: 16)  {
                     Button {
-                        appRouter.navigate(to: .signIn)
+                        appRouter.navigate(to: .signUp)
                     } label: {
                         HStack {
                             Spacer()

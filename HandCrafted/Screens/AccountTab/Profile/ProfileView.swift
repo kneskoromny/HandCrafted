@@ -84,9 +84,12 @@ struct ProfileView: View {
                         Button {
                             appRouter.navigate(to: .orders)
                         } label: {
+                            let subtitle = viewModel.orders.isEmpty 
+                            ? "У вас пока нет заказов"
+                            : "У вас \(viewModel.orders.count) заказов"
                             ArrowRightButton(
-                                title: "My orders",
-                                subtitle: "You have no current orders",
+                                title: "Мои заказы",
+                                subtitle: subtitle,
                                 font: Constant.AppFont.secondary,
                                 isSpacer: true
                             )
@@ -163,7 +166,7 @@ struct ProfileView: View {
             }
         }
         .onAppear {
-            viewModel.getUser()
+            viewModel.getUserInfo()
         }
     }
     

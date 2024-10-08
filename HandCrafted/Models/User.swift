@@ -10,9 +10,10 @@ struct User: Codable, Hashable, Identifiable {
     var id: String?
     var name: String?
     var email: String?
-    var password: String? // не должно быть здесь
     var birthday: String?
+    var city: String?
     
+    var password: String? // не должно быть здесь
     var avatarUrl: String?
     
     var isSalesSubOn: Bool = false

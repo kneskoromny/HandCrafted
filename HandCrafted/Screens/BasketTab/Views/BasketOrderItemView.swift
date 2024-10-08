@@ -18,7 +18,7 @@ struct BasketOrderItemView: View {
     }
     
     @EnvironmentObject var basVm: BasketViewModel
-    @StateObject var orderItem: OrderItem
+    @StateObject var orderItem: ProductItem
     
     var height: CGFloat
     
@@ -112,7 +112,7 @@ struct BasketOrderItemView: View {
 
 #Preview {
     BasketOrderItemView(
-        orderItem: OrderItem(
+        orderItem: ProductItem(
             product: MockData.mockProduct,
             quantity: 1
         ),

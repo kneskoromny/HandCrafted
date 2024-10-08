@@ -30,7 +30,7 @@ struct ProductListView: View {
                     LazyVGrid(columns: columns, spacing: 32) {
                         ForEach(catVm.filteredProductList) { product in
                             Button {
-                                router.navigate(to: .detail(product: product))
+                                router.navigate(to: .productDetail(product))
                             } label: {
                                 ProductView(product: product)
                             }

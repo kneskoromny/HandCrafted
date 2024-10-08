@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-struct ProfileTabView: View {
+struct AccountTabView: View {
     
     @StateObject var profileViewModel = ProfileViewModel()
     @EnvironmentObject var appRouter: AppRouter
@@ -14,7 +14,9 @@ struct ProfileTabView: View {
                     .navigationDestination(for: AppDestination.self) { destination in
                         switch destination {
                         case .orders:
-                            Text("Orders View")
+                            MyOrdersView(orders: profileViewModel.orders)
+                        case .orderDetail(let order):
+                            Text(order.id)
                         case .favorites:
                             Text("Favorites View")
                         case .shippingAddresses:
@@ -32,11 +34,11 @@ struct ProfileTabView: View {
             
         case .unAuth:
             NavigationStack(path: $appRouter.navPath) {
-                RegisterView()
+                LoginView()
                     .navigationDestination(for: AppDestination.self) { destination in
                         switch destination {
-                        case .signIn:
-                            LoginView()
+                        case .signUp:
+                            RegisterView()
                         case .forgotPassword:
                             ForgotPasswordView()
                         case .recoveryRequested:

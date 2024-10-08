@@ -211,7 +211,7 @@ struct ProductDetailView: View {
                             ) {
                                 catVm.removeSelectedProduct()
                                 catVm.clearFilteredProductList()
-                                router.navigate(to: .detail(product: product))
+                                router.navigate(to: .productDetail(product))
                             }
                         case .size:
                             if let size = product.sizes.first(where: { $0.name == newValue }) {
@@ -307,7 +307,7 @@ struct SimilarProductsScrollView: View {
                     Button {
                         catVm.removeSelectedProduct()
                         catVm.clearFilteredProductList()
-                        router.navigate(to: .detail(product: product))
+                        router.navigate(to: .productDetail(product))
                     } label: {
                         ProductView(product: product)
                     }

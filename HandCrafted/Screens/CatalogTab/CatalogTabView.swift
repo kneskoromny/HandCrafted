@@ -13,7 +13,7 @@ struct CatalogTabView: View {
                         ProductListView(
                             category: category
                         )
-                    case .detail(let product):
+                    case .productDetail(let product):
                         ProductDetailView(product: product)
                     default:
                         Text("Ошибка роутинга 🙀")
