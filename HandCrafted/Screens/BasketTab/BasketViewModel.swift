@@ -148,7 +148,7 @@ extension BasketViewModel {
                     quantity: $0.quantity
                 )
             }
-        let date = Date().formatted(date: .numeric, time: .omitted)
+        let date = Date().getFormattedString(date: .numeric, time: .omitted)
         let order = Order(
             id: orderId,
             userId: user.id ?? "",
@@ -194,13 +194,15 @@ private extension BasketViewModel {
     
     func getOrderId(user: User) -> String? {
         let converted = user.city?.replacingOccurrences(of: "\"", with: "").uppercased()
-        // TODO: добавить год к айди заказа
+        let year = Date().getString(component: .year)
         guard
             let orderNumber = (1...1000).randomElement(),
-            let cityId = converted?.prefix(3) else {
+            let firstLetter = converted?.first,
+            let lastLetter = converted?.last 
+        else {
             print(#function, "mytest - no user")
             return nil
         }
-        return "\(cityId) - \(orderNumber)"
+        return "\(firstLetter)\(lastLetter)\(year) - \(orderNumber)"
     }
 }

@@ -62,6 +62,8 @@
 		F7CF6D252CB46CE70094DB9D /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CF6D242CB46CE70094DB9D /* Order.swift */; };
 		F7CF6D272CB46D120094DB9D /* OrderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CF6D262CB46D120094DB9D /* OrderItem.swift */; };
 		F7CF6D292CB46D4C0094DB9D /* OrderStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CF6D282CB46D4C0094DB9D /* OrderStatus.swift */; };
+		F7CF6D2B2CB50E530094DB9D /* Date+getComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CF6D2A2CB50E530094DB9D /* Date+getComponent.swift */; };
+		F7CF6D2F2CB51A000094DB9D /* MyOrderStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7CF6D2E2CB51A000094DB9D /* MyOrderStatusView.swift */; };
 		F7EAFD042C7E2DE90052088E /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EAFD032C7E2DE90052088E /* StorageManager.swift */; };
 		F7EEE8A22C1F05260045C760 /* HandCraftedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EEE8A12C1F05260045C760 /* HandCraftedApp.swift */; };
 		F7EEE8A42C1F05260045C760 /* TabsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7EEE8A32C1F05260045C760 /* TabsView.swift */; };
@@ -118,6 +120,8 @@
 		F7CF6D242CB46CE70094DB9D /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		F7CF6D262CB46D120094DB9D /* OrderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItem.swift; sourceTree = "<group>"; };
 		F7CF6D282CB46D4C0094DB9D /* OrderStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStatus.swift; sourceTree = "<group>"; };
+		F7CF6D2A2CB50E530094DB9D /* Date+getComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+getComponent.swift"; sourceTree = "<group>"; };
+		F7CF6D2E2CB51A000094DB9D /* MyOrderStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrderStatusView.swift; sourceTree = "<group>"; };
 		F7EAFD032C7E2DE90052088E /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		F7EEE89E2C1F05260045C760 /* Хвоя.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Хвоя.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7EEE8A12C1F05260045C760 /* HandCraftedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandCraftedApp.swift; sourceTree = "<group>"; };
@@ -252,6 +256,7 @@
 				F7B0D2AE2C275AB40017DCD7 /* String+isValidEmail.swift */,
 				F737B7F52C77796300BC7E64 /* Binding+toUnwrapped.swift */,
 				F776BCC92CAC8B2E0099A3D6 /* Optional+Codable.swift */,
+				F7CF6D2A2CB50E530094DB9D /* Date+getComponent.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -307,6 +312,7 @@
 			isa = PBXGroup;
 			children = (
 				F7CF6D212CB45FA20094DB9D /* MyOrderView.swift */,
+				F7CF6D2E2CB51A000094DB9D /* MyOrderStatusView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -473,6 +479,7 @@
 				F713CD7F2C9437FC00C4F647 /* SecondaryButton.swift in Sources */,
 				F75831122C909AD700736C5F /* ProductListView.swift in Sources */,
 				F7C48A842C917B75008D2EAC /* ProductDetailView.swift in Sources */,
+				F7CF6D2B2CB50E530094DB9D /* Date+getComponent.swift in Sources */,
 				F7FEF2522C64CC8800DE29FC /* ForgotPasswordView.swift in Sources */,
 				F764FCDC2C6139C600506AA2 /* BasketTabView.swift in Sources */,
 				F7EAFD042C7E2DE90052088E /* StorageManager.swift in Sources */,
@@ -499,6 +506,7 @@
 				F79534792CA5C3CD001E7AE2 /* AppDestination.swift in Sources */,
 				F74F26F32C739F720095DC2E /* Constant.swift in Sources */,
 				F770AC812C8C71DE00161E02 /* Product.swift in Sources */,
+				F7CF6D2F2CB51A000094DB9D /* MyOrderStatusView.swift in Sources */,
 				F70FC9152C6A581100A6106E /* ArrowRightButton.swift in Sources */,
 				F7B0D2A92C275A3B0017DCD7 /* ProfileViewModel.swift in Sources */,
 				F7FEF2542C64DA9D00DE29FC /* RecoveryPasswordRequestedView.swift in Sources */,

@@ -15,6 +15,8 @@ struct AccountTabView: View {
                         switch destination {
                         case .orders:
                             MyOrdersView(orders: profileViewModel.orders)
+                        case .orderDetail(let order):
+                            Text(order.id)
                         case .favorites:
                             Text("Favorites View")
                         case .shippingAddresses:

@@ -18,6 +18,16 @@ struct MyOrdersView: View {
         }
         .navigationTitle("Мои заказы")
         .navigationBarBackButtonHidden()
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    router.navigateBack()
+                } label: {
+                    Label("Back", systemImage: "arrow.left")
+                }
+                .tint(.red)
+            }
+        }
         .listStyle(.insetGrouped)
         .scrollIndicators(.hidden)
         .listRowSpacing(16)
