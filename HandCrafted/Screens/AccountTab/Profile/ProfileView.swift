@@ -36,7 +36,7 @@ struct ProfileView: View {
     var body: some View {
         VStack {
             if viewModel.isLoading {
-                ProgressView("Loading...")
+                ProgressView("Минуточку...")
             } else {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
@@ -101,8 +101,8 @@ struct ProfileView: View {
                             appRouter.navigate(to: .favorites)
                         } label: {
                             ArrowRightButton(
-                                title: "My favorites",
-                                subtitle: "2 favorites goods are waiting...",
+                                title: "Мои избранные",
+                                subtitle: "У вас пока нет избранных товаров",
                                 font: Constant.AppFont.secondary,
                                 isSpacer: true
                             )
@@ -114,8 +114,8 @@ struct ProfileView: View {
                             appRouter.navigate(to: .paymentMethods)
                         } label: {
                             ArrowRightButton(
-                                title: "Payment methods",
-                                subtitle: "VISA **34",
+                                title: "Способы оплаты",
+                                subtitle: "У вас нет сохраненных способов оплаты",
                                 font: Constant.AppFont.secondary,
                                 isSpacer: true
                             )
@@ -127,8 +127,8 @@ struct ProfileView: View {
                             appRouter.navigate(to: .shippingAddresses)
                         } label: {
                             ArrowRightButton(
-                                title: "Shipping addresses",
-                                subtitle: "1 address",
+                                title: "Адреса доставки",
+                                subtitle: "У вас нет сохраненных адресов доставки",
                                 font: Constant.AppFont.secondary,
                                 isSpacer: true
                             )
@@ -140,8 +140,8 @@ struct ProfileView: View {
                             appRouter.navigate(to: .settings)
                         } label: {
                             ArrowRightButton(
-                                title: "Settings",
-                                subtitle: "Notifications, password etc.",
+                                title: "Настройки",
+                                subtitle: "Почта, пароль и т.д.",
                                 font: Constant.AppFont.secondary,
                                 isSpacer: true
                             )
@@ -152,7 +152,7 @@ struct ProfileView: View {
                             viewModel.logoutUser()
                         } label: {
                             PrimaryButton(
-                                title: "Logout",
+                                title: "Выйти",
                                 foregroundColor: .white,
                                 backgroundColor: .red
                             )
@@ -161,7 +161,7 @@ struct ProfileView: View {
                         Spacer()
                     }
                     .padding(Const.viewInsets)
-                    .navigationTitle("My profile")
+                    .navigationTitle("Мой профиль")
                 }
             }
         }
