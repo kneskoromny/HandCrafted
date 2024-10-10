@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SecondaryButton: View {
     
-    var title: LocalizedStringKey
+    var title: String
     var font: Font
     var foregroundColor: Color
     var backgroundColor: Color
