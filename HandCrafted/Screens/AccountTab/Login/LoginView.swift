@@ -2,100 +2,62 @@ import SwiftUI
 
 struct LoginView: View {
     
-    // MARK: - Const
-    
-    private enum Const {
-        static let viewInsets = EdgeInsets(
-            top: 0,
-            leading: 16,
-            bottom: 0,
-            trailing: 16
-        )
-        static let textFieldsInsets = EdgeInsets(
-            top: 48,
-            leading: 0,
-            bottom: 0,
-            trailing: 0
-        )
-        static let buttonsInsets = EdgeInsets(
-            top: 8,
-            leading: 0,
-            bottom: 0,
-            trailing: 0
-        )
-    }
-    
     // MARK: - State
     
     @EnvironmentObject var viewModel: ProfileViewModel
-    @EnvironmentObject var appRouter: AppRouter
+    @EnvironmentObject var router: AppRouter
     
     // MARK: - Body
     
     var body: some View {
-        if viewModel.isLoading {
-            ProgressView("Loading...")
-        } else {
-            VStack {
-                VStack(spacing: 16) {
-                    PrimaryTextField(
-                        placeholder: "E-mail",
-                        value: $viewModel.loginData.email
-                    )
-                    .textContentType(.emailAddress)
-                    .keyboardType(.emailAddress)
-                    PrimaryTextField(
-                        placeholder: "Password",
-                        value: $viewModel.loginData.password
-                    )
-                    .textContentType(.password)
-                    .keyboardType(.asciiCapable)
-                }
-                .padding(Const.textFieldsInsets)
-                
-                VStack(spacing: 16)  {
-                    Button {
-                        appRouter.navigate(to: .forgotPassword)
-                    } label: {
-                        HStack {
-                            Spacer()
-                            ArrowRightButton(
-                                title: "Forgot your password?",
-                                font: .subheadline,
-                                isSpacer: false
-                            )
-                        }
-                    }
-                    Button {
-                        viewModel.loginUser()
-                    } label: {
-                        PrimaryButton(
-                            title: "Sign In",
-                            foregroundColor: .white,
-                            backgroundColor: .green
-                        )
-                    }
-                }
-                .padding(Const.buttonsInsets)
-                Spacer()
+        List {
+            Section {
+                PrimaryTextField(
+                    placeholder: "E-mail",
+                    value: $viewModel.loginData.email
+                )
+                .modifier(EmailTextFieldModifier())
+                PrimaryTextField(
+                    placeholder: "Пароль",
+                    value: $viewModel.loginData.password
+                )
+                .modifier(PasswordTextFieldModifier())
             }
-            .padding(Const.viewInsets)
-            .navigationTitle("Sign In")
-            .navigationBarBackButtonHidden()
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        appRouter.navigateBack()
-                    } label: {
-                        Label("Back", systemImage: "arrow.left")
-                    }
-                    .tint(.red)
+            .listRowInsets(EdgeInsets())
+            Section {
+                Button {
+                    viewModel.loginUser()
+                } label: {
+                    PrimaryButton(
+                        title: "Войти"
+                    )
                 }
+                Button {
+                    
+                } label: {
+                    SecondaryButton(
+                        title: "Зарегистрироваться"
+                    )
+                }
+                .tint(.primary)
             }
+            .listRowInsets(
+                EdgeInsets(top: 1, leading: 1, bottom: 1, trailing: 1)
+            )
         }
+        .navigationTitle("Вход")
+        .navigationBarBackButtonHidden()
+        .listStyle(.insetGrouped)
+        .scrollIndicators(.hidden)
+        .listRowSpacing(12)
+        .listSectionSpacing(24)
+        .contentMargins(.top, 24)
     }
+    
 }
 
 #Preview {
     LoginView()
+        .environmentObject(ProfileViewModel())
+        .environmentObject(AppRouter())
 }

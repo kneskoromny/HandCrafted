@@ -34,11 +34,7 @@ struct ProfileView: View {
                                 router.navigate(to: .settings)
                             } label: {
                                 SecondaryButton(
-                                    title: "Редактировать данные",
-                                    font: Constant.AppFont.secondary,
-                                    foregroundColor: .primary,
-                                    backgroundColor: Color(uiColor: .systemBackground),
-                                    height: 44
+                                    title: "Редактировать данные"
                                 )
                             }
                             .padding(
@@ -94,7 +90,6 @@ struct ProfileView: View {
                 }
                 .listStyle(.insetGrouped)
                 .scrollIndicators(.hidden)
-                //                .listSectionSpacing(20)
                 .listRowSpacing(16)
                 .contentMargins(.top, 24)
             }

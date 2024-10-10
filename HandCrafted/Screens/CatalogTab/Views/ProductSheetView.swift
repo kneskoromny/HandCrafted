@@ -38,11 +38,7 @@ struct ProductSheetView: View {
                         isPresented = false
                     }) {
                         SecondaryButton(
-                            title: value,
-                            font: .body,
-                            foregroundColor: .primary,
-                            backgroundColor: Color(uiColor: .systemBackground),
-                            height: 44
+                            title: value
                         )
                     }
                 }

@@ -4,23 +4,23 @@ struct PrimaryTextField: View {
     
     private enum Const {
         static let viewInsets = EdgeInsets(
-            top: 8,
+            top: 16,
             leading: 16,
-            bottom: 8,
+            bottom: 16,
             trailing: 16
         )
     }
     
-    var placeholder: LocalizedStringKey
-    var error: LocalizedStringKey?
+    var placeholder: String
+    var error: String?
     @Binding var value: String
     
     var body: some View {
         VStack {
             HStack {
                 Text(placeholder)
-                    .font(.caption)
-                    .foregroundStyle(.gray)
+                    .font(Constant.AppFont.thirdly)
+                    .foregroundStyle(.secondary)
                 Spacer()
             }
             TextField(
@@ -28,9 +28,11 @@ struct PrimaryTextField: View {
                 text: $value
             )
             .textFieldStyle(.plain)
-            .font(.body)
+            .font(Constant.AppFont.secondary)
+            .foregroundStyle(.primary)
             .textInputAutocapitalization(.never)
             .disableAutocorrection(true)
+            .keyboardType(.emailAddress)
             if let error {
                 HStack {
                     Text(error)
@@ -41,21 +43,36 @@ struct PrimaryTextField: View {
             }
         }
         .padding(Const.viewInsets)
-        .background(Color.white)
+        .background(Color(uiColor: .systemBackground))
         .cornerRadius(10)
         .clipped()
-        .shadow(
-            color: Color.gray,
-            radius: 1,
-            x: 0,
-            y: 0
-        )
     }
 }
 
 #Preview {
     PrimaryTextField(
-        placeholder: "email",
-        value: .constant("test@mail.ru")
+        placeholder: "E-mail",
+        value: .constant("kneskoromny@gmail.com")
     )
+    .modifier(EmailTextFieldModifier())
+}
+
+struct EmailTextFieldModifier: ViewModifier {
+    
+    func body(content: Content) -> some View {
+        content
+            .textContentType(.emailAddress)
+            .keyboardType(.emailAddress)
+    }
+    
+}
+
+struct PasswordTextFieldModifier: ViewModifier {
+    
+    func body(content: Content) -> some View {
+        content
+            .textContentType(.password)
+            .keyboardType(.asciiCapable)
+    }
+    
 }
