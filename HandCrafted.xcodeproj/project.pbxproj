@@ -19,7 +19,6 @@
 		F73E29972CADD08F00B74EEC /* ProductItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E29962CADD08F00B74EEC /* ProductItem.swift */; };
 		F7403A062C282E8C00A9A138 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7403A052C282E8C00A9A138 /* LoginView.swift */; };
 		F7403A082C28345D00A9A138 /* PrimaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7403A072C28345D00A9A138 /* PrimaryButton.swift */; };
-		F7403A0D2C28633800A9A138 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7403A0C2C28633800A9A138 /* ProfileView.swift */; };
 		F74F26F32C739F720095DC2E /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74F26F22C739F720095DC2E /* Constant.swift */; };
 		F74F26F52C73A1810095DC2E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74F26F42C73A1810095DC2E /* SettingsView.swift */; };
 		F75831122C909AD700736C5F /* ProductListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F75831112C909AD700736C5F /* ProductListView.swift */; };
@@ -76,6 +75,7 @@
 		F7FEF2542C64DA9D00DE29FC /* RecoveryPasswordRequestedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FEF2532C64DA9D00DE29FC /* RecoveryPasswordRequestedView.swift */; };
 		F7FEF2592C67D2C800DE29FC /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FEF2582C67D2C700DE29FC /* AuthManager.swift */; };
 		F7FEF25C2C67FF9A00DE29FC /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FEF25B2C67FF9A00DE29FC /* DatabaseManager.swift */; };
+		F7FF0D2E2CB7D141007AB024 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FF0D2D2CB7D141007AB024 /* ProfileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,7 +91,6 @@
 		F73E29962CADD08F00B74EEC /* ProductItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductItem.swift; sourceTree = "<group>"; };
 		F7403A052C282E8C00A9A138 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		F7403A072C28345D00A9A138 /* PrimaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryButton.swift; sourceTree = "<group>"; };
-		F7403A0C2C28633800A9A138 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		F74F26F22C739F720095DC2E /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		F74F26F42C73A1810095DC2E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		F75831112C909AD700736C5F /* ProductListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListView.swift; sourceTree = "<group>"; };
@@ -137,6 +136,7 @@
 		F7FEF2532C64DA9D00DE29FC /* RecoveryPasswordRequestedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPasswordRequestedView.swift; sourceTree = "<group>"; };
 		F7FEF2582C67D2C700DE29FC /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		F7FEF25B2C67FF9A00DE29FC /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		F7FF0D2D2CB7D141007AB024 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -284,10 +284,10 @@
 		F7CF6D1A2CB458040094DB9D /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				F7FF0D2D2CB7D141007AB024 /* ProfileView.swift */,
+				F7B0D2A82C275A3B0017DCD7 /* ProfileViewModel.swift */,
 				F7CF6D232CB45FAD0094DB9D /* Views */,
 				F7CF6D192CB457B80094DB9D /* Settings */,
-				F7B0D2A82C275A3B0017DCD7 /* ProfileViewModel.swift */,
-				F7403A0C2C28633800A9A138 /* ProfileView.swift */,
 				F7CF6D1E2CB45B6D0094DB9D /* MyOrders */,
 			);
 			path = Profile;
@@ -487,6 +487,7 @@
 				F7C48A842C917B75008D2EAC /* ProductDetailView.swift in Sources */,
 				F7CF6D2B2CB50E530094DB9D /* Date+getComponent.swift in Sources */,
 				F7FEF2522C64CC8800DE29FC /* ForgotPasswordView.swift in Sources */,
+				F7FF0D2E2CB7D141007AB024 /* ProfileView.swift in Sources */,
 				F764FCDC2C6139C600506AA2 /* BasketTabView.swift in Sources */,
 				F7EAFD042C7E2DE90052088E /* StorageManager.swift in Sources */,
 				F779EA762C9C7A230006ECFE /* BasketView.swift in Sources */,
@@ -526,7 +527,6 @@
 				F7B0D2AB2C275A6D0017DCD7 /* AlertContext.swift in Sources */,
 				F7403A062C282E8C00A9A138 /* LoginView.swift in Sources */,
 				F768E9012C96DB6200E92AAC /* SelectableButton.swift in Sources */,
-				F7403A0D2C28633800A9A138 /* ProfileView.swift in Sources */,
 				F7CF6D222CB45FA20094DB9D /* MyOrderView.swift in Sources */,
 				F770AC872C8CA0F900161E02 /* CategoryView.swift in Sources */,
 				F7FEF2502C617FB800DE29FC /* RegisterView.swift in Sources */,

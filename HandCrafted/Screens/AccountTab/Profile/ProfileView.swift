@@ -1,153 +1,84 @@
 import SwiftUI
-import SwiftData
 
 struct ProfileView: View {
-    
-    // MARK: - Const
-    
-    private enum Const {
-        static let viewInsets = EdgeInsets(
-            top: 24,
-            leading: 8,
-            bottom: 0,
-            trailing: 8
-        )
-        static let cellInsets = EdgeInsets(
-            top: 0,
-            leading: 8,
-            bottom: 0,
-            trailing: 8
-        )
-        static let buttonInsets = EdgeInsets(
-            top: 8,
-            leading: 0,
-            bottom: 0,
-            trailing: 0
-        )
-    }
     
     // MARK: - State
     
     @EnvironmentObject var viewModel: ProfileViewModel
-    @EnvironmentObject var appRouter: AppRouter
-    
-    // MARK: - Body
+    @EnvironmentObject var router: AppRouter
     
     var body: some View {
         VStack {
             if viewModel.isLoading {
                 ProgressView("Минуточку...")
             } else {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 24) {
-                        HStack(spacing: 16) {
-                            if let urlString = viewModel.user.avatarUrl,
-                               let url = URL(string: urlString) {
-                                // TODO: how to cache image?
-                                AsyncImage(url: url,
-                                           content: { image in
-                                    image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 100, height: 100)
-                                        .cornerRadius(50)
-                                },
-                                           placeholder: {
-                                    ZStack(alignment: .center) {
-                                        Circle()
-                                        Text("😍")
-                                            .font(.largeTitle)
-                                    }
-                                    .frame(width: 100, height: 100)
-                                    .cornerRadius(50)
-                                })
-                            } else {
-                                ZStack(alignment: .center) {
-                                    Circle()
-                                    Text("😇")
-                                        .font(.largeTitle)
+                List {
+                    Section {
+                        VStack(spacing: 16) {
+                            VStack(spacing: 4) {
+                                HStack {
+                                    Text("Кирилл Нескоромный")
+                                        .font(Constant.AppFont.primary)
+                                        .fontWeight(.semibold)
+                                        .foregroundStyle(.primary)
+                                    Spacer()
                                 }
-                                .frame(width: 100, height: 100)
-                                .cornerRadius(50)
+                                HStack {
+                                    Text("kneskoromny@gmail.com")
+                                        .font(Constant.AppFont.secondary)
+                                        .foregroundStyle(.secondary)
+                                    Spacer()
+                                }
                             }
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text(viewModel.user.name ?? "User without name :(")
-                                    .font(Constant.AppFont.primary)
-                                    .foregroundStyle(.black)
-                                    .multilineTextAlignment(.leading)
-                                Text(viewModel.user.email ?? "")
-                                    .font(Constant.AppFont.secondary)
-                                    .foregroundStyle(.gray)
-                                
+                            Button {
+                                router.navigate(to: .settings)
+                            } label: {
+                                SecondaryButton(
+                                    title: "Редактировать данные",
+                                    font: Constant.AppFont.secondary,
+                                    foregroundColor: .primary,
+                                    backgroundColor: Color(uiColor: .systemBackground),
+                                    height: 44
+                                )
                             }
+                            .padding(
+                                EdgeInsets(
+                                    top: 0,
+                                    leading: 0,
+                                    bottom: 4,
+                                    trailing: 0
+                                )
+                            )
                         }
+                    }
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
+                    Section {
+                        let subtitle = viewModel.orders.isEmpty
+                        ? "У вас пока нет заказов"
+                        : "У вас \(viewModel.orders.count) заказов"
                         Button {
-                            appRouter.navigate(to: .orders)
+                            router.navigate(to: .orders)
                         } label: {
-                            let subtitle = viewModel.orders.isEmpty 
-                            ? "У вас пока нет заказов"
-                            : "У вас \(viewModel.orders.count) заказов"
-                            ArrowRightButton(
+                            ProfileButton(
                                 title: "Мои заказы",
-                                subtitle: subtitle,
-                                font: Constant.AppFont.secondary,
-                                isSpacer: true
+                                subtitle: subtitle
                             )
                         }
-                        .frame(height: 44)
-                        .padding(Const.cellInsets)
-                        Divider()
+                        .tint(.primary)
                         Button {
-                            appRouter.navigate(to: .favorites)
+                            router.navigate(to: .shippingAddresses)
                         } label: {
-                            ArrowRightButton(
-                                title: "Мои избранные",
-                                subtitle: "У вас пока нет избранных товаров",
-                                font: Constant.AppFont.secondary,
-                                isSpacer: true
-                            )
-                        }
-                        .frame(height: 44)
-                        .padding(Const.cellInsets)
-                        Divider()
-                        Button {
-                            appRouter.navigate(to: .paymentMethods)
-                        } label: {
-                            ArrowRightButton(
-                                title: "Способы оплаты",
-                                subtitle: "У вас нет сохраненных способов оплаты",
-                                font: Constant.AppFont.secondary,
-                                isSpacer: true
-                            )
-                        }
-                        .frame(height: 44)
-                        .padding(Const.cellInsets)
-                        Divider()
-                        Button {
-                            appRouter.navigate(to: .shippingAddresses)
-                        } label: {
-                            ArrowRightButton(
+                            ProfileButton(
                                 title: "Адреса доставки",
-                                subtitle: "У вас нет сохраненных адресов доставки",
-                                font: Constant.AppFont.secondary,
-                                isSpacer: true
+                                subtitle: "У вас нет сохраненных адресов доставки"
                             )
                         }
-                        .frame(height: 44)
-                        .padding(Const.cellInsets)
-                        Divider()
-                        Button {
-                            appRouter.navigate(to: .settings)
-                        } label: {
-                            ArrowRightButton(
-                                title: "Настройки",
-                                subtitle: "Почта, пароль и т.д.",
-                                font: Constant.AppFont.secondary,
-                                isSpacer: true
-                            )
-                        }
-                        .frame(height: 44)
-                        .padding(Const.cellInsets)
+                        .tint(.primary)
+                    }
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
+                    Section {
                         Button {
                             viewModel.logoutUser()
                         } label: {
@@ -157,14 +88,18 @@ struct ProfileView: View {
                                 backgroundColor: .red
                             )
                         }
-                        .padding(Const.buttonInsets)
-                        Spacer()
                     }
-                    .padding(Const.viewInsets)
-                    .navigationTitle("Мой профиль")
+                    .listRowInsets(EdgeInsets())
+                    .listRowBackground(Color.clear)
                 }
+                .listStyle(.insetGrouped)
+                .scrollIndicators(.hidden)
+                //                .listSectionSpacing(20)
+                .listRowSpacing(16)
+                .contentMargins(.top, 24)
             }
         }
+        .navigationTitle("Мой профиль")
         .onAppear {
             viewModel.getUserInfo()
         }
@@ -174,4 +109,48 @@ struct ProfileView: View {
 
 #Preview {
     ProfileView()
+        .environmentObject(ProfileViewModel())
+        .environmentObject(AppRouter())
+}
+
+struct ProfileButton: View {
+    
+    private enum Const {
+        static let viewInsets = EdgeInsets(
+            top: 16,
+            leading: 16,
+            bottom: 16,
+            trailing: 16
+        )
+    }
+    
+    var title: String
+    var subtitle: String?
+    
+    var body: some View {
+        HStack {
+            VStack(spacing: 8) {
+                HStack {
+                    Text(title)
+                        .font(Constant.AppFont.secondary)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.primary)
+                    Spacer()
+                }
+                if let subtitle {
+                    HStack {
+                        Text(subtitle)
+                            .font(Constant.AppFont.secondary)
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                    }
+                }
+            }
+            Image(uiImage: UIImage(named: "chevronRight") ?? UIImage())
+        }
+        .padding(Const.viewInsets)
+        .background(Color(uiColor: .systemBackground))
+        .cornerRadius(10)
+        .clipped()
+    }
 }

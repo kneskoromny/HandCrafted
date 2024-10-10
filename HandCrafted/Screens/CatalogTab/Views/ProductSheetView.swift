@@ -38,7 +38,7 @@ struct ProductSheetView: View {
                         isPresented = false
                     }) {
                         SecondaryButton(
-                            title: LocalizedStringKey(value),
+                            title: value,
                             font: .body,
                             foregroundColor: .primary,
                             backgroundColor: Color(uiColor: .systemBackground),
