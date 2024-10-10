@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		F701674F2CB2A2920087E724 /* AlertType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F701674E2CB2A2920087E724 /* AlertType.swift */; };
+		F70861862CB71220003F8721 /* MyOrderDetailItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70861852CB71220003F8721 /* MyOrderDetailItemView.swift */; };
 		F70B64C82CAB36B100C5E483 /* UrlImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70B64C72CAB36B100C5E483 /* UrlImageView.swift */; };
 		F70B64CA2CAB376D00C5E483 /* BasketOrderItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70B64C92CAB376D00C5E483 /* BasketOrderItemView.swift */; };
 		F70FC9152C6A581100A6106E /* ArrowRightButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F70FC9142C6A581100A6106E /* ArrowRightButton.swift */; };
 		F713CD7F2C9437FC00C4F647 /* SecondaryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F713CD7E2C9437FC00C4F647 /* SecondaryButton.swift */; };
+		F72CF7722CB5C55F00361F1B /* MyOrderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72CF7712CB5C55F00361F1B /* MyOrderDetailView.swift */; };
 		F737B7F62C77796300BC7E64 /* Binding+toUnwrapped.swift in Sources */ = {isa = PBXBuildFile; fileRef = F737B7F52C77796300BC7E64 /* Binding+toUnwrapped.swift */; };
 		F737B7F82C77987600BC7E64 /* AccountTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F737B7F72C77987600BC7E64 /* AccountTabView.swift */; };
 		F73E29972CADD08F00B74EEC /* ProductItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73E29962CADD08F00B74EEC /* ProductItem.swift */; };
@@ -78,10 +80,12 @@
 
 /* Begin PBXFileReference section */
 		F701674E2CB2A2920087E724 /* AlertType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertType.swift; sourceTree = "<group>"; };
+		F70861852CB71220003F8721 /* MyOrderDetailItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrderDetailItemView.swift; sourceTree = "<group>"; };
 		F70B64C72CAB36B100C5E483 /* UrlImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlImageView.swift; sourceTree = "<group>"; };
 		F70B64C92CAB376D00C5E483 /* BasketOrderItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketOrderItemView.swift; sourceTree = "<group>"; };
 		F70FC9142C6A581100A6106E /* ArrowRightButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrowRightButton.swift; sourceTree = "<group>"; };
 		F713CD7E2C9437FC00C4F647 /* SecondaryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryButton.swift; sourceTree = "<group>"; };
+		F72CF7712CB5C55F00361F1B /* MyOrderDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrderDetailView.swift; sourceTree = "<group>"; };
 		F737B7F52C77796300BC7E64 /* Binding+toUnwrapped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+toUnwrapped.swift"; sourceTree = "<group>"; };
 		F737B7F72C77987600BC7E64 /* AccountTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTabView.swift; sourceTree = "<group>"; };
 		F73E29962CADD08F00B74EEC /* ProductItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductItem.swift; sourceTree = "<group>"; };
@@ -304,6 +308,7 @@
 			isa = PBXGroup;
 			children = (
 				F7CF6D1C2CB45B2F0094DB9D /* MyOrdersView.swift */,
+				F72CF7712CB5C55F00361F1B /* MyOrderDetailView.swift */,
 			);
 			path = MyOrders;
 			sourceTree = "<group>";
@@ -313,6 +318,7 @@
 			children = (
 				F7CF6D212CB45FA20094DB9D /* MyOrderView.swift */,
 				F7CF6D2E2CB51A000094DB9D /* MyOrderStatusView.swift */,
+				F70861852CB71220003F8721 /* MyOrderDetailItemView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -491,6 +497,7 @@
 				F776BCCA2CAC8B2E0099A3D6 /* Optional+Codable.swift in Sources */,
 				F7B0D2AF2C275AB40017DCD7 /* String+isValidEmail.swift in Sources */,
 				F770AC852C8C7EB600161E02 /* CatalogView.swift in Sources */,
+				F72CF7722CB5C55F00361F1B /* MyOrderDetailView.swift in Sources */,
 				F7EEE8A42C1F05260045C760 /* TabsView.swift in Sources */,
 				F768E9032C96E5AB00E92AAC /* ProductSheetView.swift in Sources */,
 				F7403A082C28345D00A9A138 /* PrimaryButton.swift in Sources */,
@@ -515,6 +522,7 @@
 				F79FDC542C9A132000BCA68A /* NoImageView.swift in Sources */,
 				F737B7F82C77987600BC7E64 /* AccountTabView.swift in Sources */,
 				F79534772CA5AC96001E7AE2 /* AppRouter.swift in Sources */,
+				F70861862CB71220003F8721 /* MyOrderDetailItemView.swift in Sources */,
 				F7B0D2AB2C275A6D0017DCD7 /* AlertContext.swift in Sources */,
 				F7403A062C282E8C00A9A138 /* LoginView.swift in Sources */,
 				F768E9012C96DB6200E92AAC /* SelectableButton.swift in Sources */,
