@@ -83,11 +83,7 @@ struct MyOrderView: View {
                     router.navigate(to: .orderDetail(order))
                 } label: {
                     SecondaryButton(
-                        title: "Детали",
-                        font: Constant.AppFont.secondary,
-                        foregroundColor: .primary,
-                        backgroundColor: Color(uiColor: .systemBackground),
-                        height: 36
+                        title: "Детали"
                     )
 //                    .frame(width: 150)
                 }

@@ -37,7 +37,7 @@ struct AccountTabView: View {
                 LoginView()
                     .navigationDestination(for: AppDestination.self) { destination in
                         switch destination {
-                        case .signUp:
+                        case .register:
                             RegisterView()
                         case .forgotPassword:
                             ForgotPasswordView()
