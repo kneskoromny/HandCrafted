@@ -33,7 +33,7 @@ struct LoginView: View {
                     )
                 }
                 Button {
-                    
+                    router.navigate(to: .register)
                 } label: {
                     SecondaryButton(
                         title: "Зарегистрироваться"

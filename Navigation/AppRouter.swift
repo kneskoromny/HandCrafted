@@ -3,7 +3,7 @@ import SwiftUI
 final class AppRouter: ObservableObject {
     
     @Published var navPath = NavigationPath()
-    @Published var selectedTab: Tab = .catalog
+    @Published var selectedTab: Tab = .account
 
     public enum Tab: Hashable {
         case catalog
