@@ -10,9 +10,9 @@ struct PrimaryTextField: View {
             trailing: 16
         )
     }
-    
+    var inputType: InputType
     var placeholder: String
-    var error: String?
+    @State var error: String?
     @Binding var value: String
     
     var body: some View {
@@ -32,7 +32,12 @@ struct PrimaryTextField: View {
             .foregroundStyle(.primary)
             .textInputAutocapitalization(.never)
             .disableAutocorrection(true)
-            .keyboardType(.emailAddress)
+            .keyboardType(inputType.keyboardType)
+            .textContentType(inputType.textContentType)
+            .onChange(of: value) { oldValue, newValue in
+                print(#function, "mytest - old: \(oldValue), new: \(newValue)")
+                value = inputType.format(newValue)
+            }
             if let error {
                 HStack {
                     Text(error)
@@ -51,10 +56,10 @@ struct PrimaryTextField: View {
 
 #Preview {
     PrimaryTextField(
+        inputType: .email,
         placeholder: "E-mail",
         value: .constant("kneskoromny@gmail.com")
     )
-    .modifier(EmailTextFieldModifier())
 }
 
 struct EmailTextFieldModifier: ViewModifier {

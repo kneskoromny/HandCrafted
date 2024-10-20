@@ -36,26 +36,31 @@ struct RegisterView: View {
                     // Имя, Дата рождения, Город, Номер телефона, E-mail
                     Section {
                         PrimaryTextField(
+                            inputType: .name,
                             placeholder: "Имя",
                             value: $regVm.registerData.name
                         )
                         PrimaryTextField(
+                            inputType: .birthDate,
                             placeholder: "Дата рождения",
                             value: $regVm.registerData.birthDate
                         )
                         PrimaryTextField(
+                            inputType: .city,
                             placeholder: "Город",
                             value: $regVm.registerData.city
                         )
                         PrimaryTextField(
+                            inputType: .phone,
                             placeholder: "Номер телефона",
                             value: $regVm.registerData.phone
                         )
                         PrimaryTextField(
+                            inputType: .email,
                             placeholder: "E-mail",
                             value: $regVm.registerData.email
                         )
-                        .modifier(EmailTextFieldModifier())
+//                        .modifier(EmailTextFieldModifier())
                     } header: {
                         Text("Личные данные")
                             .font(Constant.AppFont.secondary)
@@ -66,11 +71,13 @@ struct RegisterView: View {
                     // Пароль, Подтверждение пароля, Вью с правилами пароля
                     Section {
                         PrimaryTextField(
+                            inputType: .password,
                             placeholder: "Пароль",
                             value: $regVm.registerData.password
                         )
                         .modifier(PasswordTextFieldModifier())
                         PrimaryTextField(
+                            inputType: .confirm,
                             placeholder: "Подтверждение пароля",
                             value: $regVm.registerData.confirm
                         )

@@ -18,11 +18,13 @@ struct LoginView: View {
                 List {
                     Section {
                         PrimaryTextField(
+                            inputType: .email,
                             placeholder: "E-mail",
                             value: $loginVm.loginData.email
                         )
                         .modifier(EmailTextFieldModifier())
                         PrimaryTextField(
+                            inputType: .password,
                             placeholder: "Пароль",
                             value: $loginVm.loginData.password
                         )
