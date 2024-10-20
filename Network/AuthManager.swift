@@ -18,12 +18,18 @@ final class AuthManager {
     }
     
     func register(
-        withEmail email: String,
+        email: String,
         password: String,
-        completion: @escaping (Error?) -> Void
+        completion: @escaping (Result<AuthDataResult, Error>) -> Void
     ) {
-        Auth.auth().createUser(withEmail: email, password: password) { _, error in
-            completion(error)
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            if let authResult,
+               error == nil {
+                completion(.success(authResult))
+            }
+            else if let error {
+                completion(.failure(error))
+            }
         }
     }
     

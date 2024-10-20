@@ -1,0 +1,53 @@
+import SwiftUI
+
+struct RegisterData {
+    
+    var name: String = ""
+    var birthDate: String = ""
+    var city: String = ""
+    var phone: String = ""
+    var email: String = ""
+    
+    var password: String = ""
+    var confirm: String = ""
+    
+}
+
+final class RegisterViewModel: ObservableObject {
+    
+    @Published var registerData = RegisterData()
+    @Published var isLoading = false
+    
+    private let authManager = AuthManager()
+    private let dbManager = DatabaseManager()
+    
+    func registerUser(completion: (() -> Void)?)  {
+        isLoading = true
+        authManager.register(email: registerData.email, password: registerData.password) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let response):
+                let user = User(
+                    id: response.user.uid,
+                    name: registerData.name,
+                    birthDate: registerData.birthDate,
+                    city: registerData.city,
+                    phone: registerData.phone,
+                    email: registerData.email
+                )
+                do {
+                    try self.dbManager.saveUser(user)
+                    self.isLoading = false
+                    completion?()
+                } catch let error {
+                    self.isLoading = false
+                    print(#function, "mytest - save user error: \(error)")
+                }
+            case .failure(let error):
+                self.isLoading = false
+                print(#function, "mytest - register error: \(error)")
+            }
+        }
+    }
+    
+}
