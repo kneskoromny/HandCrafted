@@ -1,21 +1,35 @@
 import SwiftUI
 
-struct RegisterData {
-    
-    var name: String = ""
-    var birthDate: String = ""
-    var city: String = ""
-    var phone: String = ""
-    var email: String = ""
-    
-    var password: String = ""
-    var confirm: String = ""
-    
-}
-
 final class RegisterViewModel: ObservableObject {
     
+    struct RegisterData {
+        
+        var name: String = ""
+        var birthDate: String = ""
+        var city: String = ""
+        var phone: String = ""
+        var email: String = ""
+        
+        var password: String = ""
+        var confirm: String = ""
+        
+    }
+    
+    struct ErrorData {
+        
+        var name: String = ""
+        var birthDate: String = ""
+        var city: String = ""
+        var phone: String = ""
+        var email: String = ""
+        
+        var password: String = ""
+        var confirm: String = ""
+        
+    }
+    
     @Published var registerData = RegisterData()
+    @Published var errorData = ErrorData()
     @Published var isLoading = false
     
     private let authManager = AuthManager()

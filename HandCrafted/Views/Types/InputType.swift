@@ -10,6 +10,25 @@ enum InputType {
     case password
     case confirm
     
+    var placeholder: String {
+        switch self {
+        case .name:
+            return "Имя"
+        case .birthDate:
+            return "Дата рождения"
+        case .city:
+            return "Город проживания"
+        case .phone:
+            return "Номер телефона"
+        case .email:
+            return "E-mail"
+        case .password:
+            return "Пароль"
+        case .confirm:
+            return "Подтверждение пароля"
+        }
+    }
+    
     var textContentType: UITextContentType {
         switch self {
         case .name:
@@ -49,10 +68,23 @@ extension InputType {
             return getTextMasked(mask, text: text)
         case .phone:
             let mask = "+# (###) ###-##-##"
-            var updated = text.count <= 2 ? "7" : text
+            let updated = text.count <= 2 ? "7" : text
             return getTextMasked(mask, text: updated)
         default:
             return text
+        }
+    }
+    // TODO: продолжить здесь с настройки правил валидации
+    func validate(_ text: String) throws {
+        switch self {
+        case .name, .city, .phone, .confirm:
+            return
+        case .birthDate:
+            throw InputValidateError.invalidBirthDate
+        case .email:
+            throw InputValidateError.invalidEmail
+        case .password:
+            throw InputValidateError.invalidPassword
         }
     }
     

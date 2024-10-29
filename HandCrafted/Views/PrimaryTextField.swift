@@ -11,14 +11,13 @@ struct PrimaryTextField: View {
         )
     }
     var inputType: InputType
-    var placeholder: String
-    @State var error: String?
     @Binding var value: String
+    @Binding var error: String
     
     var body: some View {
         VStack {
             HStack {
-                Text(placeholder)
+                Text(inputType.placeholder)
                     .font(Constant.AppFont.thirdly)
                     .foregroundStyle(.secondary)
                 Spacer()
@@ -37,11 +36,16 @@ struct PrimaryTextField: View {
             .onChange(of: value) { oldValue, newValue in
                 print(#function, "mytest - old: \(oldValue), new: \(newValue)")
                 value = inputType.format(newValue)
+                do {
+                    try inputType.validate(value)
+                } catch {
+                    self.error = error.localizedDescription
+                }
             }
-            if let error {
+            if error != "" {
                 HStack {
                     Text(error)
-                        .font(.caption)
+                        .font(Constant.AppFont.thirdly)
                         .foregroundStyle(.red)
                     Spacer()
                 }
@@ -57,27 +61,7 @@ struct PrimaryTextField: View {
 #Preview {
     PrimaryTextField(
         inputType: .email,
-        placeholder: "E-mail",
-        value: .constant("kneskoromny@gmail.com")
+        value: .constant("kneskoromny@gmail.com"),
+        error: .constant("")
     )
-}
-
-struct EmailTextFieldModifier: ViewModifier {
-    
-    func body(content: Content) -> some View {
-        content
-            .textContentType(.emailAddress)
-            .keyboardType(.emailAddress)
-    }
-    
-}
-
-struct PasswordTextFieldModifier: ViewModifier {
-    
-    func body(content: Content) -> some View {
-        content
-            .textContentType(.password)
-            .keyboardType(.asciiCapable)
-    }
-    
 }

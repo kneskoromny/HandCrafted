@@ -37,30 +37,29 @@ struct RegisterView: View {
                     Section {
                         PrimaryTextField(
                             inputType: .name,
-                            placeholder: "Имя",
-                            value: $regVm.registerData.name
+                            value: $regVm.registerData.name,
+                            error: $regVm.errorData.name
                         )
                         PrimaryTextField(
                             inputType: .birthDate,
-                            placeholder: "Дата рождения",
-                            value: $regVm.registerData.birthDate
+                            value: $regVm.registerData.birthDate,
+                            error: $regVm.errorData.birthDate
                         )
                         PrimaryTextField(
                             inputType: .city,
-                            placeholder: "Город",
-                            value: $regVm.registerData.city
+                            value: $regVm.registerData.city,
+                            error: $regVm.errorData.city
                         )
                         PrimaryTextField(
                             inputType: .phone,
-                            placeholder: "Номер телефона",
-                            value: $regVm.registerData.phone
+                            value: $regVm.registerData.phone,
+                            error: $regVm.errorData.phone
                         )
                         PrimaryTextField(
                             inputType: .email,
-                            placeholder: "E-mail",
-                            value: $regVm.registerData.email
+                            value: $regVm.registerData.email,
+                            error: $regVm.errorData.email
                         )
-//                        .modifier(EmailTextFieldModifier())
                     } header: {
                         Text("Личные данные")
                             .font(Constant.AppFont.secondary)
@@ -68,20 +67,19 @@ struct RegisterView: View {
                             .foregroundStyle(.secondary)
                     }
                     .listRowInsets(EdgeInsets())
+                    
                     // Пароль, Подтверждение пароля, Вью с правилами пароля
                     Section {
                         PrimaryTextField(
                             inputType: .password,
-                            placeholder: "Пароль",
-                            value: $regVm.registerData.password
+                            value: $regVm.registerData.password,
+                            error: $regVm.errorData.password
                         )
-                        .modifier(PasswordTextFieldModifier())
                         PrimaryTextField(
                             inputType: .confirm,
-                            placeholder: "Подтверждение пароля",
-                            value: $regVm.registerData.confirm
+                            value: $regVm.registerData.confirm,
+                            error: $regVm.errorData.confirm
                         )
-                        .modifier(PasswordTextFieldModifier())
                     } header: {
                         Text("Пароль")
                             .font(Constant.AppFont.secondary)
@@ -89,6 +87,7 @@ struct RegisterView: View {
                             .foregroundStyle(.secondary)
                     }
                     .listRowInsets(EdgeInsets())
+                    
                     // Кнопка
                     Section {
                         Button {

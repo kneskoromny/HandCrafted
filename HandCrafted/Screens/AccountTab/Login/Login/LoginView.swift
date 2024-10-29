@@ -19,16 +19,14 @@ struct LoginView: View {
                     Section {
                         PrimaryTextField(
                             inputType: .email,
-                            placeholder: "E-mail",
-                            value: $loginVm.loginData.email
+                            value: $loginVm.loginData.email,
+                            error: $loginVm.errorData.email
                         )
-                        .modifier(EmailTextFieldModifier())
                         PrimaryTextField(
                             inputType: .password,
-                            placeholder: "Пароль",
-                            value: $loginVm.loginData.password
+                            value: $loginVm.loginData.password,
+                            error: $loginVm.errorData.password
                         )
-                        .modifier(PasswordTextFieldModifier())
                     }
                     .listRowInsets(EdgeInsets())
                     Section {
