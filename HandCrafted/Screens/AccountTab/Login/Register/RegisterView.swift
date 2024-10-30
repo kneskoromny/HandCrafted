@@ -70,14 +70,16 @@ struct RegisterView: View {
                     
                     // Пароль, Подтверждение пароля, Вью с правилами пароля
                     Section {
-                        PrimaryTextField(
+                        SecureTextField(
                             inputType: .password,
                             value: $regVm.registerData.password,
+                            comparsionValue: $regVm.registerData.password,
                             error: $regVm.errorData.password
                         )
-                        PrimaryTextField(
+                        SecureTextField(
                             inputType: .confirm,
                             value: $regVm.registerData.confirm,
+                            comparsionValue: $regVm.registerData.password,
                             error: $regVm.errorData.confirm
                         )
                     } header: {
@@ -127,7 +129,7 @@ struct RegisterView: View {
             isPresented: $regVm.isAlertPresented) {
                 Button("OK") {}
             } message: {
-                Text("Чтобы зарегистрироваться необходимо заполнить все поля.")
+                Text("Чтобы зарегистрироваться заполните все поля или устраните ошибки.")
             }
 
         

@@ -33,7 +33,7 @@ final class RegisterViewModel: ObservableObject {
         
         // TODO: оптимизировать
         var isErrored: Bool {
-            return name != "" && birthDate != "" && city != "" && phone != "" && email != "" && password != "" && confirm != ""
+            return name != "" || birthDate != "" || city != "" || phone != "" || email != "" || password != "" || confirm != ""
         }
         
     }

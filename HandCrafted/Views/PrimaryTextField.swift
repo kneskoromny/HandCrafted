@@ -36,7 +36,7 @@ struct PrimaryTextField: View {
             .keyboardType(inputType.keyboardType)
             .textContentType(inputType.textContentType)
             .onChange(of: value) { oldValue, newValue in
-                print(#function, "mytest - old: \(oldValue), new: \(newValue)")
+//                print(#function, "mytest - old: \(oldValue), new: \(newValue)")
                 value = inputType.format(newValue)
                 self.error = ""
             }

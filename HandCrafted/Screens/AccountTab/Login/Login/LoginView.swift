@@ -22,9 +22,10 @@ struct LoginView: View {
                             value: $loginVm.loginData.email,
                             error: $loginVm.errorData.email
                         )
-                        PrimaryTextField(
+                        SecureTextField(
                             inputType: .password,
-                            value: $loginVm.loginData.password,
+                            value: $loginVm.loginData.password, 
+                            comparsionValue: $loginVm.loginData.password,
                             error: $loginVm.errorData.password
                         )
                     }

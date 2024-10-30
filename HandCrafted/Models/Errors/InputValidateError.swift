@@ -8,6 +8,7 @@ enum InputValidateError: Error {
     case birthDate
     case email
     case password
+    case confirm
 }
 
 extension InputValidateError: LocalizedError {
@@ -26,7 +27,9 @@ extension InputValidateError: LocalizedError {
         case .email:
             return "Ошибка в адресе почты"
         case .password:
-            return "Минимум 8 символов: латинские буквы и цифры"
+            return "Минимум 6 символов: латинские буквы, цифры или спецсимволы"
+        case .confirm:
+            return "Пароли не совпадают"
         }
     }
     

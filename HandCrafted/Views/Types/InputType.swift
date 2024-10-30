@@ -92,8 +92,6 @@ extension InputType {
             separatedBy: CharacterSet.decimalDigits.inverted
         ).joined()
         switch self {
-        case .confirm:
-            return true
         case .name, .city:
             let validSymbols =
             "абвгдеёжзийклмнопрстуфхцчшщъыьэюя" +
@@ -137,11 +135,17 @@ extension InputType {
                 return true
             }
         case .password:
-            if !(8...70).contains(text.count) {
+            let predicate = NSPredicate(
+                format: "SELF MATCHES %@",
+                "(?=.*[0-9a-zA-Z]).{6,}"
+            )
+            if !(6...70).contains(text.count) && !predicate.evaluate(with: text) {
                 throw InputValidateError.password
             } else {
                 return true
             }
+        case .confirm:
+            return false
         }
     }
     
