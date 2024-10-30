@@ -24,19 +24,11 @@ final class DatabaseManager {
 
 extension DatabaseManager {
     
-    func saveUser(
-        _ user: User,
-        completion: @escaping (Error?) -> Void
-    ) {
-        guard let id = Auth.auth().currentUser?.uid else { return }
-        var copy = user
-        copy.id = id
+    func saveUser(_ user: User) throws {
         do {
-            try ref.child("\(Const.usersPath)/\(id)").setValue(from: copy)
-            completion(nil)
-        } catch let error {
-            print(#function, "mytest - error: \(error)")
-            completion(error)
+            try ref.child(Const.usersPath).child(user.id).setValue(from: user)
+        } catch {
+            throw error
         }
     }
     
@@ -51,26 +43,20 @@ extension DatabaseManager {
             let id = value["id"] as? String,
             let name = value["name"] as? String,
             let email = value["email"] as? String,
-            let birthday = value["birthday"] as? String,
-            let city = value["city"] as? String
+            let birthDate = value["birthDate"] as? String,
+            let city = value["city"] as? String,
+            let phone = value["phone"] as? String
         else {
             return nil
         }
-        let password =  value["password"] as? String
-        let avatarUrl = value["avatarUrl"] as? String
-        let isSalesSubOn = value["isSalesSubOn"] as? Bool ?? false
-        let isNewArrivalsSubOn = value["isNewArrivalsSubOn"] as? Bool ?? false
         
         let user = User(
             id: id,
             name: name,
-            email: email,
-            birthday: birthday,
+            birthDate: birthDate,
             city: city,
-            password: password,
-            avatarUrl: avatarUrl,
-            isSalesSubOn: isSalesSubOn,
-            isNewArrivalsSubOn: isNewArrivalsSubOn
+            phone: phone,
+            email: email
         )
         self.user = user
         return user
@@ -134,6 +120,15 @@ extension DatabaseManager {
     
     func saveOrder(_ order: Order) throws {
         try ref.child(Const.orders).child(order.userId).child(order.id).setValue(from: order)
+    }
+    
+    func getOrdersCount() async throws -> Int {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            return 0
+        }
+        
+        let snapshot = try await ref.child(Const.orders).child(userId).getData()
+        return Int(snapshot.childrenCount)
     }
     
     func getOrderList() async throws -> [Order] {

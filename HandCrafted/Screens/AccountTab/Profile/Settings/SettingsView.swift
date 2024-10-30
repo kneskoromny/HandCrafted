@@ -30,6 +30,8 @@ struct SettingsView: View {
                 ProgressView("Loading...")
             } else {
                 ScrollView {
+                    Text("Экран настроек")
+                    /*
                     VStack(alignment: .center, spacing: 8) {
                         if let urlString = viewModel.user.avatarUrl,
                            let url = URL(string: urlString) {
@@ -89,7 +91,6 @@ struct SettingsView: View {
                             }
                     }
                     .padding(Const.viewInsets)
-                    
                     VStack(alignment: .leading, spacing: 24) {
                         Text("Personal information")
                             .font(Constant.AppFont.secondary)
@@ -149,7 +150,7 @@ struct SettingsView: View {
                             Toggle("", isOn: $viewModel.user.isNewArrivalsSubOn)
                         }
                         Button {
-                            viewModel.saveUser()
+//                            viewModel.saveUser()
                         } label: {
                             PrimaryButton(
                                 title: "Save",
@@ -161,6 +162,7 @@ struct SettingsView: View {
                         Spacer()
                     }
                     
+                     */
                 }
             }
         }

@@ -10,15 +10,16 @@ struct PrimaryTextField: View {
             trailing: 16
         )
     }
-    
-    var placeholder: String
-    var error: String?
+    var inputType: InputType
     @Binding var value: String
+    @Binding var error: String
+    
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         VStack {
             HStack {
-                Text(placeholder)
+                Text(inputType.placeholder)
                     .font(Constant.AppFont.thirdly)
                     .foregroundStyle(.secondary)
                 Spacer()
@@ -30,16 +31,35 @@ struct PrimaryTextField: View {
             .textFieldStyle(.plain)
             .font(Constant.AppFont.secondary)
             .foregroundStyle(.primary)
-            .textInputAutocapitalization(.never)
             .disableAutocorrection(true)
-            .keyboardType(.emailAddress)
-            if let error {
+            .textInputAutocapitalization(inputType.autocapitalization)
+            .keyboardType(inputType.keyboardType)
+            .textContentType(inputType.textContentType)
+            .onChange(of: value) { oldValue, newValue in
+//                print(#function, "mytest - old: \(oldValue), new: \(newValue)")
+                value = inputType.format(newValue)
+                self.error = ""
+            }
+            .focused($isFocused)
+            .onChange(of: isFocused) { _, isFocused in
+                if !isFocused {
+                    do {
+                        if try inputType.isValid(value) {
+                            self.error = ""
+                        }
+                    } catch {
+                        self.error = error.localizedDescription
+                    }
+                }
+            }
+            if error != "" {
                 HStack {
                     Text(error)
-                        .font(.caption)
+                        .font(Constant.AppFont.thirdly)
                         .foregroundStyle(.red)
                     Spacer()
                 }
+                .padding(.top)
             }
         }
         .padding(Const.viewInsets)
@@ -51,28 +71,8 @@ struct PrimaryTextField: View {
 
 #Preview {
     PrimaryTextField(
-        placeholder: "E-mail",
-        value: .constant("kneskoromny@gmail.com")
+        inputType: .email,
+        value: .constant("kneskoromny@gmail.com"),
+        error: .constant("")
     )
-    .modifier(EmailTextFieldModifier())
-}
-
-struct EmailTextFieldModifier: ViewModifier {
-    
-    func body(content: Content) -> some View {
-        content
-            .textContentType(.emailAddress)
-            .keyboardType(.emailAddress)
-    }
-    
-}
-
-struct PasswordTextFieldModifier: ViewModifier {
-    
-    func body(content: Content) -> some View {
-        content
-            .textContentType(.password)
-            .keyboardType(.asciiCapable)
-    }
-    
 }

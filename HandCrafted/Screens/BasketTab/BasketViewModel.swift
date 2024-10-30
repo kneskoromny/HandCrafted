@@ -192,12 +192,12 @@ private extension BasketViewModel {
     }
     
     func getOrderId(user: User) -> String? {
-        let converted = user.city?.replacingOccurrences(of: "\"", with: "").uppercased()
+        let converted = user.city.replacingOccurrences(of: "\"", with: "").uppercased()
         let year = Date().getString(component: .year)
         guard
             let orderNumber = (1...1000).randomElement(),
-            let firstLetter = converted?.first,
-            let lastLetter = converted?.last 
+            let firstLetter = converted.first,
+            let lastLetter = converted.last 
         else {
             print(#function, "mytest - no user")
             return nil

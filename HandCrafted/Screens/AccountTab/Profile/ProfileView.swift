@@ -4,12 +4,13 @@ struct ProfileView: View {
     
     // MARK: - State
     
-    @EnvironmentObject var viewModel: ProfileViewModel
+    @StateObject var profileVm = ProfileViewModel()
+    @Binding var accountState: AccountState
     @EnvironmentObject var router: AppRouter
     
     var body: some View {
         VStack {
-            if viewModel.isLoading {
+            if profileVm.isLoading {
                 ProgressView("Минуточку...")
             } else {
                 List {
@@ -17,14 +18,14 @@ struct ProfileView: View {
                         VStack(spacing: 16) {
                             VStack(spacing: 4) {
                                 HStack {
-                                    Text("Кирилл Нескоромный")
+                                    Text(profileVm.user?.name ?? "Пользователь-без-имени")
                                         .font(Constant.AppFont.primary)
                                         .fontWeight(.semibold)
                                         .foregroundStyle(.primary)
                                     Spacer()
                                 }
                                 HStack {
-                                    Text("kneskoromny@gmail.com")
+                                    Text(profileVm.user?.email ?? "unknown@mail.com")
                                         .font(Constant.AppFont.secondary)
                                         .foregroundStyle(.secondary)
                                     Spacer()
@@ -39,10 +40,10 @@ struct ProfileView: View {
                             }
                             .padding(
                                 EdgeInsets(
-                                    top: 0,
-                                    leading: 0,
+                                    top: 1,
+                                    leading: 1,
                                     bottom: 4,
-                                    trailing: 0
+                                    trailing: 1
                                 )
                             )
                         }
@@ -50,9 +51,9 @@ struct ProfileView: View {
                     .listRowInsets(EdgeInsets())
                     .listRowBackground(Color.clear)
                     Section {
-                        let subtitle = viewModel.orders.isEmpty
+                        let subtitle = profileVm.ordersCount == 0
                         ? "У вас пока нет заказов"
-                        : "У вас \(viewModel.orders.count) заказов"
+                        : "У вас \(profileVm.ordersCount) заказов"
                         Button {
                             router.navigate(to: .orders)
                         } label: {
@@ -76,7 +77,9 @@ struct ProfileView: View {
                     .listRowBackground(Color.clear)
                     Section {
                         Button {
-                            viewModel.logoutUser()
+                            profileVm.logoutUser() {
+                                accountState = .unAuth
+                            }
                         } label: {
                             PrimaryButton(
                                 title: "Выйти",
@@ -96,14 +99,14 @@ struct ProfileView: View {
         }
         .navigationTitle("Мой профиль")
         .onAppear {
-            viewModel.getUserInfo()
+            profileVm.getUserInfo()
         }
     }
     
 }
 
 #Preview {
-    ProfileView()
+    ProfileView(accountState: .constant(.auth))
         .environmentObject(ProfileViewModel())
         .environmentObject(AppRouter())
 }

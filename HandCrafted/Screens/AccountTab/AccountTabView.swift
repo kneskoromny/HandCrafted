@@ -3,52 +3,56 @@ import SwiftData
 
 struct AccountTabView: View {
     
-    @StateObject var profileViewModel = ProfileViewModel()
+    @State var accountState: AccountState = .unAuth
+    @StateObject var accountVm = AccountViewModel()
     @EnvironmentObject var appRouter: AppRouter
     
     var body: some View {
-        switch profileViewModel.accountState {
-        case .auth:
-            NavigationStack(path: $appRouter.navPath) {
-                ProfileView()
-                    .navigationDestination(for: AppDestination.self) { destination in
-                        switch destination {
-                        case .orders:
-                            MyOrdersView(orders: profileViewModel.orders)
-                        case .orderDetail(let order):
-                            MyOrderDetailView(order: order)
-                        case .favorites:
-                            Text("Favorites View")
-                        case .shippingAddresses:
-                            Text("Shipping Addresses View")
-                        case .paymentMethods:
-                            Text("Payment Methods View")
-                        case .settings:
-                            SettingsView()
-                        default:
-                            Text("Ошибка роутинга 🙀")
+        VStack {
+            switch accountState {
+            case .auth:
+                NavigationStack(path: $appRouter.navPath) {
+                    ProfileView(accountState: $accountState)
+                        .navigationDestination(for: AppDestination.self) { destination in
+                            switch destination {
+                            case .orders:
+                                MyOrdersView()
+                            case .orderDetail(let order):
+                                MyOrderDetailView(order: order)
+                            case .favorites:
+                                Text("Favorites View")
+                            case .shippingAddresses:
+                                Text("Shipping Addresses View")
+                            case .paymentMethods:
+                                Text("Payment Methods View")
+                            case .settings:
+                                SettingsView()
+                            default:
+                                Text("Ошибка роутинга 🙀")
+                            }
                         }
-                    }
-            }
-            .environmentObject(profileViewModel)
-            
-        case .unAuth:
-            NavigationStack(path: $appRouter.navPath) {
-                LoginView()
-                    .navigationDestination(for: AppDestination.self) { destination in
-                        switch destination {
-                        case .register:
-                            RegisterView()
-                        case .forgotPassword:
-                            ForgotPasswordView()
-                        case .recoveryRequested:
-                            RecoveryPasswordRequestedView()
-                        default:
-                            Text("Ошибка роутинга 🙀")
+                }
+                
+            case .unAuth:
+                NavigationStack(path: $appRouter.navPath) {
+                    LoginView(accountState: $accountState)
+                        .navigationDestination(for: AppDestination.self) { destination in
+                            switch destination {
+                            case .register:
+                                RegisterView(accountState: $accountState)
+                            case .forgotPassword:
+                                ForgotPasswordView()
+                            case .recoveryRequested:
+                                RecoveryPasswordRequestedView()
+                            default:
+                                Text("Ошибка роутинга 🙀")
+                            }
                         }
-                    }
+                }
             }
-            .environmentObject(profileViewModel)
+        }
+        .onAppear {
+            accountState = accountVm.getAccountState()
         }
     }
     
@@ -56,7 +60,7 @@ struct AccountTabView: View {
 
 struct AccountView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView()
+        ProfileView(accountState: .constant(.auth))
             .environmentObject(AppRouter())
     }
 }

@@ -42,12 +42,12 @@ struct ForgotPasswordView: View {
                         .font(.title3)
                         .foregroundStyle(.black)
                         .multilineTextAlignment(.leading)
-                    PrimaryTextField(
-                        placeholder: "E-mail",
-                        value: $viewModel.loginData.email
-                    )
-                    .textContentType(.emailAddress)
-                    .keyboardType(.emailAddress)
+//                    PrimaryTextField(
+//                        placeholder: "E-mail",
+//                        value: $viewModel.loginData.email
+//                    )
+//                    .textContentType(.emailAddress)
+//                    .keyboardType(.emailAddress)
                 }
                 .padding(Const.textFieldsInsets)
                 Button {

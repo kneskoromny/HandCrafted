@@ -2,19 +2,28 @@ import SwiftUI
 
 struct MyOrdersView: View {
     
+    @StateObject private var myOrdersVm = MyOrdersViewModel()
     @EnvironmentObject var router: AppRouter
     
-    var orders: [Order]
-    
     var body: some View {
-        List(orders) { order in
-            Button {
-                router.navigate(to: .orderDetail(order))
-            } label: {
-                MyOrderView(order: order)
+        VStack {
+            if myOrdersVm.isLoading {
+                ProgressView("Минуточку...")
+            } else {
+                List(myOrdersVm.orders) { order in
+                    Button {
+                        router.navigate(to: .orderDetail(order))
+                    } label: {
+                        MyOrderView(order: order)
+                    }
+                    .tint(.primary)
+                    .listRowInsets(EdgeInsets())
+                }
+                .listStyle(.insetGrouped)
+                .scrollIndicators(.hidden)
+                .listRowSpacing(16)
+                .contentMargins(.top, 24)
             }
-            .tint(.primary)
-            .listRowInsets(EdgeInsets())
         }
         .navigationTitle("Мои заказы")
         .navigationBarBackButtonHidden()
@@ -28,13 +37,13 @@ struct MyOrdersView: View {
                 .tint(.red)
             }
         }
-        .listStyle(.insetGrouped)
-        .scrollIndicators(.hidden)
-        .listRowSpacing(16)
-        .contentMargins(.top, 24)
+        .onAppear {
+            myOrdersVm.getOrders()
+        }
+        
     }
 }
 
 #Preview {
-    MyOrdersView(orders: [])
+    MyOrdersView()
 }
