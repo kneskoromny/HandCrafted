@@ -2,20 +2,30 @@ import Foundation
 
 enum InputValidateError: Error {
     
-    case invalidBirthDate
-    case invalidEmail
-    case invalidPassword
+    case reqField
+    case notKirillic
+    case phone
+    case birthDate
+    case email
+    case password
 }
 
 extension InputValidateError: LocalizedError {
     
     var errorDescription: String? {
         switch self {
-        case .invalidBirthDate:
+            
+        case .reqField:
+            return "Обязательное поле"
+        case .notKirillic:
+            return "Текст содержит не кириллицу или введены недопустимые символы"
+        case .phone:
+            return "Ошибка в номере телефона"
+        case .birthDate:
             return "Ошибка в дате рождения"
-        case .invalidEmail:
+        case .email:
             return "Ошибка в адресе почты"
-        case .invalidPassword:
+        case .password:
             return "Минимум 8 символов: латинские буквы и цифры"
         }
     }

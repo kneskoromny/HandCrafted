@@ -1,4 +1,4 @@
-import UIKit
+import SwiftUI
 
 enum InputType {
     
@@ -19,13 +19,22 @@ enum InputType {
         case .city:
             return "Город проживания"
         case .phone:
-            return "Номер телефона"
+            return "Номер телефона c привязкой к мессенджерам"
         case .email:
             return "E-mail"
         case .password:
             return "Пароль"
         case .confirm:
             return "Подтверждение пароля"
+        }
+    }
+    
+    var autocapitalization: TextInputAutocapitalization {
+        switch self {
+        case .name, .city:
+            return .words
+        default:
+            return .never
         }
     }
     
@@ -53,7 +62,7 @@ enum InputType {
         case .phone:
             return .phonePad
         default:
-            return .asciiCapable
+            return .default
         }
     }
 
@@ -74,17 +83,65 @@ extension InputType {
             return text
         }
     }
-    // TODO: продолжить здесь с настройки правил валидации
-    func validate(_ text: String) throws {
+    
+    func isValid(_ text: String) throws -> Bool {
+        if text == "" {
+            throw InputValidateError.reqField
+        }
+        let clean = text.components(
+            separatedBy: CharacterSet.decimalDigits.inverted
+        ).joined()
         switch self {
-        case .name, .city, .phone, .confirm:
-            return
+        case .confirm:
+            return true
+        case .name, .city:
+            let validSymbols =
+            "абвгдеёжзийклмнопрстуфхцчшщъыьэюя" +
+            "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ" +
+            "`-"
+            let allowedCharacters = CharacterSet(charactersIn: validSymbols)
+            let characterSet = CharacterSet(charactersIn: text)
+            if !allowedCharacters.isSuperset(of: characterSet) {
+                throw InputValidateError.notKirillic
+            } else {
+                return true
+            }
+        case .phone:
+            if clean.count != 11 {
+                throw InputValidateError.phone
+            } else {
+                return true
+            }
         case .birthDate:
-            throw InputValidateError.invalidBirthDate
+            let formatter = DateFormatter()
+            formatter.dateFormat = "dd.MM.yyyy"
+            if formatter.date(from: text) == nil || clean.count != 8 {
+                throw InputValidateError.birthDate
+            } else {
+                return true
+            }
         case .email:
-            throw InputValidateError.invalidEmail
+            let predicate = NSPredicate(
+                format: "SELF MATCHES %@",
+                "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+                "\\@" +
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+                "(" +
+                "\\." +
+                "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+                ")+"
+            )
+            if !(5...60).contains(text.count) && !predicate.evaluate(with: text) {
+                throw InputValidateError.email
+            } else {
+                return true
+            }
         case .password:
-            throw InputValidateError.invalidPassword
+            if !(8...70).contains(text.count) {
+                throw InputValidateError.password
+            } else {
+                return true
+            }
         }
     }
     

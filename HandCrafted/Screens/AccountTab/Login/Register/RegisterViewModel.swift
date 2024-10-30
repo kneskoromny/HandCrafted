@@ -13,6 +13,11 @@ final class RegisterViewModel: ObservableObject {
         var password: String = ""
         var confirm: String = ""
         
+        // TODO: оптимизировать
+        var isFilled: Bool {
+            return name != "" && birthDate != "" && city != "" && phone != "" && email != "" && password != "" && confirm != ""
+        }
+        
     }
     
     struct ErrorData {
@@ -26,11 +31,21 @@ final class RegisterViewModel: ObservableObject {
         var password: String = ""
         var confirm: String = ""
         
+        // TODO: оптимизировать
+        var isErrored: Bool {
+            return name != "" && birthDate != "" && city != "" && phone != "" && email != "" && password != "" && confirm != ""
+        }
+        
     }
     
     @Published var registerData = RegisterData()
     @Published var errorData = ErrorData()
     @Published var isLoading = false
+    @Published var isAlertPresented = false
+    
+    var isFormReady: Bool {
+        return registerData.isFilled && !errorData.isErrored
+    }
     
     private let authManager = AuthManager()
     private let dbManager = DatabaseManager()

@@ -495,11 +495,12 @@
 			};
 			buildConfigurationList = F7EEE8992C1F05260045C760 /* Build configuration list for PBXProject "HandCrafted" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ru;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = F7EEE8952C1F05260045C760;
 			packageReferences = (

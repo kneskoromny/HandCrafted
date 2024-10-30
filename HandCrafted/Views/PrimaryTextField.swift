@@ -14,6 +14,8 @@ struct PrimaryTextField: View {
     @Binding var value: String
     @Binding var error: String
     
+    @FocusState private var isFocused: Bool
+    
     var body: some View {
         VStack {
             HStack {
@@ -29,17 +31,25 @@ struct PrimaryTextField: View {
             .textFieldStyle(.plain)
             .font(Constant.AppFont.secondary)
             .foregroundStyle(.primary)
-            .textInputAutocapitalization(.never)
             .disableAutocorrection(true)
+            .textInputAutocapitalization(inputType.autocapitalization)
             .keyboardType(inputType.keyboardType)
             .textContentType(inputType.textContentType)
             .onChange(of: value) { oldValue, newValue in
                 print(#function, "mytest - old: \(oldValue), new: \(newValue)")
                 value = inputType.format(newValue)
-                do {
-                    try inputType.validate(value)
-                } catch {
-                    self.error = error.localizedDescription
+                self.error = ""
+            }
+            .focused($isFocused)
+            .onChange(of: isFocused) { _, isFocused in
+                if !isFocused {
+                    do {
+                        if try inputType.isValid(value) {
+                            self.error = ""
+                        }
+                    } catch {
+                        self.error = error.localizedDescription
+                    }
                 }
             }
             if error != "" {
@@ -49,6 +59,7 @@ struct PrimaryTextField: View {
                         .foregroundStyle(.red)
                     Spacer()
                 }
+                .padding(.top)
             }
         }
         .padding(Const.viewInsets)

@@ -242,12 +242,11 @@ struct ProductDetailView: View {
                 } else {
                     Button("OK") {}
                 }
+            } message: {
+                Text(catVm.alertMessage)
             }
-    message: {
-        Text(catVm.alertMessage)
     }
-}
-
+    
 }
 
 #Preview {

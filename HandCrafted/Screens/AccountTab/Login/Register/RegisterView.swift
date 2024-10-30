@@ -91,8 +91,12 @@ struct RegisterView: View {
                     // Кнопка
                     Section {
                         Button {
-                            regVm.registerUser() {
-                                router.navigateToRoot()
+                            if regVm.isFormReady {
+                                regVm.registerUser() {
+                                    router.navigateToRoot()
+                                }
+                            } else {
+                                regVm.isAlertPresented = true
                             }
                         } label: {
                             PrimaryButton(title: "Регистрация")
@@ -118,6 +122,14 @@ struct RegisterView: View {
                 .tint(.red)
             }
         }
+        .alert(
+            "Ошибка формы",
+            isPresented: $regVm.isAlertPresented) {
+                Button("OK") {}
+            } message: {
+                Text("Чтобы зарегистрироваться необходимо заполнить все поля.")
+            }
+
         
     }
 }
