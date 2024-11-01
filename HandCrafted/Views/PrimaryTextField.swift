@@ -11,6 +11,7 @@ struct PrimaryTextField: View {
         )
     }
     var inputType: InputType
+    @Binding var isDisabled: Bool
     @Binding var value: String
     @Binding var error: String
     
@@ -28,6 +29,7 @@ struct PrimaryTextField: View {
                 "",
                 text: $value
             )
+            .disabled(isDisabled)
             .textFieldStyle(.plain)
             .font(Constant.AppFont.secondary)
             .foregroundStyle(.primary)
@@ -36,7 +38,6 @@ struct PrimaryTextField: View {
             .keyboardType(inputType.keyboardType)
             .textContentType(inputType.textContentType)
             .onChange(of: value) { oldValue, newValue in
-//                print(#function, "mytest - old: \(oldValue), new: \(newValue)")
                 value = inputType.format(newValue)
                 self.error = ""
             }
@@ -72,6 +73,7 @@ struct PrimaryTextField: View {
 #Preview {
     PrimaryTextField(
         inputType: .email,
+        isDisabled: .constant(false),
         value: .constant("kneskoromny@gmail.com"),
         error: .constant("")
     )

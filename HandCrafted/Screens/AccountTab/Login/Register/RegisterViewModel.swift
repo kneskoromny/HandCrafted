@@ -41,6 +41,7 @@ final class RegisterViewModel: ObservableObject {
     @Published var registerData = RegisterData()
     @Published var errorData = ErrorData()
     @Published var isLoading = false
+    @Published var isDisabled = false
     @Published var isAlertPresented = false
     
     var isFormReady: Bool {
