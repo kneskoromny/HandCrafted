@@ -32,25 +32,25 @@ struct MyDataView: View {
                         PrimaryTextField(
                             inputType: .name,
                             isDisabled: $myDataVm.isDisabled,
-                            value: $myDataVm.registerData.name,
+                            value: $myDataVm.userData.name,
                             error: $myDataVm.errorData.name
                         )
                         PrimaryTextField(
                             inputType: .birthDate,
                             isDisabled: $myDataVm.isDisabled,
-                            value: $myDataVm.registerData.birthDate,
+                            value: $myDataVm.userData.birthDate,
                             error: $myDataVm.errorData.birthDate
                         )
                         PrimaryTextField(
                             inputType: .city,
                             isDisabled: $myDataVm.isDisabled,
-                            value: $myDataVm.registerData.city,
+                            value: $myDataVm.userData.city,
                             error: $myDataVm.errorData.city
                         )
                         PrimaryTextField(
                             inputType: .phone,
                             isDisabled: $myDataVm.isDisabled,
-                            value: $myDataVm.registerData.phone,
+                            value: $myDataVm.userData.phone,
                             error: $myDataVm.errorData.phone
                         )
                     }
@@ -59,19 +59,22 @@ struct MyDataView: View {
                     // Кнопка
                     Section {
                         Button {
-                            if myDataVm.isDisabled {
+                            switch myDataVm.isDisabled {
+                            case true:
                                 myDataVm.isDisabled = false
-                            } else {
-                               print(#function, "mytest - отправка запроса на изменение данных в Realtime Database")
-                                // TODO: запрос на изменение данных в RealTime Database
+                            case false:
+                                if myDataVm.isFormReady {
+                                    myDataVm.updateUser()
+                                } else {
+                                    myDataVm.isAlertPresented = true
+                                }
                             }
                         } label: {
-                            PrimaryButton(title: myDataVm.isDisabled ? "Изменить" : "Сохранить")
+                            PrimaryButton(title: myDataVm.isDisabled ? "Изменить данные" : "Сохранить")
                         }
                     }
                     .listRowInsets(EdgeInsets())
                     
-                    // TODO: здесь должны быть просто кнопки
                     // E-mail, Пароль,
                     Section {
                         Button {
@@ -80,7 +83,7 @@ struct MyDataView: View {
                             // TODO: email должен быть из User
                             ProfileButton(
                                 title: "E-mail",
-                                subtitle: "useremail@mail.com"
+                                subtitle: myDataVm.userData.email
                             )
                         }
                         .tint(.primary)
@@ -114,6 +117,17 @@ struct MyDataView: View {
                 .tint(.red)
             }
         }
+        .onAppear {
+            myDataVm.getUser()
+            print(#function, "mytest - on appear")
+        }
+        .alert(
+            "Ошибка формы",
+            isPresented: $myDataVm.isAlertPresented) {
+                Button("OK") {}
+            } message: {
+                Text("Чтобы поменять данные устраните ошибки.")
+            }
     }
 }
 

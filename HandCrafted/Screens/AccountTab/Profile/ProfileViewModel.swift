@@ -7,11 +7,13 @@ enum AccountState {
 
 final class ProfileViewModel: ObservableObject {
     
-    // TODO: хранить польз данные для использования на разных экранах
-    @AppStorage("user") private var userData: Data?
+    struct UserData {
+        var name: String = ""
+        var email: String = ""
+        var ordersCount: Int = 0
+    }
     
-    
-    @Published var user:  User?
+    @Published var userData = UserData()
     @Published var alertItem: AlertItem?
     @Published var isLoading = false
     
@@ -28,7 +30,8 @@ final class ProfileViewModel: ObservableObject {
                 try await authManager.logout()
                 await MainActor.run {
                     isLoading = false
-                    self.user = nil
+                    self.userData = UserData()
+                    self.dbManager.removeLocalUser()
                     completion?()
                 }
             } catch {
@@ -37,7 +40,7 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
-    func getUserInfo() {
+    func getUser() {
         isLoading = true
         Task {
             do {
@@ -47,11 +50,12 @@ final class ProfileViewModel: ObservableObject {
                 await MainActor.run {
                     self.isLoading = false
                     if let user {
-                        self.user = user
+                        self.userData.name = user.name
+                        self.userData.email = user.email
+                        self.userData.ordersCount = ordersCount
                     } else {
                         self.alertItem = AlertContext.invalidUserData
                     }
-                    self.ordersCount = ordersCount
                 }
             } catch {
                 print(#function, "mytest - error: \(error.localizedDescription)")

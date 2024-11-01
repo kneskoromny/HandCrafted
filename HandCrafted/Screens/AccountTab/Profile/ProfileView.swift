@@ -18,14 +18,14 @@ struct ProfileView: View {
                         VStack(spacing: 16) {
                             VStack(spacing: 4) {
                                 HStack {
-                                    Text(profileVm.user?.name ?? "Пользователь-без-имени")
+                                    Text(profileVm.userData.name)
                                         .font(Constant.AppFont.primary)
                                         .fontWeight(.semibold)
                                         .foregroundStyle(.primary)
                                     Spacer()
                                 }
                                 HStack {
-                                    Text(profileVm.user?.email ?? "unknown@mail.com")
+                                    Text(profileVm.userData.email)
                                         .font(Constant.AppFont.secondary)
                                         .foregroundStyle(.secondary)
                                     Spacer()
@@ -51,9 +51,9 @@ struct ProfileView: View {
                     .listRowInsets(EdgeInsets())
                     .listRowBackground(Color.clear)
                     Section {
-                        let subtitle = profileVm.ordersCount == 0
+                        let subtitle = profileVm.userData.ordersCount == 0
                         ? "У вас пока нет заказов"
-                        : "У вас \(profileVm.ordersCount) заказов"
+                        : "У вас \(profileVm.userData.ordersCount) заказов"
                         Button {
                             router.navigate(to: .orders)
                         } label: {
@@ -99,7 +99,7 @@ struct ProfileView: View {
         }
         .navigationTitle("Мой профиль")
         .onAppear {
-            profileVm.getUserInfo()
+            profileVm.getUser()
         }
     }
     

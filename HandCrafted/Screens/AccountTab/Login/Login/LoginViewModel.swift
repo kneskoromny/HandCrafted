@@ -3,19 +3,15 @@ import SwiftUI
 final class LoginViewModel: ObservableObject {
     
     struct LoginData {
-        
         var email = ""
         var password = ""
         var confirmPassword = ""
-        
     }
     
     struct ErrorData {
-        
         var email = ""
         var password = ""
         var confirmPassword = ""
-        
     }
     
     @Published var loginData = LoginData()

@@ -3,7 +3,6 @@ import SwiftUI
 final class RegisterViewModel: ObservableObject {
     
     struct RegisterData {
-        
         var name: String = ""
         var birthDate: String = ""
         var city: String = ""
@@ -17,11 +16,9 @@ final class RegisterViewModel: ObservableObject {
         var isFilled: Bool {
             return name != "" && birthDate != "" && city != "" && phone != "" && email != "" && password != "" && confirm != ""
         }
-        
     }
     
     struct ErrorData {
-        
         var name: String = ""
         var birthDate: String = ""
         var city: String = ""
@@ -35,7 +32,6 @@ final class RegisterViewModel: ObservableObject {
         var isErrored: Bool {
             return name != "" || birthDate != "" || city != "" || phone != "" || email != "" || password != "" || confirm != ""
         }
-        
     }
     
     @Published var registerData = RegisterData()
