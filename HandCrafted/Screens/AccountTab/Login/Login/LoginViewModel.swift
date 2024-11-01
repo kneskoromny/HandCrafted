@@ -21,6 +21,7 @@ final class LoginViewModel: ObservableObject {
     @Published var loginData = LoginData()
     @Published var errorData = ErrorData()
     @Published var isLoading = false
+    @Published var isDisabled = false
     
     private let authManager = AuthManager()
     private let dbManager = DatabaseManager()

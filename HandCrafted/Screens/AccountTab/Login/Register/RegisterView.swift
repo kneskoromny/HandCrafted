@@ -37,26 +37,31 @@ struct RegisterView: View {
                     Section {
                         PrimaryTextField(
                             inputType: .name,
+                            isDisabled: $regVm.isDisabled,
                             value: $regVm.registerData.name,
                             error: $regVm.errorData.name
                         )
                         PrimaryTextField(
                             inputType: .birthDate,
+                            isDisabled: $regVm.isDisabled,
                             value: $regVm.registerData.birthDate,
                             error: $regVm.errorData.birthDate
                         )
                         PrimaryTextField(
                             inputType: .city,
+                            isDisabled: $regVm.isDisabled,
                             value: $regVm.registerData.city,
                             error: $regVm.errorData.city
                         )
                         PrimaryTextField(
                             inputType: .phone,
+                            isDisabled: $regVm.isDisabled,
                             value: $regVm.registerData.phone,
                             error: $regVm.errorData.phone
                         )
                         PrimaryTextField(
                             inputType: .email,
+                            isDisabled: $regVm.isDisabled,
                             value: $regVm.registerData.email,
                             error: $regVm.errorData.email
                         )
@@ -68,7 +73,7 @@ struct RegisterView: View {
                     }
                     .listRowInsets(EdgeInsets())
                     
-                    // Пароль, Подтверждение пароля, Вью с правилами пароля
+                    // Пароль, Подтверждение пароля
                     Section {
                         SecureTextField(
                             inputType: .password,
@@ -131,9 +136,8 @@ struct RegisterView: View {
             } message: {
                 Text("Чтобы зарегистрироваться заполните все поля или устраните ошибки.")
             }
-
-        
     }
+    
 }
 
 #Preview {

@@ -19,6 +19,7 @@ struct LoginView: View {
                     Section {
                         PrimaryTextField(
                             inputType: .email,
+                            isDisabled: $loginVm.isDisabled,
                             value: $loginVm.loginData.email,
                             error: $loginVm.errorData.email
                         )

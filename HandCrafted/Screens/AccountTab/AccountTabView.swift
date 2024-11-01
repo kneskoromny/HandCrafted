@@ -26,7 +26,7 @@ struct AccountTabView: View {
                             case .paymentMethods:
                                 Text("Payment Methods View")
                             case .settings:
-                                SettingsView()
+                                MyDataView()
                             default:
                                 Text("Ошибка роутинга 🙀")
                             }
