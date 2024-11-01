@@ -1,9 +1,7 @@
 import FirebaseAuth
 import FirebaseCore
 import FirebaseDatabase
-
-// TODO: Не сделано
-// подумать над реализацией подписки на User
+import SwiftUI
 
 final class DatabaseManager {
     
@@ -16,7 +14,7 @@ final class DatabaseManager {
     }
     private let ref = Database.database(url: Const.dbUrl).reference()
     
-    var user: User?
+    @AppStorage("user") private(set) var user: User? = nil
     
 }
 
@@ -27,14 +25,19 @@ extension DatabaseManager {
     func saveUser(_ user: User) throws {
         do {
             try ref.child(Const.usersPath).child(user.id).setValue(from: user)
+            self.user = user
         } catch {
             throw error
         }
     }
     
     func getUser() async throws -> User? {
-        // Получаем текущий ID пользователя
+        guard user == nil else {
+            print(#function, "mytest - user: \(user?.name) is not nil")
+            return user
+        }
         guard let id = Auth.auth().currentUser?.uid else {
+            print(#function, "mytest - no id")
             return nil
         }
         let snapshot = try await ref.child(Const.usersPath).child(id).getData()
@@ -49,7 +52,7 @@ extension DatabaseManager {
         else {
             return nil
         }
-        
+        print(#function, "mytest - get user from server")
         let user = User(
             id: id,
             name: name,
@@ -60,6 +63,10 @@ extension DatabaseManager {
         )
         self.user = user
         return user
+    }
+    
+    func removeLocalUser() {
+        user = nil
     }
     
 }
